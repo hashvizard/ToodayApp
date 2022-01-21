@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "128578158131",
+    "firebase_url": "https://toodayapp-338407-default-rtdb.asia-southeast1.firebasedatabase.app",
+    "project_id": "toodayapp-338407",
+    "storage_bucket": "toodayapp-338407.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:128578158131:android:12ade2a64604c47d636d46",
+        "android_client_info": {
+          "package_name": "com.hashvizard.tooday"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "128578158131-i45i5pdbgfft0ddrqdaq1j5lqptaqvcf.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.hashvizard.tooday",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "128578158131-ghr9c1i0k1q1084kaptun7norts3gkud.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDFK1N5h9osv9n_v1SskYwc6sJdQmBiEBk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "128578158131-ghr9c1i0k1q1084kaptun7norts3gkud.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
