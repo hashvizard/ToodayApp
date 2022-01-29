@@ -1,61 +1,40 @@
 import React from 'react'
-import { View, Text } from 'react-native'
-import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs'
-import Feather from 'react-native-vector-icons/Feather';
+import { createStackNavigator } from '@react-navigation/stack';
 import CameraScreen from '../../screens/camera';
 import ProfileScreen from '../../screens/profile';
 import SearchScreen from '../../screens/search';
-import FeedScreen from '../../screens/feed';
 import FeedNavigation from '../feed';
 import auth from '@react-native-firebase/auth';
-const Tab = createMaterialBottomTabNavigator()
 
-const EmptyScreen = () => {
-    return <View></View>
-}
+const Stack = createStackNavigator()
 
 export default function HomeScreen() {
     return (
-        <Tab.Navigator
-            barStyle={{ backgroundColor: 'black' }}
-            initialRouteName="feed">
-            <Tab.Screen
+        <Stack.Navigator
+            initialRouteName={"feed"}
+            screenOptions={{
+                headerShown: false
+            }}>
+            <Stack.Screen
                 name="feed"
                 component={FeedNavigation}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <Feather name="home" size={24} color={color} />
-                    )
-                }}
+
             />
-            <Tab.Screen
+            <Stack.Screen
                 name="Discover"
                 component={SearchScreen}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <Feather name="search" size={24} color={color} />
-                    )
-                }}
+
             />
-            <Tab.Screen
+            <Stack.Screen
                 name="Add"
                 component={CameraScreen}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <Feather name="plus-square" size={24} color={color} />
-                    )
-                }}
+
             />
-             <Tab.Screen
+            <Stack.Screen
                 name="Me"
                 component={ProfileScreen}
-                options={{
-                    tabBarIcon: ({ color }) => (
-                        <Feather name="user" size={24} color={color} />
-                    )
-                }}
-                initialParams={{initialUserId: auth().currentUser.uid}}
+                initialParams={{ initialUserId: auth().currentUser.uid }}
             />
-        </Tab.Navigator>
+        </Stack.Navigator>
     )
 }

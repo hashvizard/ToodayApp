@@ -1,24 +1,27 @@
 import React, { useEffect } from 'react'
-import { View, Text } from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
-import AuthScreen from '../../screens/auth'
 import { userAuthStateListener } from '../../redux/actions';
 import HomeScreen from '../home';
 import SavePostScreen from '../../screens/savePost';
 import EditProfileScreen from '../../screens/profile/edit';
 import EditProfileFieldScreen from '../../screens/profile/edit/field';
-import Modal from '../../components/modal';
+import ReportModal from '../../components/modal/report';
 import ProfileScreen from '../../screens/profile';
 import FeedScreen from '../../screens/feed';
+import UserLogin from '../../components/auth/login';
+import UserCity from '../../components/auth/city';
+import Error from '../../components/error';
+import { navigationRef } from '../../../RootNavigation';
+import BlockModal from '../../components/modal/block';
+
 const Stack = createStackNavigator()
 
 
 export default function Route() {
 
-    const currentUserObj = useSelector(state => state.auth)
-    console.log(currentUserObj)
+    const currentUserObj = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
     useEffect(() => {
@@ -26,27 +29,31 @@ export default function Route() {
     }, [])
 
     if (!currentUserObj.loaded) {
-        return (
-            <View></View>
-        )
+        return (<></>)
     }
 
     return (
-        <NavigationContainer>
+        <NavigationContainer ref={navigationRef}>
             <Stack.Navigator>
                 {currentUserObj.currentUser == null ?
-                    <Stack.Screen name="auth" component={AuthScreen} options={{ headerShown: false }} />
-                    : <>
-                     <Stack.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
-                          <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false }} />
-                          <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
-                          <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />
-                          <Stack.Screen name="editProfile" component={EditProfileScreen} options={{ headerShown: false }} />
-                          <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
-                    </>
+                    <Stack.Screen name="auth" component={UserLogin} options={{ headerShown: false }} />
+                : (currentUserObj.currentUser != null ? !currentUserObj.currentUser.hasOwnProperty('City') : null) ?
+                    <Stack.Screen name="city" component={UserCity} options={{ headerShown: false }} />
+                :
+                <>
+                    <Stack.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="editProfile" component={EditProfileScreen} options={{ headerShown: false }} />
+                    <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
+                </>
+
                 }
+                <Stack.Screen name="Error" component={Error} options={{ headerShown: false }} />
             </Stack.Navigator>
-            <Modal />
+            <ReportModal />
+            <BlockModal />
         </NavigationContainer>
     )
 }

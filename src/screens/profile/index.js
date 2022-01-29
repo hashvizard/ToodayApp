@@ -9,9 +9,9 @@ import { SafeAreaView } from 'react-native-safe-area-context'
 import { CurrentUserProfileItemInViewContext } from '../../navigation/feed'
 import { useUser } from '../../hooks/useUser'
 import { getPostsByUserId } from '../../services/posts'
-
+import { useFocusEffect } from '@react-navigation/native';
 export default function ProfileScreen({ route }) {
-    const { initialUserId } = route.params
+    const initialUserId = useSelector(state => state.initialPost.userId);
     const [userPosts, setUserPosts] = useState([])
 
     let providerUserId = null
@@ -20,13 +20,20 @@ export default function ProfileScreen({ route }) {
     }
 
     const user = useUser(initialUserId ? initialUserId : providerUserId).data;
-    useEffect(() => {
-        if (user === undefined || user === null) {
-            return;
-        }
-        getPostsByUserId(user.uid).then(setUserPosts)
 
-    }, [user])
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if (user === undefined || user === null) {
+                return;
+            }
+            getPostsByUserId(user.uid).then(setUserPosts)
+
+            return () => {
+                setUserPosts([])
+            }
+        }, [user])
+    );
 
     if (user === undefined || user === null) {
         return <></>
@@ -34,10 +41,10 @@ export default function ProfileScreen({ route }) {
     return (
         <SafeAreaView style={styles.container}>
             <ProfileNavBar user={user} />
-            
-                <ProfileHeader user={user} />
-                <ProfilePostList posts={userPosts} />
-           
+
+            <ProfileHeader user={user} />
+            <ProfilePostList posts={userPosts} />
+
         </SafeAreaView>
     )
 }

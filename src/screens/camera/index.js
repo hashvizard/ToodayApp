@@ -9,7 +9,6 @@ import  Feather  from 'react-native-vector-icons/Feather'
 import styles from './styles'
 import { useNavigation } from '@react-navigation/native'
 
-
 /**
  * Function that renders a component responsible showing
  * a view with the camera preview, recording videos, controling the camera and
@@ -58,11 +57,8 @@ export default function CameraScreen() {
                 if (videoRecordPromise) {
                     const data = await videoRecordPromise;
                     const source = data.uri
-                    
-                    let sourceThumb = await generateThumbnail(source)
-                    console.log(sourceThumb);
-                    navigation.navigate('savePost', { source, sourceThumb })
-                }
+                    navigation.navigate('savePost', { source })
+                  }
             } catch (error) {
                 console.warn(error)
             }
@@ -84,20 +80,9 @@ export default function CameraScreen() {
             quality: 1
         })
         if (!result.cancelled) {
-            let sourceThumb = await generateThumbnail(result.uri);
-            console.log(sourceThumb);
-            navigation.navigate('savePost', { source: result.uri, sourceThumb })
+            navigation.navigate('savePost', { source: result.uri })
         }
     }
-
-    //Add code to generate thumbnail
-     const generateThumbnail = async (source) => {
-         try {
-             return "abc.png";
-         } catch (e) {
-             console.warn(e);
-         }
-     };
 
      if (!hasCameraPermissions || !hasAudioPermissions || !hasGalleryPermissions) {
          return (

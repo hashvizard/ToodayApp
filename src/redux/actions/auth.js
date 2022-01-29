@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore'
 import { USER_STATE_CHANGE } from '../constants'
 import { getPostsByUser } from './posts'
 
+
 export const userAuthStateListener = () => dispatch => {
     auth().onAuthStateChanged((user) => {
         if (user) {
@@ -14,6 +15,7 @@ export const userAuthStateListener = () => dispatch => {
         }
     })
 }
+
 
 export const getCurrentUserData = () => dispatch => {
     firestore()
@@ -30,22 +32,14 @@ export const getCurrentUserData = () => dispatch => {
         })
 }
 
-export const login = (email, password) => dispatch => new Promise((resolve, reject) => {
-    auth().signInWithEmailAndPassword(email, password)
+export const login = (googleCredential) => dispatch => new Promise((resolve, reject) => {
+    // Sign-in the user with the credential
+    auth().signInWithCredential(googleCredential)
         .then(() => {
             resolve()
         })
-        .catch(() => {
-            reject()
+        .catch((e) => {
+            reject(e)
         })
 })
 
-export const register = (email, password) => dispatch => new Promise((resolve, reject) => {
-    auth().createUserWithEmailAndPassword(email, password)
-        .then(() => {
-            resolve()
-        })
-        .catch((error) => {
-            reject(error)
-        })
-})

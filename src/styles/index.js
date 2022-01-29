@@ -1,4 +1,4 @@
 import buttonStyles from "./buttonStyles";
 import generalStyles from "./generalStyles";
-
-export { buttonStyles, generalStyles }
+import videoStyles from "./VideoStyles";
+export { buttonStyles, generalStyles,videoStyles}

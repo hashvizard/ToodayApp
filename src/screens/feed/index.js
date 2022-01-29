@@ -1,8 +1,14 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { Dimensions, FlatList, View } from 'react-native'
+import { FlatList } from 'react-native'
 import PostSingle from '../../components/general/post'
 import { getFeed, getPostsByUserId } from '../../services/posts'
-import styles from './styles'
+import LoadingScreen from '../../components/FeedLoaders/LoadingScreen';
+import NoDataFound from '../../components/FeedLoaders/NoDataFound';
+import Navbar from '../../components/FeedLoaders/Header/Navbar';
+import { useDispatch, useSelector } from 'react-redux';
+import { reportNull } from '../../redux/actions/report'
+import { blockNull, intialPostView } from '../../redux/actions';
+
 
 /**
  * Component that renders a list of posts meant to be 
@@ -11,19 +17,39 @@ import styles from './styles'
  * On start make fetch for posts then use a flatList 
  * to display/control the posts.
  */
+
+
 export default function FeedScreen({ route }) {
-    const { setCurrentUserProfileItemInView, creator, profile } = route.params
+    const user = useSelector(state =>state.auth)
+    const { creator, profile } = route.params
     const [posts, setPosts] = useState([])
     const mediaRefs = useRef([])
+    const [loading, setloading] = useState(true);
+    const dispatch = useDispatch();
+    const removePost = useSelector(state => state.report);
+    const removeBlockUserPosts = useSelector(state => state.blockedUserPost);
 
     useEffect(() => {
         if (profile) {
             getPostsByUserId(creator).then(setPosts)
         } else {
-            getFeed().then(setPosts)
+            getFeed(user).then(setPosts).then(setloading(false))
         }
     }, [])
 
+    useEffect(() => {
+        if (removePost.postId != null) {
+            setPosts(posts.filter(item => item.id !== removePost.postId));
+            dispatch(reportNull())
+        }
+    }, [removePost])
+
+    useEffect(() => {
+        if (removeBlockUserPosts.userId != null) {
+            setPosts(posts.filter(item => item.creator !== removeBlockUserPosts.userId));
+            dispatch(blockNull())
+        }
+    }, [removeBlockUserPosts])
 
     /**
      * Called any time a new post is shown when a user scrolls
@@ -36,7 +62,7 @@ export default function FeedScreen({ route }) {
             if (cell) {
                 if (element.isViewable) {
                     if (!profile) {
-                        setCurrentUserProfileItemInView(element.item.creator)
+                        dispatch(intialPostView(element.item.id,element.item.creator))
                     }
                     cell.play()
                 } else {
@@ -55,24 +81,40 @@ export default function FeedScreen({ route }) {
      * @returns 
      */
     const renderItem = ({ item, index }) => {
-        return (
-            <View style={{ height: Dimensions.get('window').height - 78, backgroundColor: index % 2 == 0? 'red':"pink" }}>
-                <PostSingle item={item} ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)} />
-            </View>
-        )
+        return (<PostSingle
+            item={item}
+            ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)}
+        />)
     }
 
+    if (loading) {
+        return (
+            <React.Fragment>
+                <Navbar />
+                <LoadingScreen />
+            </React.Fragment>
+        )
+    }
+    else if (!loading && posts.length == 0) {
+        return (
+            <React.Fragment>
+                <Navbar />
+                <NoDataFound />
+            </React.Fragment>
+        )
+    }
     return (
-        <View style={{flex:1}}>
+        <React.Fragment>
+            <Navbar />
             <FlatList
                 data={posts}
-                style={styles.container}
+                style={{ flex: 1 }}
                 windowSize={4}
-                initialNumToRender={0}
+                initialNumToRender={1}
                 maxToRenderPerBatch={2}
                 removeClippedSubviews
                 viewabilityConfig={{
-                    itemVisiblePercentThreshold: 0
+                    viewAreaCoveragePercentThreshold: 100
                 }}
                 renderItem={renderItem}
                 pagingEnabled
@@ -80,6 +122,7 @@ export default function FeedScreen({ route }) {
                 decelerationRate={'normal'}
                 onViewableItemsChanged={onViewableItemsChanged.current}
             />
-        </View>
+        </React.Fragment>
     )
+
 }

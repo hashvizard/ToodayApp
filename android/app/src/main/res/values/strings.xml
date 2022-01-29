@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">TooDay</string>
+     <string moduleConfig="true" name="CodePushDeploymentKey">cZvasQvLeYCMK1ZThgr9sMRKK4KYYziAHowRG</string>
 </resources>

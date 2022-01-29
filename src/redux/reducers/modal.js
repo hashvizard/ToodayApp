@@ -1,14 +1,14 @@
-import { CLEAR_MODAL, MODAL_OPEN_COMMENT_SECTION } from '../constants';
+import { CLEAR_MODAL,REPORT_MODAL_OPEN } from '../constants';
 
 const initialState = {
     open: false,
     data: null,
     modalType: -1,
 }
-
+// 0 for report modal and 1 for block modal
 export const modal = (state = initialState, action) => {
     switch (action.type) {
-        case MODAL_OPEN_COMMENT_SECTION:
+        case REPORT_MODAL_OPEN:
             return {
                 ...state,
                 open: action.open,

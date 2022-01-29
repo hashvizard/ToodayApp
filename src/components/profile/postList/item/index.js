@@ -4,7 +4,6 @@ import { View, Text, Image, TouchableOpacity } from 'react-native'
 import styles from './styles';
 export default function ProfilePostListItem({ item }) {
     const navigation = useNavigation()
-    console.log(item)
     return (
         <TouchableOpacity
             style={styles.container}

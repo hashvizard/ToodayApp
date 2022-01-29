@@ -1,25 +1,30 @@
 
 import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
+
+
+let commentListnerInstance = null
+
 // let commentListnerInstance = null
 // /**
 //  * Returns all the posts in the database.
 //  *
 //  * @returns {Promise<[<Object>]>} post list if successful.
 //  */
-export const getFeed = () => new Promise((resolve, reject) => {
-    firestore()
-      .collection("post")
-      .get()
-      .then((res) => {
-        let posts = res.docs.map((value) => {
-          const id = value.id;
-          const data = value.data();
-          return { id, ...data };
-        });
-        resolve(posts);
+export const getFeed = (data) => new Promise((resolve, reject) => {
+  firestore()
+    .collection("post")
+    .where('creator', 'not-in', data.currentUser.blocked !== undefined ? data.currentUser.blocked : ['blocked_none'])
+    .get()
+    .then((res) => {
+      let posts = res.docs.map((value) => {
+        const id = value.id;
+        const data = value.data();
+        return { id, ...data };
       });
-  });
+      resolve(posts);
+    });
+});
 
 // /**
 //  * Gets the like state of a user in a specific post
@@ -75,6 +80,20 @@ export const addComment = (postId, creator, comment) => {
     })
 }
 
+export const reportVideo = (postId, index, creator, comment) => new Promise((resolve, reject) => {
+  firestore()
+    .collection('post')
+    .doc(postId)
+    .collection('report')
+    .add({
+      creator,
+      index,
+      comment,
+      creation: firestore.FieldValue.serverTimestamp(),
+    }).then(() => resolve())
+    .catch(() => reject())
+});
+
 export const commentListner = (postId, setCommentList) => {
   commentListnerInstance = firestore()
     .collection('post')
@@ -105,13 +124,12 @@ export const getPostsByUserId = (uid = auth().currentUser.uid) => new Promise((r
   firestore()
     .collection('post')
     .where('creator', '==', uid)
-    .orderBy('creation', 'desc')
     .onSnapshot((snapshot) => {
       let posts = snapshot.docs.map(doc => {
         const data = doc.data()
         const id = doc.id
         return { id, ...data }
-      })
+      });
       resolve(posts)
     })
 })
