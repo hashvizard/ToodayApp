@@ -3,11 +3,11 @@ import { useSelector } from 'react-redux'
 import { FlatList, ImageBackground, KeyboardAvoidingView } from 'react-native'
 import Chat from './Chat'
 import videoStyles from '../../styles/VideoStyles'
-import { TextInput } from 'react-native-paper';
+import { IconButton, TextInput } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { addComment, clearCommentListener, commentListner } from '../../services/posts'
 
-export default function CommentModal() {
+export default function CommentModal(props) {
 
     const data = useSelector(state => state.initialPost);
 
@@ -43,6 +43,13 @@ export default function CommentModal() {
                 behavior="padding"
                 style={videoStyles.commentcontainer}
             >
+                <IconButton
+                    icon="close"
+                    size={30}
+                    color='red'
+                    style={{ alignSelf: "flex-end", marginTop: 10 }}
+                    onPress={() => props.navigation.goBack()}
+                />
                 <FlatList
                     data={commentList}
                     inverted
