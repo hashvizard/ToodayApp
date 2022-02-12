@@ -99,7 +99,7 @@ export default function CameraScreen() {
             aspect: [16, 9],
             quality: 1
         })
-        if (!result.cancelled) {
+        if (result.cancelled) {
             navigation.navigate('savePost', { source: result.uri })
         }
     }

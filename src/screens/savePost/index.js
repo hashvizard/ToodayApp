@@ -17,13 +17,16 @@ export default function SavePostScreen(props) {
     const [requestRunning, setRequestRunning] = useState(false)
     const [uploaded, setuploaded] = useState(false)
     const [paused, setpaused] = useState(true);
+    const [loaction,setlocation] = useState('');
     const navigation = useNavigation()
     const dispatch = useDispatch();
+    const element = <TextInput.Icon name="check-circle" color="white" size={35} onPress={() => handleSavePost()} />
+    const location = <TextInput.Icon name="map-marker" color="red"  />
 
     const handleSavePost = async () => {
         setRequestRunning(true)
         let data = await getData(props.route.params.source)
-        dispatch(createPost(description, data.path, data.thumbnail))
+        dispatch(createPost(description, data.path, data.thumbnail,loaction))
             .then(() => setuploaded(true))
             .catch((err) => { setRequestRunning(false); console.log(err) })
     }
@@ -79,11 +82,10 @@ export default function SavePostScreen(props) {
 
     return (
         <View style={{ flex: 1 }}>
-            <Video source={{ uri: props.route.params.source }}   // Can be a URL or a local file.
-                paused={paused}
-                repeat={true}
+            <Image
                 resizeMode='cover'
                 style={{ height: "100%", width: "100%" }}
+                source={{ uri: props.route.params.source }}
             />
             <IconButton
                 icon="close"
@@ -101,22 +103,30 @@ export default function SavePostScreen(props) {
                 behavior="padding"
                 style={{ ...videoStyles.commentcontainer, position: "absolute", bottom: 0, zIndex: 20 }}
             >
-                <View style={{ flexDirection: "row", justifyContent: 'space-between', alignItems: "center", width: "100%" }}>
-                    <TextInput
-                        style={{ backgroundColor: 'transparent', width: "85%" }}
-                        mode='flat'
-                        textAlignVertical='center'
-                        multiline={true}
-                        maxLength={95}
-                        value={description}
-                        onChangeText={setDescription}
-                        placeholder='Write a post Description..' />
-                    <IconButton
-                        icon="check-circle"
-                        size={35}
-                        onPress={() => handleSavePost()}
-                    />
-                </View>
+
+                <TextInput
+                    style={{ backgroundColor: 'rgba(0,0,0,0.4)', width: "100%"}}
+                    mode='flat'
+                    theme={{ colors: { text: 'white' } }}
+                    placeholderTextColor="white"
+                    textAlignVertical='center'
+                    maxLength={95}
+                    value={description}
+                    onChangeText={(text)=> setDescription(text)}
+                    placeholder='Write post Description..' />
+
+                <TextInput
+                    style={{ backgroundColor: 'rgba(0,0,0,0.4)', width: "100%" }}
+                    mode='flat'
+                    theme={{ colors: { text: 'white' } }}
+                    placeholderTextColor="white"
+                    textAlignVertical='center'
+                    right={element}
+                    left={location}
+                    maxLength={15}
+                    value={location}
+                    onChangeText={(text)=> setlocation(text)}
+                    placeholder='Enter the locality' />
             </KeyboardAvoidingView>
         </View>
     )

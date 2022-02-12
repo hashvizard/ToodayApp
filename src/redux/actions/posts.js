@@ -5,7 +5,7 @@ import { saveMediaToStorage } from '../../services/random'
 import uuid from 'uuid-random'
 import { CURRENT_USER_POSTS_UPDATE } from '../constants'
 
-export const createPost = (description, video ,thumbnail) => dispatch => new Promise((resolve, reject) => {
+export const createPost = (description, video ,thumbnail,location) => dispatch => new Promise((resolve, reject) => {
     let storagePostId = uuid()
     let allSavePromises = Promise.all([
         saveMediaToStorage(video, `post/${auth().currentUser.uid}/${storagePostId}/video`,'video'),
@@ -20,6 +20,7 @@ export const createPost = (description, video ,thumbnail) => dispatch => new Pro
                     creator: auth().currentUser.uid,
                     media,
                     description,
+                    location,
                     likesCount: 0,
                     reportCount: 0,
                     commentsCount: 0,

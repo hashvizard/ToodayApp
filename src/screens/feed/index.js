@@ -62,7 +62,7 @@ export default function FeedScreen({ route }) {
             if (cell) {
                 if (element.isViewable) {
                     if (!profile) {
-                        dispatch(intialPostView(element.item.id, element.item.creator))
+                        dispatch(intialPostView(element.item.id, element.item.creator , element.item?.location))
                     }
                     cell.play()
                 } else {

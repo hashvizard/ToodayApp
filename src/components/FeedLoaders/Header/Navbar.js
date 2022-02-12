@@ -4,15 +4,17 @@ import { Avatar, Title } from 'react-native-paper'
 import videoStyles from '../../../styles/VideoStyles';
 import { useSelector } from 'react-redux';
 import * as RootNavigation from '../../../../RootNavigation'
+import  Icon  from 'react-native-vector-icons/MaterialCommunityIcons';
 const Navbar = () => {
    
     const User = useSelector(state => state.auth);
-   
+    const post = useSelector(state => state.initialPost);
+   console.log(post.location)
     return (
         <View style={{ ...videoStyles.header }}>
             <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <Image source={require('../../../../assets/logo.png')} style={videoStyles.imageShadow} />
-                <Title style={{ ...videoStyles.darkTextShadow, marginLeft: 10 }}>{User.currentUser.City}</Title>
+                <Icon name='map-marker' size={30} color="red" />
+                <Title style={{ ...videoStyles.darkTextShadow, marginLeft: 5,color:"grey" }}>{post.location?post.location:User.currentUser.City}</Title>
             </View>
             <TouchableOpacity onPress={()=>RootNavigation.navigate('Me') }>
             <Avatar.Image size={30} source={{ uri: User.currentUser.photoURL }} />

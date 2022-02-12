@@ -6,7 +6,7 @@ import videoStyles from '../../styles/VideoStyles';
 
 const NoDataFound = () => {
     return (<>
-        <View style={videoStyles.animate}>
+        <View style={{...videoStyles.animate,height:"100%"}}>
             <LottieView
                 source={require('../../../Animations/noData.json')}
                 colorFilters={[{

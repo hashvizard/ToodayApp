@@ -104,7 +104,7 @@ const videoStyles = StyleSheet.create({
         flexDirection: "row",
         justifyContent: "space-between",
         alignItems: "center",
-        padding: 18
+        padding: 15
     },
     darkTextShadow: {
         textShadowColor: MODE == 'dark' ? 'black' : 'white',
