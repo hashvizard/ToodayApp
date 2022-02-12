@@ -1,4 +1,10 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar, Dimensions, Appearance } from 'react-native';
+
+const MODE = Appearance.getColorScheme();
+const SCREEN_HEIGHT = Dimensions.get('screen').height;
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight || 24;
+const NAVIGATION_BAR_HEIGHT = SCREEN_HEIGHT - Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
@@ -9,8 +15,11 @@ const styles = StyleSheet.create({
     },
     bottomBarContainer: {
         alignItems: 'center',
+        justifyContent:"space-between",
+        paddingHorizontal:30,
+        width:"100%",
         position: 'absolute',
-        bottom: 0,
+        bottom: NAVIGATION_BAR_HEIGHT,
         flexDirection: 'row',
         marginBottom: 30,
     },
@@ -40,9 +49,13 @@ const styles = StyleSheet.create({
         height: 50,
     },
     sideBarContainer: {
-        top: 60,
+        top: STATUS_BAR_HEIGHT + 30,
         right: 0,
-        marginHorizontal: 20,
+        flexDirection:"row",
+        width:"100%",
+        justifyContent:"space-between",
+        alignItems:"center",
+        paddingHorizontal: 20,
         position: 'absolute'
     },
     iconText: {

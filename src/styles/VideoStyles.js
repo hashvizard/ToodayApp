@@ -6,14 +6,38 @@ const STATUS_BAR_HEIGHT = StatusBar.currentHeight || 24;
 const NAVIGATION_BAR_HEIGHT = SCREEN_HEIGHT - Dimensions.get('window').height;
 
 const videoStyles = StyleSheet.create({
-    commentcontainer:{
-        marginTop:STATUS_BAR_HEIGHT,
-        marginBottom:NAVIGATION_BAR_HEIGHT,
-        flex:1,
-        width: "100%", 
+    commentcontainer: {
+        marginTop: STATUS_BAR_HEIGHT,
+        marginBottom: NAVIGATION_BAR_HEIGHT,
+        flex: 1,
+        width: "100%",
     },
-    cropping:{
-        flex:1,
+    statusbarheightheight: {
+        marginVertical: STATUS_BAR_HEIGHT + 30,
+        borderWidth: 2,
+        right: 5,
+        borderColor: "lightgrey"
+    },
+    cropping: {
+        flex: 1,
+    },
+    bottomSpace:{
+        bottom:NAVIGATION_BAR_HEIGHT + 40
+    },
+    animate: {
+        width: "80%",
+        borderRadius: 20,
+        height: 250,
+        alignItems: "center",
+        justifyContent: "space-evenly"
+      },
+    uploadingconatiner:{
+        position: "absolute",
+        alignItems: "center",
+        justifyContent: 'center',
+        width: "100%",
+        height: "100%",
+        backgroundColor: "#f7f7f7"
     },
     backgroundVideo: {
         position: 'absolute',
@@ -25,18 +49,18 @@ const videoStyles = StyleSheet.create({
         bottom: 0,
         right: 0,
     },
-    animate:{
-        position:'absolute',
-        height:"100%",
-        width:"100%",
-        zIndex:-2
+    animate: {
+        position: 'absolute',
+        height: "100%",
+        width: "100%",
+        zIndex: -2
     },
-    addFirst:{
-        bottom:NAVIGATION_BAR_HEIGHT,
-        position:"absolute",
-        zIndex:5,
-        width:"100%",
-        padding:10
+    addFirst: {
+        bottom: NAVIGATION_BAR_HEIGHT,
+        position: "absolute",
+        zIndex: 5,
+        width: "100%",
+        padding: 10
     },
     containerSplash: {
         flex: 1,
