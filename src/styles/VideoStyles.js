@@ -22,7 +22,12 @@ const videoStyles = StyleSheet.create({
         flex: 1,
     },
     bottomSpace:{
-        bottom:NAVIGATION_BAR_HEIGHT + 40
+        bottom:NAVIGATION_BAR_HEIGHT + 40,
+        height:"40%",
+        position: "absolute", 
+        alignItems: "center", 
+        justifyContent: "center", 
+        width: "100%" 
     },
     animate: {
         width: "80%",
@@ -51,7 +56,8 @@ const videoStyles = StyleSheet.create({
     },
     animate: {
         position: 'absolute',
-        height: "100%",
+        height: "60%",
+        top:0,
         width: "100%",
         zIndex: -2
     },

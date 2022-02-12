@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef,forwardRef, useImperativeHandle } from 'react'
+import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
 import { Text, View, TouchableWithoutFeedback, ActivityIndicator, AppState } from 'react-native';
 import { Caption } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
@@ -12,7 +12,7 @@ import { useIsFocused } from '@react-navigation/native';
 
 
 const PostSingle = forwardRef(({ item }, parentRef) => {
- 
+
     const user = useUser(item.creator).data
     const ref = useRef(null);
     const isFocused = useIsFocused();
@@ -279,7 +279,8 @@ const PostSingle = forwardRef(({ item }, parentRef) => {
 
         <Video
             ref={ref}
-            source={{ uri: video, cache: { size: 50, expiresIn: 3600 }}} 
+            source={{ uri: video }}
+            // source={{ uri: video, cache: { size: 50, expiresIn: 3600 }}} 
             style={videoStyles.backgroundVideo}
             resizeMode='cover'
             paused={appState == 'active' ? (isFocused ? paused : true) : true}

@@ -56,6 +56,7 @@ export default function CameraScreen() {
     const recording = (val) => {
         if (val) {
             timer = setInterval(() => {
+                console.log('asd')
                 setCount(count => count + 1);
             }, 1000);
         } else {
@@ -75,8 +76,8 @@ export default function CameraScreen() {
                     console.log(data)
                     const source = data.uri
                     console.log(count);
-                    navigation.navigate('savePost', { source })
                     recording(false)
+                    navigation.navigate('savePost', { source })
                 }
             } catch (error) {
                 console.warn(error)

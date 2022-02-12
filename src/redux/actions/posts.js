@@ -41,7 +41,6 @@ export const getPostsByUser = (uid = auth().currentUser.uid) => dispatch => new 
                 const id = doc.id
                 return { id, ...data }
             })
-       
             dispatch({ type: CURRENT_USER_POSTS_UPDATE, currentUserPosts: posts })
         })
 })

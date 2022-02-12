@@ -34,7 +34,7 @@ export default function SavePostScreen(props) {
             width: origin.size && origin.size.width / 3,
             height: origin.size && origin.size.height / 3,
             bitrateMultiplier: 3,
-            removeAudio: false, 
+            removeAudio: false,
             minimumBitrate: 300000
         });
         const thumbnail = await ProcessingManager.getPreviewForSecond(result.source);
@@ -60,11 +60,11 @@ export default function SavePostScreen(props) {
                 </View>
             </View>
             {!uploaded ?
-                <View style={{ ...videoStyles.bottomSpace, position: "absolute", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                <View style={videoStyles.bottomSpace}>
                     <Title style={{ fontSize: 18, fontWeight: "bold", color: "black" }}>Please Wait</Title>
                     <Caption style={{ fontSize: 16, color: "black" }}>Uploading is in progress</Caption>
                 </View>
-                : <View style={{ ...videoStyles.bottomSpace, position: "absolute", alignItems: "center", justifyContent: "center", width: "100%" }}>
+                : <View style={videoStyles.bottomSpace}>
                     <Icon name="check-circle" size={30} style={{ marginBottom: 10 }} color="lightgrey" />
                     <Caption style={{ fontSize: 16, color: "black", marginBottom: 20 }}>Video uploaded Succesfully</Caption>
                     <Button mode="outlined" onPress={() => props.navigation.navigate('feedList')} >
@@ -76,7 +76,7 @@ export default function SavePostScreen(props) {
         </>
         )
     }
-   
+
     return (
         <View style={{ flex: 1 }}>
             <Video source={{ uri: props.route.params.source }}   // Can be a URL or a local file.

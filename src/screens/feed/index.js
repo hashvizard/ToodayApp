@@ -20,7 +20,7 @@ import { blockNull, intialPostView } from '../../redux/actions';
 
 
 export default function FeedScreen({ route }) {
-    const user = useSelector(state =>state.auth)
+    const user = useSelector(state => state.auth)
     const { creator, profile } = route.params
     const [posts, setPosts] = useState([])
     const mediaRefs = useRef([])
@@ -62,7 +62,7 @@ export default function FeedScreen({ route }) {
             if (cell) {
                 if (element.isViewable) {
                     if (!profile) {
-                        dispatch(intialPostView(element.item.id,element.item.creator))
+                        dispatch(intialPostView(element.item.id, element.item.creator))
                     }
                     cell.play()
                 } else {
@@ -87,15 +87,7 @@ export default function FeedScreen({ route }) {
         />)
     }
 
-    if (loading) {
-        return (
-            <React.Fragment>
-                <Navbar />
-                <LoadingScreen />
-            </React.Fragment>
-        )
-    }
-    else if (!loading && posts.length == 0) {
+    if (loading || posts.length == 0) {
         return (
             <React.Fragment>
                 <Navbar />
@@ -103,6 +95,14 @@ export default function FeedScreen({ route }) {
             </React.Fragment>
         )
     }
+    // else if (!loading && posts.length == 0) {
+    //     return (
+    //         <React.Fragment>
+    //             <Navbar />
+    //             <NoDataFound />
+    //         </React.Fragment>
+    //     )
+    // }
     return (
         <React.Fragment>
             <Navbar />

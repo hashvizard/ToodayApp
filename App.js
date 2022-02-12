@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import withCodePush from './CodePush'
-
+import { LogBox } from 'react-native';
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const queryClient = new QueryClient({
@@ -26,6 +26,7 @@ const theme = {
 };
 
 const App = () => {
+  LogBox.ignoreAllLogs();
   return (
     <SafeAreaProvider>
       <PaperProvider theme={theme}>
@@ -38,6 +39,4 @@ const App = () => {
     </SafeAreaProvider>
   )
 }
-// export default withCodePush(App)
-
-export default App
+export default withCodePush(App)
