@@ -6,11 +6,12 @@ import CommentModal from '../../components/comment'
 
 const { Screen, Navigator } = createMaterialTopTabNavigator()
 
-
+export const CurrentUserProfileItemInViewContext = createContext(null)
 
 const FeedNavigation = () => {
-
+    const [currentUserProfileItemInView, setCurrentUserProfileItemInView] = useState(null)
     return (
+        <CurrentUserProfileItemInViewContext.Provider value={currentUserProfileItemInView}>
         <Navigator
             initialRouteName="feedList"
             backBehavior='initialRoute'
@@ -23,13 +24,16 @@ const FeedNavigation = () => {
             <Screen
                 name="feedList"
                 component={FeedScreen}
-                initialParams={{ profile: false }} />
+                initialParams={{ setCurrentUserProfileItemInView, profile: false }} />
+                
             <Screen
                 name="comment"
                 component={CommentModal}
             />
+            
 
         </Navigator>
+        </CurrentUserProfileItemInViewContext.Provider>
     )
 }
 

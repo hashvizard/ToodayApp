@@ -11,7 +11,7 @@ import { useUser } from '../../../hooks/useUser'
 import { useIsFocused } from '@react-navigation/native';
 
 
-const PostSingle = forwardRef(({ item }, parentRef) => {
+const PostSingle = forwardRef(({ item,profile }, parentRef) => {
 
     const user = useUser(item.creator).data
     const ref = useRef(null);
@@ -274,9 +274,9 @@ const PostSingle = forwardRef(({ item }, parentRef) => {
                     </View>
                 </View>
             </View>
-            <PostSingleOverlay user={user} post={item} minute={duration.minute} second={duration.second} action={(val) => setAction(val)} />
+            <PostSingleOverlay user={user} profile={profile} post={item} minute={duration.minute} second={duration.second} action={(val) => setAction(val)} />
         </View>
-
+{/* 
         <Video
             ref={ref}
             source={{ uri: video }}
@@ -289,7 +289,7 @@ const PostSingle = forwardRef(({ item }, parentRef) => {
             onBuffer={(buffer) => setbuffering(buffer.isBuffering)}
             poster={poster}
             posterResizeMode='cover'
-        />
+        /> */}
     </>
     )
 })

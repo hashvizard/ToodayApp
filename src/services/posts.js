@@ -3,7 +3,9 @@ import firestore from '@react-native-firebase/firestore';
 import auth from '@react-native-firebase/auth';
 
 
-let commentListnerInstance = null
+let commentListnerInstance = null;
+let reviewListnerInstance = null
+
 
 // let commentListnerInstance = null
 // /**
@@ -80,6 +82,18 @@ export const addComment = (postId, creator, comment) => {
     })
 }
 
+export const addReviews = (userId, creator, comment) => {
+  firestore()
+    .collection('user')
+    .doc(userId)
+    .collection('reviews')
+    .add({
+      creator,
+      comment,
+      creation: firestore.FieldValue.serverTimestamp(),
+    })
+}
+
 export const reportVideo = (postId, index, creator, comment) => new Promise((resolve, reject) => {
   firestore()
     .collection('post')
@@ -113,10 +127,38 @@ export const commentListner = (postId, setCommentList) => {
     })
 }
 
+
+export const reviewListner = (userId, setReviewsList) => {
+  commentListnerInstance = firestore()
+    .collection('user')
+    .doc(userId)
+    .collection('reviews')
+    .orderBy('creation', 'desc')
+    .onSnapshot((snapshot) => {
+      if (snapshot.docChanges().length == 0) {
+        return;
+      }
+      let reviews = snapshot.docs.map((value) => {
+        const id = value.id;
+        const data = value.data();
+        return { id, ...data }
+      })
+      setReviewsList(reviews)
+    })
+}
+
+
 export const clearCommentListener = () => {
   if (commentListnerInstance != null) {
     commentListnerInstance();
     commentListnerInstance = null
+  }
+}
+
+export const clearReviewListener = () => {
+  if (reviewListnerInstance != null) {
+    reviewListnerInstance();
+    reviewListnerInstance = null
   }
 }
 

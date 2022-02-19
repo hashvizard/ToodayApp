@@ -10,6 +10,7 @@ import { CurrentUserProfileItemInViewContext } from '../../navigation/feed'
 import { useUser } from '../../hooks/useUser'
 import { getPostsByUserId } from '../../services/posts'
 import { useFocusEffect } from '@react-navigation/native';
+
 export default function ProfileScreen({ route }) {
     const initialUserId = useSelector(state => state.initialPost.userId);
     const [userPosts, setUserPosts] = useState([])
@@ -40,11 +41,13 @@ export default function ProfileScreen({ route }) {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <ProfileNavBar user={user} />
-
+            <ScrollView
+            stickyHeaderIndices={[0]}
+            >
+            <ProfileNavBar user={user} route={route} />
             <ProfileHeader user={user} />
             <ProfilePostList posts={userPosts} />
-
+            </ScrollView>
         </SafeAreaView>
     )
 }

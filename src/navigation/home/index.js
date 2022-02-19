@@ -5,6 +5,7 @@ import ProfileScreen from '../../screens/profile';
 import SearchScreen from '../../screens/search';
 import FeedNavigation from '../feed';
 import auth from '@react-native-firebase/auth';
+import CommentModal from '../../components/comment';
 
 const Stack = createStackNavigator()
 
@@ -25,6 +26,7 @@ export default function HomeScreen() {
                 component={SearchScreen}
 
             />
+          
             <Stack.Screen
                 name="Add"
                 component={CameraScreen}

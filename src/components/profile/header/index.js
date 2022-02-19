@@ -27,9 +27,9 @@ export default function ProfileHeader({ user }) {
             </View>
             <TouchableOpacity
                 style={buttonStyles.grayOutlinedButton}
-                onPress={() => navigation.navigate('editProfile')}
+                onPress={() => navigation.navigate('profileComment')}
             >
-                <Text>Edit Profile</Text>
+                <Text>See Reviews</Text>
             </TouchableOpacity>
         </View>
     )

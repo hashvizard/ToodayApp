@@ -8,7 +8,7 @@ import { openReportModal, openBlockModal } from '../../../../redux/actions';
 import { useNavigation } from '@react-navigation/core';
 import { Avatar, IconButton, Paragraph, Title, Caption, Button } from 'react-native-paper';
 import { changeDateForamt } from "../../../../helpers";
-
+import * as RootNavigation from '../../../../../RootNavigation';
 /**
  * Function that renders a component meant to be overlapped on
  * top of the post with the post info like user's display name and avatar
@@ -17,7 +17,7 @@ import { changeDateForamt } from "../../../../helpers";
  * @param {Object} user that created the post
  * @param {Object} post object
  */
-export default function PostSingleOverlay({ user, post, minute, second, action }) {
+export default function PostSingleOverlay({ user, post, minute, second, action, profile }) {
 
   const dispatch = useDispatch()
   const currentUser = useSelector((state) => state.auth.currentUser);
@@ -39,8 +39,8 @@ export default function PostSingleOverlay({ user, post, minute, second, action }
       });
     });
   }, []);
- 
-  
+
+
   /**
    * Handles the like button action.
    *
@@ -65,32 +65,35 @@ export default function PostSingleOverlay({ user, post, minute, second, action }
 
   return (<>
     <View style={videoStyles.contianer}>
+      <Caption style={{ ...videoStyles.darkTextShadow, }}>
+        {second != 0 ? minute == 0 ? `${second} sec remaining` : `${minute}:${second} min remaining` : null}
+      </Caption>
       <View style={videoStyles.profile_container}>
         <View >
           <TouchableOpacity
+          style={{display:profile?'none':"flex"}}
             onPress={() => navigation.navigate('feedProfile', { initialUserId: user?.uid })}
           >
             <View
               style={{ flexDirection: "row", alignItems: "center" }}>
 
-              <Avatar.Image size={30} style={videoStyles.imageShadow} source={{ uri: user?.photoURL }} />
+              <Avatar.Image size={30} style={{ ...videoStyles.imageShadow, marginRight: 10 }} source={{ uri: user?.photoURL }} />
+              <Title style={{ ...videoStyles.darkTextShadow }}>{user?.displayName}</Title>
 
-              <Caption style={{ ...videoStyles.darkTextShadow, marginLeft: 10 }}>
-                {second != 0 ? minute == 0 ? `${second} sec remaining` : `${minute}:${second} min remaining` : null}
-              </Caption>
             </View>
           </TouchableOpacity>
-          <Title style={{ ...videoStyles.darkTextShadow }}>{user?.displayName}</Title>
+
           <Caption style={{ ...videoStyles.darkTextShadow }}>Posted {changeDateForamt(new Date(post.creation.seconds * 1000))} ago</Caption>
         </View>
         {/* Adding Video  Button*/}
         <IconButton
-          icon="camera"
+          icon={profile?"home-outline":"camera-outline"}
           color={"#f0ad4e"}
           size={35}
           animated={true}
           onPress={() => {
-            navigation.navigate('Add')
+            profile?RootNavigation.navigate('feedList') :navigation.navigate('Add');
+           
           }}
         />
       </View>

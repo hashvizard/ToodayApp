@@ -19,9 +19,10 @@ import { blockNull, intialPostView } from '../../redux/actions';
  */
 
 
-export default function FeedScreen({ route }) {
+export default function FeedScreen(props) {
+   
+    const { setCurrentUserProfileItemInView, creator, profile } = props.route.params
     const user = useSelector(state => state.auth)
-    const { creator, profile } = route.params
     const [posts, setPosts] = useState([])
     const mediaRefs = useRef([])
     const [loading, setloading] = useState(true);
@@ -31,7 +32,7 @@ export default function FeedScreen({ route }) {
 
     useEffect(() => {
         if (profile) {
-            getPostsByUserId(creator).then(setPosts)
+            getPostsByUserId(creator).then(setPosts).then(setloading(false))
         } else {
             getFeed(user).then(setPosts).then(setloading(false))
         }
@@ -62,8 +63,9 @@ export default function FeedScreen({ route }) {
             if (cell) {
                 if (element.isViewable) {
                     if (!profile) {
-                        dispatch(intialPostView(element.item.id, element.item.creator , element.item?.location))
+                        setCurrentUserProfileItemInView(element.item.creator)
                     }
+                    dispatch(intialPostView(element.item.id, element.item.creator, element.item?.location));
                     cell.play()
                 } else {
                     cell.stop()
@@ -83,6 +85,7 @@ export default function FeedScreen({ route }) {
     const renderItem = ({ item, index }) => {
         return (<PostSingle
             item={item}
+            profile={profile}
             ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)}
         />)
     }
@@ -90,7 +93,7 @@ export default function FeedScreen({ route }) {
     if (loading || posts.length == 0) {
         return (
             <React.Fragment>
-                <Navbar />
+                <Navbar  profile={profile} />
                 <NoDataFound />
             </React.Fragment>
         )
@@ -105,7 +108,7 @@ export default function FeedScreen({ route }) {
     // }
     return (
         <React.Fragment>
-            <Navbar />
+            <Navbar profile={profile} {...props} />
             <FlatList
                 data={posts}
                 style={{ flex: 1 }}
