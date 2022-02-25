@@ -21,13 +21,13 @@ const videoStyles = StyleSheet.create({
     cropping: {
         flex: 1,
     },
-    bottomSpace:{
-        bottom:NAVIGATION_BAR_HEIGHT + 40,
-        height:"40%",
-        position: "absolute", 
-        alignItems: "center", 
-        justifyContent: "center", 
-        width: "100%" 
+    bottomSpace: {
+        bottom: NAVIGATION_BAR_HEIGHT + 40,
+        height: "40%",
+        position: "absolute",
+        alignItems: "center",
+        justifyContent: "center",
+        width: "100%"
     },
     animate: {
         width: "80%",
@@ -35,8 +35,8 @@ const videoStyles = StyleSheet.create({
         height: 250,
         alignItems: "center",
         justifyContent: "space-evenly"
-      },
-    uploadingconatiner:{
+    },
+    uploadingconatiner: {
         position: "absolute",
         alignItems: "center",
         justifyContent: 'center',
@@ -46,6 +46,7 @@ const videoStyles = StyleSheet.create({
     },
     backgroundVideo: {
         position: 'absolute',
+        zIndex: 10,
         height: "100%",
         width: "100%",
         top: 0,
@@ -57,7 +58,7 @@ const videoStyles = StyleSheet.create({
     animate: {
         position: 'absolute',
         height: "60%",
-        top:0,
+        top: 0,
         width: "100%",
         zIndex: -2
     },
@@ -94,17 +95,19 @@ const videoStyles = StyleSheet.create({
         width: "100%",
     },
     contianer: {
-        paddingHorizontal: 18
+        paddingHorizontal: 15,
     },
     header: {
         top: STATUS_BAR_HEIGHT,
         width: "100%",
         position: "absolute",
-        zIndex: 1,
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-        padding: 15
+        zIndex: 100,
+    },
+    containerContent: {
+        paddingHorizontal: 10, borderRadius: 50,
+
+        paddingVertical: 5,
+        marginBottom: 8
     },
     darkTextShadow: {
         textShadowColor: MODE == 'dark' ? 'black' : 'white',
@@ -145,8 +148,9 @@ const videoStyles = StyleSheet.create({
         justifyContent: "center"
     },
     profile_container: {
-        flexDirection: "row",
-        justifyContent: "space-between",
+        flexDirection: "column",
+        justifyContent: "center",
+        alignContent: "center",
         alignItems: "center"
     },
     button_container: {
@@ -158,7 +162,8 @@ const videoStyles = StyleSheet.create({
     Video_Details_Container: {
         height: SCREEN_HEIGHT,
         paddingTop: STATUS_BAR_HEIGHT,
-        paddingBottom: NAVIGATION_BAR_HEIGHT
+        paddingBottom: NAVIGATION_BAR_HEIGHT,
+        justifyContent:"flex-end"
     },
     Screen_height: {
         height: SCREEN_HEIGHT,

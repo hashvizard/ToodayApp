@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
-import { Text, View, TouchableWithoutFeedback, ActivityIndicator, AppState } from 'react-native';
+import { Text, View, TouchableWithoutFeedback, ActivityIndicator, AppState,Image } from 'react-native';
 import { Caption } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -183,7 +183,7 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
              * 
              ****/}
 
-            <View style={{ flexGrow: 1, flex: 1 }}>
+            <View style={{ }}>
                 <View style={{ ...videoStyles.containers }}>
                     {/* Backward Button */}
                     <View style={videoStyles.actionsContainer}>
@@ -227,7 +227,7 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
                     {/* Pause and Play Button */}
                     <TouchableWithoutFeedback onPress={() => setpaused(!paused)} >
                         <View style={{ ...videoStyles.actionsContainer, ...videoStyles.playPause }}>
-                            {paused && !buffering && !action ? <Icon name='pause' size={30} color='rgba(0,0,0,0.5)' /> : null}
+                            {paused && !buffering && !action ? <Icon name='pause' size={30} color='white' style={{zIndex:15,position:"absolute"}} /> : null}
                             {buffering && !paused && !action ? <ActivityIndicator size="small" color="white" /> : null}
                         </View>
                     </TouchableWithoutFeedback>
@@ -276,20 +276,24 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
             </View>
             <PostSingleOverlay user={user} profile={profile} post={item} minute={duration.minute} second={duration.second} action={(val) => setAction(val)} />
         </View>
-{/* 
-        <Video
+        {/* <Image
+        source={{uri:poster}} 
+        style={{...videoStyles.backgroundVideo,borderWidth:2}}
+        /> */}
+         
+         <Video
             ref={ref}
             source={{ uri: video }}
             // source={{ uri: video, cache: { size: 50, expiresIn: 3600 }}} 
             style={videoStyles.backgroundVideo}
             resizeMode='cover'
             paused={appState == 'active' ? (isFocused ? paused : true) : true}
-            repeat={true}
+            repeat={false}
             onProgress={(currentTime) => setDuration(currentTime)}
             onBuffer={(buffer) => setbuffering(buffer.isBuffering)}
             poster={poster}
             posterResizeMode='cover'
-        /> */}
+        />
     </>
     )
 })

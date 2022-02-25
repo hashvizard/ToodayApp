@@ -20,7 +20,7 @@ import { blockNull, intialPostView } from '../../redux/actions';
 
 
 export default function FeedScreen(props) {
-   
+
     const { setCurrentUserProfileItemInView, creator, profile } = props.route.params
     const user = useSelector(state => state.auth)
     const [posts, setPosts] = useState([])
@@ -59,13 +59,14 @@ export default function FeedScreen(props) {
      */
     const onViewableItemsChanged = useRef(({ changed }) => {
         changed.forEach(element => {
-            const cell = mediaRefs.current[element.key]
+            const cell = mediaRefs.current[element.key];
             if (cell) {
                 if (element.isViewable) {
                     if (!profile) {
                         setCurrentUserProfileItemInView(element.item.creator)
                     }
                     dispatch(intialPostView(element.item.id, element.item.creator, element.item?.location));
+
                     cell.play()
                 } else {
                     cell.stop()
@@ -93,7 +94,7 @@ export default function FeedScreen(props) {
     if (loading || posts.length == 0) {
         return (
             <React.Fragment>
-                <Navbar  profile={profile} />
+                <Navbar profile={profile} />
                 <NoDataFound />
             </React.Fragment>
         )
