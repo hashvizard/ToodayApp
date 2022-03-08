@@ -276,12 +276,12 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
             </View>
             <PostSingleOverlay user={user} profile={profile} post={item} minute={duration.minute} second={duration.second} action={(val) => setAction(val)} />
         </View>
-        {/* <Image
+        <Image
         source={{uri:poster}} 
         style={{...videoStyles.backgroundVideo,borderWidth:2}}
-        /> */}
+        />
          
-         <Video
+        {/*  <Video
             ref={ref}
             source={{ uri: video }}
             // source={{ uri: video, cache: { size: 50, expiresIn: 3600 }}} 
@@ -293,7 +293,7 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
             onBuffer={(buffer) => setbuffering(buffer.isBuffering)}
             poster={poster}
             posterResizeMode='cover'
-        />
+        /> */}
     </>
     )
 })

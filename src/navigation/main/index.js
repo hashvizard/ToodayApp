@@ -17,6 +17,8 @@ import Error from '../../components/error';
 import { navigationRef } from '../../../RootNavigation';
 import BlockModal from '../../components/modal/block';
 import CommentModal from '../../components/comment';
+import Settings from '../settings';
+
 
 const Stack = createStackNavigator()
 
@@ -51,7 +53,7 @@ export default function Route() {
                             <Stack.Screen name="editProfile" component={EditProfileScreen} options={{ headerShown: false }} />
                             <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
                             <Stack.Screen name="comment" component={CommentModal} options={{ headerShown: false }} />
-
+                            <Stack.Screen name="settings" component={Settings} options={{ headerShown: false }} />
                         </>
                 }
                 <Stack.Screen name="Error" component={Error} options={{ headerShown: false }} />

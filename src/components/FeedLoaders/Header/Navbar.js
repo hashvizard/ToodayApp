@@ -26,7 +26,7 @@ const Navbar = (props) => {
                     color="green"
                     animated={true}
                     onPress={() => {
-                        props.profile ? RootNavigation.navigate('feedList') : RootNavigation.navigate('Add');
+                        props.profile ? RootNavigation.navigate('feedList') : RootNavigation.navigate('settings');
 
                     }}
                 />
