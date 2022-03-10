@@ -1,5 +1,5 @@
 import { View } from 'react-native'
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import { Avatar, ActivityIndicator } from 'react-native-paper';
 import { ScrollView, TouchableOpacity } from 'react-native-gesture-handler'
 import { useSelector, useDispatch } from 'react-redux';
@@ -17,7 +17,11 @@ const ProfileEdit = (props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const [showModal, setshowModal] = useState(false);
+    const [showModal, setshowModal] = useState({'type':'','show':false});
+
+
+    useEffect(() => { }, [showModal])
+
 
     const pickFromGallery = async () => {
         let result = await ImagePicker.launchImageLibrary({
@@ -49,23 +53,30 @@ const ProfileEdit = (props) => {
                     style={styles.icon}
                     name='camera' size={40} />
             </TouchableOpacity>
-            <View style={{ margin: 15 }}>
+            <View >
                 <List.Item
+                style={{padding:15}}
                     title="Name"
-                    onPress={() => setshowModal(true)}
+                    onPress={() => setshowModal({'type':'name','show':true})}
                     description={user.currentUser.displayName}
                     right={props => <List.Icon {...props} icon="pencil" />}
                     left={props => <List.Icon {...props} icon="account" />}
                 />
                 <List.Item
+                style={{padding:15}}
                     title="Location"
+                    onPress={() => setshowModal({'type':'location','show':true})}
                     description={user.currentUser.City}
                     right={props => <List.Icon {...props} icon="pencil" />}
                     left={props => <List.Icon {...props} icon="map-marker" />}
                 />
             </View>
         </ScrollView>
-        <UpdateModal data={user.currentUser.displayName} showModal={showModal} changeModal={()=>setshowModal(false)} />
+        {showModal.show ?
+            <UpdateModal data={showModal.type == 'name' ?user.currentUser.displayName:user.currentUser.City} 
+            type={showModal.type}  changeModal={() => setshowModal({'type':'','show':false})} />
+            :null
+        }
     </>
     )
 }
