@@ -1,5 +1,5 @@
 import { Text, View, Image, ScrollView } from 'react-native'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import styles from './styles'
 import { useSelector } from 'react-redux'
 import { Caption, Divider, Headline, Paragraph, Subheading } from 'react-native-paper'
@@ -7,19 +7,27 @@ import { List } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Avatar } from 'react-native-paper';
 import { TouchableOpacity } from 'react-native-gesture-handler'
+import { totaluserReviews } from '../../services/user'
+
 
 const SettingPage = (props) => {
 
   const user = useSelector(state => state.auth);
 
+  const [reviewCount, setReviewCount] = useState(0);
+
+  useEffect(() => {
+    totaluserReviews().then(setReviewCount);
+  }, [])
+
   return (
     <View style={styles.container}>
       <View style={{ padding: 15 }}>
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <TouchableOpacity onPress={()=>props.navigation.navigate('profileEdit')} >
-        <Avatar.Image
-        size={70} source={{ uri: user.currentUser.photoURL }} />
-         </TouchableOpacity>
+          <TouchableOpacity onPress={() => props.navigation.navigate('profileEdit')} >
+            <Avatar.Image
+              size={70} source={{ uri: user.currentUser.photoURL }} />
+          </TouchableOpacity>
           <View style={{ marginHorizontal: 20 }}>
             <Paragraph>{user.currentUser.displayName}</Paragraph>
             <Subheading>{user.currentUser.City}</Subheading>
@@ -52,7 +60,8 @@ const SettingPage = (props) => {
 
         <List.Item
           left={props => <List.Icon {...props} icon="pencil" />}
-          right={props => <Text style={{ alignSelf: "center", fontSize: 16, fontWeight: "bold" }}>0</Text>}
+          onPress={() => props.navigation.navigate('profileReviews', { uid: user.currentUser.uid })}
+          right={props => <Text style={{ alignSelf: "center", fontSize: 16, fontWeight: "bold" }}>{reviewCount}</Text>}
           title="Profile Reviews" />
         <List.Item
           description="All active posts that are live"

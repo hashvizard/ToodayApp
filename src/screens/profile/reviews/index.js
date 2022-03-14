@@ -7,10 +7,10 @@ import { IconButton, TextInput } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { addReviews, clearReviewListener, reviewListner } from '../../../services/posts'
 
+
 export default function ReviewModal(props) {
 
-   /*  const data = useSelector(state => state.initialPost);
- */
+
     const initialUserId = useSelector(state => state.initialPost.userId);
 
     const [review, setReview] = useState('')
@@ -19,19 +19,24 @@ export default function ReviewModal(props) {
 
     useFocusEffect(
         React.useCallback(() => {
-            reviewListner(initialUserId, setReviewList)
+
+            if (props.route.params?.uid) reviewListner(props.route.params.uid, setReviewList);
+            else reviewListner(initialUserId, setReviewList);
+
             return () => {
                 clearReviewListener();
                 setReviewList('')
             }
-        }, [initialUserId])
+        }, [initialUserId, props.route.params?.uid])
     );
     const handleReviewSend = () => {
         if (review.length == 0) {
             return;
         }
         setReview('')
-        addReviews(initialUserId, currentUser.uid, review)
+        if (props.route.params?.uid) addReviews(props.route.params.uid, currentUser.uid, review);
+        else addReviews(initialUserId, currentUser.uid, review);
+
     }
 
     const element = <TextInput.Icon name="send" onPress={() => handleReviewSend()} />
@@ -46,10 +51,10 @@ export default function ReviewModal(props) {
                 style={videoStyles.commentcontainer}
             >
                 <IconButton
-                    icon="close"
+                    icon="arrow-left"
                     size={30}
-                    color='red'
-                    style={{ alignSelf: "flex-end", marginTop: 10 }}
+                    color='black'
+                    style={{ alignSelf: "flex-start", marginTop: 20 }}
                     onPress={() => props.navigation.goBack()}
                 />
                 <FlatList
