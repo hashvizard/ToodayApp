@@ -175,3 +175,18 @@ export const getPostsByUserId = (uid = auth().currentUser.uid) => new Promise((r
       resolve(posts)
     })
 })
+
+export const getLikedPostByUserId = (uid = auth().currentUser.uid) => new Promise((resolve, reject) => {
+  firestore()
+    .collection('post')
+    .where('likes', '==', uid)
+    .onSnapshot((snapshot) => {
+      let posts = snapshot.docs.map(doc => {
+        const data = doc.data()
+        const id = doc.id
+        return { id, ...data }
+      });
+      console.log(posts);
+      resolve(posts)
+    })
+})
