@@ -2,9 +2,9 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: "rgba(0,0,0,0.7)",
         justifyContent: "space-evenly",
-        alignItems: "center"
+        alignItems: "center",
+        backgroundColor:"white"
     },
     image: {
         width: 60,
@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     },
     textStyle: {
         paddingVertical: 15,
-        color: 'white'
+        color: '#292b2c'
     }
 });
 
