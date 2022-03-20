@@ -35,6 +35,7 @@ export default function Route() {
     if (!currentUserObj.loaded) {
         return (<></>)
     }
+   
 
     return (
         <NavigationContainer ref={navigationRef}>

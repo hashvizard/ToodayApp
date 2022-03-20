@@ -16,6 +16,17 @@ export const userAuthStateListener = () => dispatch => {
     })
 }
 
+export const logOut = () => dispatch => new Promise((resolve, reject) => {
+    // Sign-in the user with the credential
+    auth().signOut()
+        .then(() => {
+            resolve(true)
+        })
+        .catch((e) => {
+            reject(e)
+        })
+})
+
 
 export const getCurrentUserData = () => dispatch => {
     firestore()
