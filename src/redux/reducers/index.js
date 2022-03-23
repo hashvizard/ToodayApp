@@ -5,7 +5,7 @@ import { modal } from "./modal";
 import {report} from "./report";
 import {block} from "./block";
 import {blockedUserPost} from './blockUserPost';
-
+import {token} from './token';
 import {initialPost} from './initialPost';
 
 const Reducers = combineReducers({
@@ -15,7 +15,8 @@ const Reducers = combineReducers({
     report,
     block,
     blockedUserPost,
-    initialPost
+    initialPost,
+    token
 })
 
 export default Reducers;

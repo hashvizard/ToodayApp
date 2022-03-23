@@ -9,6 +9,9 @@ import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import withCodePush from './CodePush'
 import { LogBox } from 'react-native';
+import { navigationRef } from './RootNavigation';
+import { NavigationContainer } from '@react-navigation/native';
+
 const store = createStore(rootReducer, applyMiddleware(thunk))
 
 const queryClient = new QueryClient({
@@ -32,7 +35,9 @@ const App = () => {
       <PaperProvider theme={theme}>
         <Provider store={store}>
           <QueryClientProvider client={queryClient}>
-            <Route />
+            <NavigationContainer ref={navigationRef}>
+              <Route />
+            </NavigationContainer>
           </QueryClientProvider>
         </Provider>
       </PaperProvider>

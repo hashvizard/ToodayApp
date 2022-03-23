@@ -2,10 +2,12 @@ import React, { useState } from 'react'
 import { View, Image, Text, ImageBackground, ActivityIndicator } from 'react-native'
 import styles from './styles';
 import { useDispatch } from 'react-redux'
-import { login } from '../../../redux/actions';
+import { createNewUserData, login } from '../../../redux/actions';
 import { Headline, Caption } from 'react-native-paper'
 import { GoogleSigninButton, GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth'
+import { postDataApi } from '../../../Apis/apis';
+import { createNewuser } from '../../../Apis/LaravelApis';
 
 const ENV = require('../../../../credentials');
 
@@ -20,7 +22,7 @@ export default function UserLogin(props) {
     const [signinStatus, setsigninStatus] = useState(false);
     const image = require('../../../../assets/Startpage.jpg');
 
-    const dispatch = useDispatch()
+    const dispatch = useDispatch();
 
     /**
      * dispatch login action
@@ -31,7 +33,18 @@ export default function UserLogin(props) {
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
         dispatch(login(googleCredential))
-            .then(() => {
+            .then((data) => {
+                if (!data.newUser) {
+                    dispatch(createNewuser(data)).then((data) => {
+                        console.log(data);
+                        setsigninStatus(false);
+                    }).catch((error)=>{
+                        setsigninStatus(false);
+                        console.log(error)}) ;
+                } else {
+
+                }
+
                 console.log('login successful')
             })
             .catch((e) => {

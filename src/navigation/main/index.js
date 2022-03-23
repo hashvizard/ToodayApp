@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
-import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
 import { userAuthStateListener } from '../../redux/actions';
 import HomeScreen from '../home';
@@ -14,7 +13,6 @@ import FeedScreen from '../../screens/feed';
 import UserLogin from '../../components/auth/login';
 import UserCity from '../../components/auth/city';
 import Error from '../../components/error';
-import { navigationRef } from '../../../RootNavigation';
 import BlockModal from '../../components/modal/block';
 import CommentModal from '../../components/comment';
 import Settings from '../settings';
@@ -37,8 +35,7 @@ export default function Route() {
     }
    
 
-    return (
-        <NavigationContainer ref={navigationRef}>
+    return (<>
             <Stack.Navigator>
                 {currentUserObj.currentUser == null ?
                     <Stack.Screen name="auth" component={UserLogin} options={{ headerShown: false }} />
@@ -61,6 +58,6 @@ export default function Route() {
             </Stack.Navigator>
             <ReportModal />
             <BlockModal />
-        </NavigationContainer>
+            </>
     )
 }
