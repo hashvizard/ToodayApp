@@ -38,9 +38,9 @@ const headersOption = async () => {
 export const postDataApi = async (url, data) => {
     try {
         const response = await axios.post(BASE_URL + url, data, await headersOption());
-        return response.data
+        return response.data.data;
     } catch (err) {
-        return err.response.data
+        return err.response.data;
     }
 };
 
@@ -53,9 +53,9 @@ export const postDataApi = async (url, data) => {
 export const getDataApi = async (url) => {
     try {
         const response = await axios.get(BASE_URL + url, await headersOption());
-        return response.data;
+        return response.data.data;
     } catch (err) {
-        return err.response.data
+        return err.response.data;
     }
 };
 
@@ -68,9 +68,9 @@ export const getDataApi = async (url) => {
 export const putDataApi = async (url, data) => {
     try {
         const response = await axios.put(BASE_URL + url, data, await headersOption());
-        return response.data
+        return response.data.data;
     } catch (err) {
-        return err.response.data
+        return err.response.data;
     }
 };
 
@@ -83,8 +83,8 @@ export const putDataApi = async (url, data) => {
 export const delDataApi = async (url, data) => {
     try {
         const response = await axios.delete(BASE_URL + url, await headersOption());
-        return response.data
+        return response.data.data;
     } catch (err) {
-        return err.response.data
+        return err.response.data;
     }
 };

@@ -1,12 +1,11 @@
 import React, { useState } from 'react'
-import { View, Image, Text, ImageBackground, ActivityIndicator } from 'react-native'
+import { View, Image, Text, ActivityIndicator } from 'react-native'
 import styles from './styles';
 import { useDispatch } from 'react-redux'
-import { createNewUserData, login } from '../../../redux/actions';
+import { login, setUserData } from '../../../redux/actions';
 import { Headline, Caption } from 'react-native-paper'
 import { GoogleSigninButton, GoogleSignin } from '@react-native-google-signin/google-signin';
 import auth from '@react-native-firebase/auth'
-import { postDataApi } from '../../../Apis/apis';
 import { createNewuser } from '../../../Apis/LaravelApis';
 
 const ENV = require('../../../../credentials');
@@ -34,18 +33,13 @@ export default function UserLogin(props) {
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
         dispatch(login(googleCredential))
             .then((data) => {
-                if (!data.newUser) {
-                    dispatch(createNewuser(data)).then((data) => {
-                        console.log(data);
-                        setsigninStatus(false);
-                    }).catch((error)=>{
-                        setsigninStatus(false);
-                        console.log(error)}) ;
-                } else {
-
-                }
-
-                console.log('login successful')
+                dispatch(createNewuser(data)).then((data) => {
+                    dispatch(setUserData(data))
+                    setsigninStatus(false);
+                }).catch((error) => {
+                    setsigninStatus(false);
+                    props.navigation.navigate("Error", { error });
+                })
             })
             .catch((e) => {
                 console.log('login unsuccessful')

@@ -4,9 +4,13 @@ import firestore from '@react-native-firebase/firestore'
 import { CREATE_TOKEN, USER_STATE_CHANGE } from '../constants'
 import { getPostsByUser } from './posts'
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import * as RootNavigation from '../../../RootNavigation';
 
-export const getData = new Promise((resolve, reject) => {
+
+/**
+ * Token create and update
+ */
+
+export const getToken = () => new Promise((resolve, reject) => {
     AsyncStorage.getItem('tooday_user_token').then(value => {
         resolve(value);
     }).catch(e => {
@@ -14,8 +18,20 @@ export const getData = new Promise((resolve, reject) => {
     })
 })
 
+export const setToken = (token)  => new Promise((resolve, reject) => {
+    AsyncStorage.setItem('tooday_user_token',token).then(
+        resolve(true)
+    ).catch(e => {
+        reject(e);
+    })
+})
+
+/**
+ * Intializing user data
+ */
+
 export const userAuthStateListener = () => dispatch => {
-    getData.then((value) => {
+    getToken().then((value) => {
         dispatch({ type: CREATE_TOKEN, token: value })
         if (value != null) {
             dispatch(getCurrentUserData())
@@ -25,17 +41,6 @@ export const userAuthStateListener = () => dispatch => {
         }
     })
 }
-
-export const logOut = () => dispatch => new Promise((resolve, reject) => {
-    // Sign-in the user with the credential
-    auth().signOut()
-        .then(() => {
-            resolve(true)
-        })
-        .catch((e) => {
-            reject(e)
-        })
-})
 
 
 export const getCurrentUserData = () => dispatch => {
@@ -53,6 +58,26 @@ export const getCurrentUserData = () => dispatch => {
         })
 }
 
+/**
+ * Setting user data 
+ */
+
+export const setUserData = (data) => dispatch => {
+    setToken(data?.token).then(()=>{
+        return dispatch({
+            type: USER_STATE_CHANGE,
+            currentUser: data?.user,
+            loaded: true
+        })
+    }).catch((e)=>{
+        dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
+    })
+  
+}
+
+/**
+ * Login with Google
+ */
 
 export const login = (googleCredential) => dispatch => new Promise((resolve, reject) => {
     // Sign-in the user with the credential
@@ -82,3 +107,18 @@ export const login = (googleCredential) => dispatch => new Promise((resolve, rej
         })
 })
 
+
+/**
+ * Logout from Google
+ */
+
+export const logOut = () => dispatch => new Promise((resolve, reject) => {
+    // Sign-in the user with the credential
+    auth().signOut()
+        .then(() => {
+            resolve(true)
+        })
+        .catch((e) => {
+            reject(e)
+        })
+})
