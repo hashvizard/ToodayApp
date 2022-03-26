@@ -6,6 +6,13 @@ const STATUS_BAR_HEIGHT = StatusBar.currentHeight || 24;
 const NAVIGATION_BAR_HEIGHT = SCREEN_HEIGHT - Dimensions.get('window').height;
 
 const videoStyles = StyleSheet.create({
+
+    citySelectorStyle:{
+        marginBottom: NAVIGATION_BAR_HEIGHT,
+        flexGrow:1,
+        padding:15,
+        justifyContent:"space-around"
+    },
     commentcontainer: {
         marginTop: STATUS_BAR_HEIGHT,
         marginBottom: NAVIGATION_BAR_HEIGHT,

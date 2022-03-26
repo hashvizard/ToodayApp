@@ -16,6 +16,7 @@ import Error from '../../components/error';
 import BlockModal from '../../components/modal/block';
 import CommentModal from '../../components/comment';
 import Settings from '../settings';
+import UserInfo from '../../components/auth/userInfo';
 
 
 const Stack = createStackNavigator()
@@ -33,31 +34,30 @@ export default function Route() {
     if (!currentUserObj.loaded) {
         return (<></>)
     }
-   
 
     return (<>
-            <Stack.Navigator>
-                {currentUserObj.currentUser == null ?
-                    <Stack.Screen name="auth" component={UserLogin} options={{ headerShown: false }} />
-                    : (currentUserObj.currentUser != null ? !currentUserObj.currentUser.hasOwnProperty('City') : null) ?
-                        <Stack.Screen name="city" component={UserCity} options={{ headerShown: false }} />
-                        :
-                        <>
-                            <Stack.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
-                            <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false }} />
-                            <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
-                            <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />
-                            <Stack.Screen name="profileComment" component={ReviewModal} options={{ headerShown: false }} />
-                            <Stack.Screen name="editProfile" component={EditProfileScreen} options={{ headerShown: false }} />
-                            <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
-                            <Stack.Screen name="comment" component={CommentModal} options={{ headerShown: false }} />
-                            <Stack.Screen name="settings" component={Settings} options={{ headerShown: false }} />
-                        </>
-                }
-                <Stack.Screen name="Error" component={Error} options={{ headerShown: false }} />
-            </Stack.Navigator>
-            <ReportModal />
-            <BlockModal />
-            </>
+        <Stack.Navigator>
+            {currentUserObj.currentUser === null ?
+                <Stack.Screen name="auth" component={UserLogin} options={{ headerShown: false }} />
+                : currentUserObj.currentUser?.city_id === null ?
+                    <Stack.Screen name="useriinfo" component={UserInfo} options={{ headerShown: true, title: "Select your city" }} />
+                    :
+                    <>
+                        <Stack.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="profileComment" component={ReviewModal} options={{ headerShown: false }} />
+                        <Stack.Screen name="editProfile" component={EditProfileScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="comment" component={CommentModal} options={{ headerShown: false }} />
+                        <Stack.Screen name="settings" component={Settings} options={{ headerShown: false }} />
+                    </>
+            }
+            <Stack.Screen name="Error" component={Error} options={{ headerShown: false }} />
+        </Stack.Navigator>
+        <ReportModal />
+        <BlockModal />
+    </>
     )
 }

@@ -4,6 +4,7 @@ import firestore from '@react-native-firebase/firestore'
 import { CREATE_TOKEN, USER_STATE_CHANGE } from '../constants'
 import { getPostsByUser } from './posts'
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserData } from '../../Apis/LaravelApis';
 
 
 /**
@@ -18,8 +19,8 @@ export const getToken = () => new Promise((resolve, reject) => {
     })
 })
 
-export const setToken = (token)  => new Promise((resolve, reject) => {
-    AsyncStorage.setItem('tooday_user_token',token).then(
+export const setToken = (token) => new Promise((resolve, reject) => {
+    AsyncStorage.setItem('tooday_user_token', token).then(
         resolve(true)
     ).catch(e => {
         reject(e);
@@ -34,8 +35,20 @@ export const userAuthStateListener = () => dispatch => {
     getToken().then((value) => {
         dispatch({ type: CREATE_TOKEN, token: value })
         if (value != null) {
-            dispatch(getCurrentUserData())
-            dispatch(getPostsByUser(auth().currentUser.uid))
+            dispatch(getUserData()).then(data => {
+                if (data.status) {
+                    dispatch({
+                        type: USER_STATE_CHANGE,
+                        currentUser: data?.data[0],
+                        loaded: true
+                    })
+                }
+                else {
+                    console.log(data.message)
+                }
+            }).catch(err => {
+                console.log(err);
+            })
         } else {
             dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
         }
@@ -43,7 +56,10 @@ export const userAuthStateListener = () => dispatch => {
 }
 
 
+
+
 export const getCurrentUserData = () => dispatch => {
+    dispatch()
     firestore()
         .collection('user')
         .doc(auth().currentUser.uid)
@@ -62,17 +78,17 @@ export const getCurrentUserData = () => dispatch => {
  * Setting user data 
  */
 
-export const setUserData = (data) => dispatch => {
-    setToken(data?.token).then(()=>{
+export const setUserData = (user) => dispatch => {
+    setToken(user?.data?.token).then(() => {
         return dispatch({
             type: USER_STATE_CHANGE,
-            currentUser: data?.user,
+            currentUser: user?.data?.user,
             loaded: true
         })
-    }).catch((e)=>{
+    }).catch((e) => {
         dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
     })
-  
+
 }
 
 /**

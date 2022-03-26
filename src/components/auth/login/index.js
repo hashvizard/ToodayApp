@@ -19,7 +19,6 @@ GoogleSignin.configure({
 export default function UserLogin(props) {
 
     const [signinStatus, setsigninStatus] = useState(false);
-    const image = require('../../../../assets/Startpage.jpg');
 
     const dispatch = useDispatch();
 
@@ -34,15 +33,14 @@ export default function UserLogin(props) {
         dispatch(login(googleCredential))
             .then((data) => {
                 dispatch(createNewuser(data)).then((data) => {
+                    if(!data.status) props.navigation.navigate("Error", { error:data.message });
                     dispatch(setUserData(data))
-                    setsigninStatus(false);
                 }).catch((error) => {
-                    setsigninStatus(false);
                     props.navigation.navigate("Error", { error });
                 })
+                setsigninStatus(false);
             })
             .catch((e) => {
-                console.log('login unsuccessful')
                 setsigninStatus(false);
                 props.navigation.navigate("Error", { error: "Something went wrong while login" })
             })

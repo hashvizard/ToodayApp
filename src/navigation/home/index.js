@@ -6,6 +6,7 @@ import SearchScreen from '../../screens/search';
 import FeedNavigation from '../feed';
 import auth from '@react-native-firebase/auth';
 import CommentModal from '../../components/comment';
+import { useSelector } from 'react-redux';
 
 const Stack = createStackNavigator()
 

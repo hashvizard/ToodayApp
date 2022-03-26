@@ -15,7 +15,27 @@ export const createNewuser = (data) => dispatch => new Promise((resolve, reject)
 */
 
 export const getUserData = () => dispatch => new Promise((resolve, reject) => {
-    getDataApi('register', data).then(response => {
+    getDataApi('userinfo').then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+/**
+ * Get All Cities
+*/
+
+export const getAllCities = () => dispatch => new Promise((resolve, reject) => {
+    getDataApi('cities').then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+/**
+ * Update user City
+*/
+
+export const updateUserCity = (data) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('cities',data).then(response => {
         resolve(response);
     }).catch(error => reject(error))
 })

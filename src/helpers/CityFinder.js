@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useState ,useEffect} from 'react'
 import { PermissionsAndroid } from 'react-native'
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
-import AllCities from '../../cities';
 import { IconButton, Colors, ActivityIndicator } from 'react-native-paper';
+import { useDispatch } from 'react-redux';
+import { getAllCities } from '../Apis/LaravelApis';
 const ENV = require('../../credentials');
 
 Geocoder.init(ENV.GOOGLE_MAP_API);
@@ -11,6 +12,22 @@ Geocoder.init(ENV.GOOGLE_MAP_API);
 const CityFinder = (props) => {
 
     const [save, setSave] = useState(false);
+    const [CityData, setCities] = useState([]);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+      dispatch(getAllCities()).then(cities=>{
+       
+          if(cities.status) setCities(cities.data);
+          else console.log(cities.message);
+      }).catch(err=>{
+          console.log(err.message);
+      })
+      return () => {
+        setCities([]);
+      }
+    }, [])
+    
 
     const requestLocationPermission = async () => {
         try {
@@ -72,14 +89,14 @@ const CityFinder = (props) => {
             await Geocoder.from(lat, long)
                 .then(json => {
                     let cities = [];
-                    let address_clues = [];
+                    let address_clues = ['Dehradun'];
 
-                    json.results[0].address_components.map((item) => {
+                  /*   json.results[0].address_components.map((item) => {
                         var City_clue = CapitilizeWords(item.long_name);
                         address_clues = [...address_clues, City_clue];
-                    });
+                    }); */
 
-                    cities = address_clues.filter(element => AllCities.includes(element));
+                    cities = address_clues.filter(element => CityData.includes(element));
 
                     if (cities.length != 0) {
                         setSave(false);
@@ -113,7 +130,7 @@ const CityFinder = (props) => {
             .then((res) => res.json())
             .then((json) => {
                 var values = Object.keys(json[0].PostOffice[0]).map(function (key) { return json[0].PostOffice[0][key]; });
-                cities = values.filter(element => AllCities.includes(element));
+                cities = values.filter(element => CityData.includes(element));
             });
         if (cities.length != 0) {
             setSave(false);
