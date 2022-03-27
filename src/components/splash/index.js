@@ -25,7 +25,7 @@ const SplashScreen = () => {
         <Animated.View style={styles.containerSplash}>
             <Animated.Image
                 source={require('../../../assets/logo.png')} style={{ ...styles.image, transform: [{ scale: scale }], }} />
-            <Text style={{ display:  "flex", ...styles.darkTextShadow }} ><Headline>Detecting</Headline> Location</Text>
+          
         </Animated.View>
     )
 }

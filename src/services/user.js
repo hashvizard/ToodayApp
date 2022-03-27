@@ -15,15 +15,6 @@ export const saveUserProfileImage = (image) => new Promise((resolve, reject) => 
     })
 })
 
-export const totaluserReviews = () => new Promise((resolve, reject) => {
-    firestore()
-        .collection(`user/${auth().currentUser.uid}/reviews`)
-        .get()
-        .then(function (querySnapshot) {
-            resolve(querySnapshot.size)
-        })
-        .catch(() => reject());
-})
 
 export const saveUserField = (field, value) => new Promise((resolve, reject) => {
     let obj = {};

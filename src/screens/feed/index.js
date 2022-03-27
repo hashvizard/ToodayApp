@@ -22,6 +22,7 @@ import { blockNull, intialPostView } from '../../redux/actions';
 export default function FeedScreen(props) {
 
     const { setCurrentUserProfileItemInView, creator, profile } = props.route.params
+    
     const user = useSelector(state => state.auth)
     const [posts, setPosts] = useState([])
     const mediaRefs = useRef([])

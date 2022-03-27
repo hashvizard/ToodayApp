@@ -10,31 +10,18 @@ const Navbar = (props) => {
 
     const User = useSelector(state => state.auth);
     const post = useSelector(state => state.initialPost);
+    console.log(User);
     console.log(props)
     return (
         <View style={{ ...videoStyles.header }}>
             <View style={{
-                flexDirection: "row", alignItems: "center", justifyContent: "space-between", paddingHorizontal: 10,
-                backgroundColor: "rgba(0,0,0,0.1)",
+                flexDirection: "row", alignItems: "center", justifyContent: "flex-end", paddingHorizontal: 10,
+              
                 margin: 15, paddingVertical: 3, borderRadius: 50
             }}>
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-between", }}>
-                <IconButton
-                    icon={"magnify-scan"}
-                    style={{ padding: 0, margin: 0 }}
-                    size={25}
-                    color="green"
-                    animated={true}
-                    onPress={() => {
-                        props.profile ? RootNavigation.navigate('feedList') : RootNavigation.navigate('settings');
 
-                    }}
-                />
-                    <Text style={{ color: "white", marginLeft: 10 }}>Search for users in your city..</Text>
 
-                </View>
-
-                <IconButton
+               {/*  <IconButton
                     icon={props.profile ? "home" : "camera"}
                     style={{ padding: 0, margin: 0 }}
                     size={25}
@@ -45,16 +32,19 @@ const Navbar = (props) => {
 
                     }}
                 />
+ */}
+                            
+              
 
-                {/*   <TouchableOpacity onPress={() => RootNavigation.navigate('Me')}>
-                {props.profile ?
-                <TouchableOpacity onPress={()=>props.navigation.goBack()}>
-                    <Icon name='close' size={30} color="red" />
+                <TouchableOpacity onPress={() => RootNavigation.navigate('settings')}>
+                    {props.profile ?
+                        <TouchableOpacity onPress={() => props.navigation.goBack()}>
+                            <Icon name='close' size={30} color="red" />
+                        </TouchableOpacity>
+                        :
+                        <Avatar.Image size={30} source={{ uri: User.currentUser.profile }} />
+                    }
                 </TouchableOpacity>
-                    :
-                    <Avatar.Image size={30} source={{ uri: User.currentUser.photoURL }} />
-                }
-            </TouchableOpacity> */}
             </View>
         </View>
     )

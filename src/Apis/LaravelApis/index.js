@@ -39,3 +39,24 @@ export const updateUserCity = (data) => dispatch => new Promise((resolve, reject
         resolve(response);
     }).catch(error => reject(error))
 })
+
+/**
+ * Update user Photo
+*/
+
+export const updateUserPhoto = (url) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('profile/pic',url).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+/**
+ * Update user Name
+*/
+
+export const updateUserName = (name) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('profile/name',name).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+

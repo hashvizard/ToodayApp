@@ -1,4 +1,4 @@
-import React, { useState ,useEffect} from 'react'
+import React, { useState, useEffect } from 'react'
 import { PermissionsAndroid } from 'react-native'
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
@@ -16,18 +16,18 @@ const CityFinder = (props) => {
     const dispatch = useDispatch();
 
     useEffect(() => {
-      dispatch(getAllCities()).then(cities=>{
-       
-          if(cities.status) setCities(cities.data);
-          else console.log(cities.message);
-      }).catch(err=>{
-          console.log(err.message);
-      })
-      return () => {
-        setCities([]);
-      }
+        dispatch(getAllCities()).then(cities => {
+
+            if (cities.status) setCities(cities.data);
+            else console.log(cities.message);
+        }).catch(err => {
+            console.log(err.message);
+        })
+        return () => {
+            setCities([]);
+        }
     }, [])
-    
+
 
     const requestLocationPermission = async () => {
         try {
@@ -89,12 +89,12 @@ const CityFinder = (props) => {
             await Geocoder.from(lat, long)
                 .then(json => {
                     let cities = [];
-                    let address_clues = ['Dehradun'];
+                    let address_clues = [];
 
-                  /*   json.results[0].address_components.map((item) => {
+                    json.results[0].address_components.map((item) => {
                         var City_clue = CapitilizeWords(item.long_name);
                         address_clues = [...address_clues, City_clue];
-                    }); */
+                    });
 
                     cities = address_clues.filter(element => CityData.includes(element));
 
@@ -143,10 +143,10 @@ const CityFinder = (props) => {
 
     if (save) {
         return (
-            <ActivityIndicator 
-            style={{ marginRight: 30 }}
-            size="small"
-            animating={true} color={Colors.red800} />
+            <ActivityIndicator
+                style={{ marginRight: 30 }}
+                size="small"
+                animating={true} color={Colors.red800} />
         );
     } else {
         return (

@@ -12,8 +12,8 @@ const Stack = createStackNavigator()
 const Settings = () => {
     return (
         <Stack.Navigator>
-            <Stack.Screen name="settingPage" component={SettingPage} options={{ headerShown: true }} />
-            <Stack.Screen name="profileEdit" component={ProfileEdit} options={{ headerShown: true }} />
+            <Stack.Screen name="settingPage" component={SettingPage} options={{ headerShown: true,title:"Settings" }} />
+            <Stack.Screen name="profileEdit" component={ProfileEdit} options={{ headerShown: true , title:"Profile" }} />
             <Stack.Screen name="profileReviews" component={ReviewModal} options={{ headerShown: false }} />
             <Stack.Screen name="profilePosts" component={MyPosts} options={{ headerShown: true }} />
             <Stack.Screen name="likedPosts" component={LikedPosts} options={{ headerShown: true }} />

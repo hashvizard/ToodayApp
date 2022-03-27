@@ -17,6 +17,7 @@ import BlockModal from '../../components/modal/block';
 import CommentModal from '../../components/comment';
 import Settings from '../settings';
 import UserInfo from '../../components/auth/userInfo';
+import SplashScreen from '../../components/splash';
 
 
 const Stack = createStackNavigator()
@@ -32,7 +33,9 @@ export default function Route() {
     }, [])
 
     if (!currentUserObj.loaded) {
-        return (<></>)
+        return (<>
+        <SplashScreen />
+        </>)
     }
 
     return (<>

@@ -1,11 +1,10 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     imageContainer: {
-        justifyContent: "center",
-        alignSelf: "center",
-        margin: 15,
-        borderRadius: 150,
-        overflow: "hidden"
+        justifyContent: "space-between",
+        alignItems: "center",
+        flexDirection:"row",
+      padding:15
     },
     loadingIndicator: {
         position: "absolute",
@@ -20,8 +19,8 @@ const styles = StyleSheet.create({
     },
     icon: {
         position:'absolute',
-        bottom:0,
-        right:0
+        bottom:5,
+        right:5
     }
 });
 

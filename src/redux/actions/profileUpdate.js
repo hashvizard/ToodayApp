@@ -1,6 +1,7 @@
 
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
+import { updateUserPhoto } from '../../Apis/LaravelApis'
 import { saveMediaToStorage } from '../../services/random'
 
 export const updateProfile = (profileUrl) => dispatch => new Promise((resolve, reject) => {
@@ -10,16 +11,18 @@ export const updateProfile = (profileUrl) => dispatch => new Promise((resolve, r
 
     promiseResponse
         .then((media) => {
-            firestore()
-                .collection('user')
-                .doc(auth().currentUser.uid)
-                .update({
-                    photoURL: media[0],
-                })
-                .then(() => resolve())
-                .catch((err) => reject(err))
+            let data = { profile:media[0] };
+            dispatch(updateUserPhoto(data)).then((data)=>{
+               if(data.status) {
+                    resolve(media[0]);
+               }else{
+                reject(data.message);
+               }
+            }).catch((err)=>{
+                reject(err);
+            })
         })
-        .catch(() => reject())
+        .catch((err) => reject(err))
 })
 
 export const updateName = (name) => dispatch => new Promise((resolve, reject) => {

@@ -6,9 +6,10 @@ import { useSelector, useDispatch } from 'react-redux';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import * as ImagePicker from 'react-native-image-picker'
 import { updateProfile } from '../../../redux/actions';
-import { List } from 'react-native-paper';
+import { List, Button } from 'react-native-paper';
 import styles from './styles'
 import UpdateModal from './UpdateModal';
+import { USER_STATE_CHANGE } from '../../../redux/constants';
 
 const ProfileEdit = (props) => {
     const user = useSelector(state => state.auth);
@@ -17,7 +18,7 @@ const ProfileEdit = (props) => {
 
     const [loading, setLoading] = useState(false);
 
-    const [showModal, setshowModal] = useState({'type':'','show':false});
+    const [showModal, setshowModal] = useState({ 'type': '', 'show': false });
 
 
     useEffect(() => { }, [showModal])
@@ -29,53 +30,60 @@ const ProfileEdit = (props) => {
             includeBase64: true,
             allowsEditing: true,
         })
-        if (result) {
+        if(result.didCancel){
+            setLoading(false);
+        }
+        else if (result) {
             setLoading(true);
             dispatch(updateProfile(result.assets[0].base64))
-                .then(() => setLoading(false))
+                .then((image) => {
+                    let data = user.currentUser;
+                    data.profile = image;
+                    dispatch({
+                        type: USER_STATE_CHANGE,
+                        currentUser: data,
+                        loaded: true
+                    })
+                    setLoading(false)
+                })
                 .catch((err) => { setLoading(false); console.log(err) })
         }
     }
 
     return (<>
-        <ScrollView style={{ flex: 1 }}>
-            <TouchableOpacity
-                onPress={() => pickFromGallery()}
+        <ScrollView style={{ flex: 1, backgroundColor: "white"}}>
+            <View
                 style={styles.imageContainer} >
-                <View
-                    style={{ ...styles.loadingIndicator, display: loading ? "flex" : "none" }}>
-                    <ActivityIndicator animating={true} color="red" />
-                </View>
-
                 <Avatar.Image
-                    size={150} source={{ uri: user.currentUser.photoURL }} />
-                <Icon
-                    style={styles.icon}
-                    name='camera' size={40} />
-            </TouchableOpacity>
+                    size={100} source={{ uri: user.currentUser.profile }}
+                />
+                <Button icon="camera-plus" onPress={() => pickFromGallery()} loading={loading} mode="text" >
+                   {loading?"Updating":"Add Profile"}
+                </Button>
+            </View>
             <View >
                 <List.Item
-                style={{padding:15}}
+                    style={{ padding: 15 }}
                     title="Name"
-                    onPress={() => setshowModal({'type':'name','show':true})}
-                    description={user.currentUser.displayName}
-                    right={props => <List.Icon {...props} icon="pencil" />}
-                    left={props => <List.Icon {...props} icon="account" />}
+                    onPress={() => setshowModal({ 'type': 'name', 'show': true })}
+                    description={user.currentUser.name}
+                    right={props => <List.Icon {...props} color="#5bc0de" icon="pencil" />}
+                    left={props => <List.Icon {...props} color="#5cb85c" icon="account" />}
                 />
                 <List.Item
-                style={{padding:15}}
+                    style={{ padding: 15 }}
                     title="Location"
-                    onPress={() => setshowModal({'type':'location','show':true})}
-                    description={user.currentUser.City}
-                    right={props => <List.Icon {...props} icon="pencil" />}
-                    left={props => <List.Icon {...props} icon="map-marker" />}
+                    onPress={() => setshowModal({ 'type': 'location', 'show': true })}
+                    description={user.currentUser.city}
+                    right={props => <List.Icon {...props} color="#5bc0de" icon="pencil" />}
+                    left={props => <List.Icon {...props} color="#d9534f" icon="map-marker" />}
                 />
             </View>
         </ScrollView>
         {showModal.show ?
-            <UpdateModal data={showModal.type == 'name' ?user.currentUser.displayName:user.currentUser.City} 
-            type={showModal.type}  changeModal={() => setshowModal({'type':'','show':false})} />
-            :null
+            <UpdateModal data={showModal.type == 'name' ? user.currentUser.name : user.currentUser.city}
+                type={showModal.type} changeModal={() => setshowModal({ 'type': '', 'show': false })} />
+            : null
         }
     </>
     )
