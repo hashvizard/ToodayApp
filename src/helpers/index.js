@@ -1,4 +1,5 @@
 export const changeDateForamt = (date) => {
+  
     // Changed date to Hour
     var seconds = Math.floor((new Date() - date) / 1000);
 

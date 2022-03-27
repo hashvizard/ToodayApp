@@ -72,16 +72,16 @@ const SettingPage = (props) => {
           <View style={{ padding: 15 }}>
             <List.Item
               left={props => <List.Icon {...props} icon="pencil" />}
-              onPress={() => props.navigation.navigate('profileReviews', { uid: user.currentUser.uid })}
+              onPress={() => props.navigation.navigate('profileReviews', { id: user.currentUser.id })}
               title="Profile Reviews" />
             <List.Item
               description="All active posts that are live"
-              onPress={() => props.navigation.navigate('profilePosts', { uid: user.currentUser.uid })}
+              onPress={() => props.navigation.navigate('profilePosts', { id: user.currentUser.id })}
               left={props => <List.Icon {...props} icon="video-vintage" />}
               title="My Posts" />
             <List.Item
               left={props => <List.Icon {...props} icon="thumb-up" />}
-              onPress={() => props.navigation.navigate('likedPosts', { uid: user.currentUser.uid })}
+              onPress={() => props.navigation.navigate('likedPosts', { id: user.currentUser.id })}
               description="Posts that has been liked by you"
               title="Liked Posts" />
             <List.Item

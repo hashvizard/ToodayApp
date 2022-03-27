@@ -2,6 +2,7 @@ import { saveMediaToStorage } from './random'
 import auth from '@react-native-firebase/auth';
 import firestore from '@react-native-firebase/firestore';
 
+
 export const saveUserProfileImage = (image) => new Promise((resolve, reject) => {
     saveMediaToStorage(image, `profileImage/${auth().currentUser.uid}`).then((res) => {
         firestore()
