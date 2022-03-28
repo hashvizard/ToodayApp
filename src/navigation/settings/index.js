@@ -6,6 +6,7 @@ import ProfileEdit from '../../components/settings/Profile';
 import ReviewModal from '../../screens/profile/reviews';
 import MyPosts from '../../components/settings/Profile/MyPosts';
 import LikedPosts from '../../components/settings/Profile/LikedPosts';
+import Blocked from '../../components/settings/Profile/Blocked';
 
 const Stack = createStackNavigator()
 
@@ -15,6 +16,7 @@ const Settings = () => {
             <Stack.Screen name="settingPage" component={SettingPage} options={{ headerShown: true,title:"Settings" }} />
             <Stack.Screen name="profileEdit" component={ProfileEdit} options={{ headerShown: true , title:"Profile" }} />
             <Stack.Screen name="profileReviews" component={ReviewModal} options={{ headerShown: false }} />
+            <Stack.Screen name="blocked" component={Blocked} options={{ headerShown: true , title:"Blocked users" }} />
             <Stack.Screen name="profilePosts" component={MyPosts} options={{ headerShown: true }} />
             <Stack.Screen name="likedPosts" component={LikedPosts} options={{ headerShown: true }} />
         </Stack.Navigator>

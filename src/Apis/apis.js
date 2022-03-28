@@ -80,7 +80,7 @@ export const putDataApi = async (url, data) => {
  * @param {string} url 
  * @returns 
  */
-export const delDataApi = async (url, data) => {
+export const delDataApi = async (url) => {
     try {
         const response = await axios.delete(BASE_URL + url, await headersOption());
         return response.data;

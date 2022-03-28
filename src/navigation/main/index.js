@@ -28,8 +28,8 @@ export default function Route() {
     const currentUserObj = useSelector(state => state.auth);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(userAuthStateListener());
+    useEffect(()  => {
+       dispatch(userAuthStateListener());
     }, [])
 
     if (!currentUserObj.loaded) {

@@ -87,6 +87,7 @@ const SettingPage = (props) => {
             <List.Item
               left={props => <List.Icon {...props} icon="block-helper" />}
               description="Posts that has been liked by you"
+              onPress={() => props.navigation.navigate('blocked', { id: user.currentUser.id })}
               title="Blocked Users" />
             <Divider />
             <List.Item

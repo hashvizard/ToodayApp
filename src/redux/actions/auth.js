@@ -27,6 +27,15 @@ export const setToken = (token) => new Promise((resolve, reject) => {
     })
 })
 
+
+export const removeToken = () => new Promise((resolve, reject) => {
+    AsyncStorage.removeItem('tooday_user_token').then(() => {
+        resolve(true);
+    }).catch(e => {
+        reject(false);
+    })
+})
+
 /**
  * Intializing user data
  */
@@ -35,8 +44,10 @@ export const userAuthStateListener = () => dispatch => {
     getToken().then((value) => {
         dispatch({ type: CREATE_TOKEN, token: value })
         if (value != null) {
+            
             dispatch(getUserData()).then(data => {
                 if (data.status) {
+                    console.log("after token",data?.data[0])
                     dispatch({
                         type: USER_STATE_CHANGE,
                         currentUser: data?.data[0],
@@ -79,16 +90,16 @@ export const getCurrentUserData = () => dispatch => {
  */
 
 export const setUserData = (user) => dispatch => {
-    setToken(user?.data?.token).then(() => {
+  
+    setToken(user.data.token).then(() => {
         return dispatch({
             type: USER_STATE_CHANGE,
-            currentUser: user?.data?.user,
+            currentUser: user.data.user[0],
             loaded: true
         })
     }).catch((e) => {
         dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
     })
-
 }
 
 /**
@@ -132,7 +143,14 @@ export const logOut = () => dispatch => new Promise((resolve, reject) => {
     // Sign-in the user with the credential
     auth().signOut()
         .then(() => {
-            resolve(true)
+            removeToken().then(val=>{
+                if(val){
+                    dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
+                    resolve(true)
+                }else{
+                    reject(false)
+                }
+            })
         })
         .catch((e) => {
             reject(e)

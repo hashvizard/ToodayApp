@@ -60,3 +60,4 @@ export const updateUserName = (name) => dispatch => new Promise((resolve, reject
     }).catch(error => reject(error))
 })
 
+

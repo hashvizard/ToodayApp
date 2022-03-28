@@ -100,7 +100,7 @@ export default function ReviewModal(props) {
         flatListRef.scrollToIndex({ animated: true, index: 0 });
     }
 
-   
+  
     return (<>
         <ImageBackground
             style={{
@@ -129,11 +129,11 @@ export default function ReviewModal(props) {
                 
                 </TouchableOpacity>
 
-                {loading == true || reviewList.length <=0 ?
+                {loading == true || reviewList.length <= 0 ?
                 <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
                         <ActivityIndicator color="white" size="small" style={{display:loading?"flex":"none"}} />
                         <Text style={{marginTop:25,display:loading?"flex":"none"}}>Loading <Title>Reviews</Title></Text>
-                        <Text style={{display:reviewList.length <= 0?"none":"flex"}}>Nothing <Title>Found</Title></Text>
+                        <Text style={{display:!loading && reviewList.length <= 0 ?"flex":"none"}}>You don't have any <Title>Reviews</Title></Text>
                 </View>
                 :
                  <FlatList
