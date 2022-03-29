@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { List, Avatar, IconButton } from 'react-native-paper';
+import { List, Avatar, IconButton, Title } from 'react-native-paper';
 import { changeDateForamt } from '../../../helpers';
 import { getBlockedUsers, removeBlockedUsers } from '../../../Apis/LaravelApis/userApi';
 
@@ -10,12 +10,14 @@ const Blocked = (props) => {
   const dispatch = useDispatch();
   const [data, setdata] = useState([]);
   const [activity, setactivity] = useState({ id: null, status: false });
+  const [loading, setLoading] = useState(false);
 
 
   useEffect(() => {
-
+    setLoading(true)
     dispatch(getBlockedUsers()).then(val => {
       if (val.status) setdata(val.data)
+      setLoading(false)
     }).catch(err => {
       console.log(err.message)
     })
@@ -60,11 +62,19 @@ const Blocked = (props) => {
   }
   return (
     <View style={{ flex: 1, backgroundColor: "white", padding: 10 }}>
-      <FlatList
-        data={data}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItem}
-      />
+      {loading == true || data.length <= 0 ?
+        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+          <ActivityIndicator color="black" size="small" style={{ display: loading ? "flex" : "none" }} />
+          <Text style={{ marginTop: 25, display: loading ? "flex" : "none" }}>Loading <Title>List</Title></Text>
+          <Text style={{ display: !loading && data.length <= 0 ? "flex" : "none" }}>You haven't blocked any <Title>user</Title></Text>
+        </View>
+        :
+        <FlatList
+          data={data}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItem}
+        />
+      }
     </View>
   )
 }
