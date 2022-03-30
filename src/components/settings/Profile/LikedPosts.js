@@ -4,16 +4,23 @@ import { useFocusEffect } from '@react-navigation/native';
 import { getLikedPostByUserId, getPostsByUserId } from '../../../services/posts';
 import ProfilePostList from '../../profile/postList';
 import videoStyles from '../../../styles/VideoStyles';
+import { getUserPosts } from '../../../Apis/LaravelApis/postApi';
+import {useDispatch} from 'react-redux'
 
 export default function LikedPosts({ route }) {
     
-    const initialUserId = route.params.uid;
+    const initialUserId = route.params.id;
     const [userPosts, setUserPosts] = useState([])
-
+    const dispatch = useDispatch();
 
     useFocusEffect(
         React.useCallback(() => {
-            getLikedPostByUserId(initialUserId).then(setUserPosts)
+            dispatch(getUserPosts(initialUserId)).then((data)=>{
+            console.log(data);
+            })
+            .catch((err)=>{
+                console.log(err);
+            })
             return () => {
                 setUserPosts([])
             }
@@ -21,7 +28,7 @@ export default function LikedPosts({ route }) {
     );
 
   
-    return (<ScrollView style={videoStyles.spaceBottom}>
-            <ProfilePostList posts={userPosts} />
-            </ScrollView>)
+    return (<>
+    
+    </>)
 }

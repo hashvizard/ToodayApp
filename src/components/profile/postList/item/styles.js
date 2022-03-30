@@ -3,7 +3,8 @@ const styles = StyleSheet.create({
     container: {
         flex: 1 / 3,
         height: 200,
-        backgroundColor: 'gray'
+        padding:0.5,
+        backgroundColor:'white'
     },
     image: {
         flex: 1,
