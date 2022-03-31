@@ -71,27 +71,27 @@ const SettingPage = (props) => {
 
           <View style={{ padding: 15 }}>
             <List.Item
-              left={props => <List.Icon {...props} icon="pencil" />}
+              left={props => <List.Icon  {...props} icon="pencil" color='#5cb85c' />}
               onPress={() => props.navigation.navigate('profileReviews', { id: user.currentUser.id })}
               title="Profile Reviews" />
             <List.Item
               description="All active posts that are live"
               onPress={() => props.navigation.navigate('profilePosts', { id: user.currentUser.id })}
-              left={props => <List.Icon {...props} icon="video-vintage" />}
+              left={props => <List.Icon {...props} icon="video-vintage" color='#f0ad4e' />}
               title="My Posts" />
             <List.Item
-              left={props => <List.Icon {...props} icon="thumb-up" />}
+              left={props => <List.Icon {...props} icon="thumb-up" color='#5bc0de' />}
               onPress={() => props.navigation.navigate('likedPosts', { id: user.currentUser.id })}
               description="Posts that has been liked by you"
               title="Liked Posts" />
             <List.Item
-              left={props => <List.Icon {...props} icon="block-helper" />}
+              left={props => <List.Icon {...props} icon="block-helper" color='#d9534f' />}
               description="Posts that has been liked by you"
               onPress={() => props.navigation.navigate('blocked', { id: user.currentUser.id })}
               title="Blocked Users" />
             <Divider />
             <List.Item
-              left={props => <List.Icon {...props} icon="lock" />}
+              left={props => <List.Icon {...props} icon="lock" color='#292b2c' />}
               description="About us, Privacy Policy, Terms & Condition"
               title="Help Center" />
             <List.Item
