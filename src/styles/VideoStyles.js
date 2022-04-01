@@ -20,7 +20,10 @@ const videoStyles = StyleSheet.create({
         width: "100%",
     },
     spaceBottom:{
-        marginBottom: NAVIGATION_BAR_HEIGHT,
+        bottom: NAVIGATION_BAR_HEIGHT,
+    },
+    spaceTop:{
+        top: STATUS_BAR_HEIGHT,
     },
     statusbarheightheight: {
         marginVertical: STATUS_BAR_HEIGHT + 30,

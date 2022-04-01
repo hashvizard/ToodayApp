@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react'
-import { FlatList } from 'react-native'
+import { FlatList, View } from 'react-native'
 import PostSingle from '../../components/general/post'
 import { getFeed, getPostsByUserId } from '../../services/posts'
 import LoadingScreen from '../../components/FeedLoaders/LoadingScreen';
@@ -8,7 +8,10 @@ import Navbar from '../../components/FeedLoaders/Header/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
 import { reportNull } from '../../redux/actions/report'
 import { blockNull, intialPostView } from '../../redux/actions';
-
+import videoStyles from '../../styles/VideoStyles';
+import { Avatar, IconButton, Paragraph, Subheading, Title } from 'react-native-paper';
+import Header from '../../HomeScreen/Header';
+import Footer from '../../HomeScreen/Footer';
 
 /**
  * Component that renders a list of posts meant to be 
@@ -22,7 +25,7 @@ import { blockNull, intialPostView } from '../../redux/actions';
 export default function FeedScreen(props) {
 
     const { setCurrentUserProfileItemInView, creator, profile } = props.route.params
-    
+
     const user = useSelector(state => state.auth)
     const [posts, setPosts] = useState([])
     const mediaRefs = useRef([])
@@ -110,8 +113,16 @@ export default function FeedScreen(props) {
     // }
     return (
         <React.Fragment>
-            <Navbar profile={profile} {...props} />
-            <FlatList
+      <Header />
+
+                {/* Bootom */}
+         <Footer />
+        </React.Fragment>
+    )
+
+}
+{/*  <Navbar profile={profile} {...props} /> */}
+          {/*   <FlatList
                 data={posts}
                 style={{ flex: 1 }}
                 windowSize={4}
@@ -126,8 +137,4 @@ export default function FeedScreen(props) {
                 keyExtractor={item => item.id}
                 decelerationRate={'normal'}
                 onViewableItemsChanged={onViewableItemsChanged.current}
-            />
-        </React.Fragment>
-    )
-
-}
+            /> */}
