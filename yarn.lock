@@ -5766,7 +5766,7 @@
   "resolved" "https://registry.npmjs.org/lodash.throttle/-/lodash.throttle-4.1.1.tgz"
   "version" "4.1.1"
 
-"lodash@^4.16.6", "lodash@^4.17.10", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.19", "lodash@^4.17.21", "lodash@^4.17.4", "lodash@^4.6.1", "lodash@^4.7.0":
+"lodash@^4.16.4", "lodash@^4.16.6", "lodash@^4.17.10", "lodash@^4.17.14", "lodash@^4.17.15", "lodash@^4.17.19", "lodash@^4.17.21", "lodash@^4.17.4", "lodash@^4.6.1", "lodash@^4.7.0":
   "integrity" "sha512-v2kDEe57lecTulaDIuNTPy3Ry4gLGJ6Z1O3vE1krgXZNrsQ+LFTGHVxVjcXPs17LhbZVGedAJv8XZ1tvj5FvSg=="
   "resolved" "https://registry.npmjs.org/lodash/-/lodash-4.17.21.tgz"
   "version" "4.17.21"
@@ -6925,7 +6925,7 @@
     "kleur" "^3.0.3"
     "sisteransi" "^1.0.5"
 
-"prop-types@^15.5.10", "prop-types@^15.6.2", "prop-types@^15.7.2":
+"prop-types@^15.5.10", "prop-types@^15.5.6", "prop-types@^15.6.2", "prop-types@^15.7.2":
   "integrity" "sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg=="
   "resolved" "https://registry.npmjs.org/prop-types/-/prop-types-15.8.1.tgz"
   "version" "15.8.1"
@@ -7046,13 +7046,6 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-16.13.1.tgz"
   "version" "16.13.1"
 
-"react-native-action-button@^2.8.5":
-  "integrity" "sha512-BvGZpzuGeuFR2Y6j93+vKiSqDhsF87VHvNXFs/qEYKfzT4b1ASAT/GQbgS6gNt4jRJCUnJWYrIwlBzRjesZQmQ=="
-  "resolved" "https://registry.npmjs.org/react-native-action-button/-/react-native-action-button-2.8.5.tgz"
-  "version" "2.8.5"
-  dependencies:
-    "prop-types" "^15.5.10"
-
 "react-native-camera@^4.2.1":
   "integrity" "sha512-+Vkql24PFYQfsPRznJCvPwJQfyzCnjlcww/iZ4Ej80bgivKjL9eU0IMQIXp4yi6XCrKi4voWXxIDPMupQZKeIQ=="
   "resolved" "https://registry.npmjs.org/react-native-camera/-/react-native-camera-4.2.1.tgz"
@@ -7121,6 +7114,11 @@
   "integrity" "sha512-HOf0jzRnq2/aFUcdCJ9w9JGzN3gdEg0zFE4FyYlp4jtidqU03D5X7ZegGKfT1EWteR0gPBGp9ye5T5FvSWi9Yg=="
   "resolved" "https://registry.npmjs.org/react-native-iphone-x-helper/-/react-native-iphone-x-helper-1.3.1.tgz"
   "version" "1.3.1"
+
+"react-native-media-controls@^2.3.0":
+  "integrity" "sha512-N10i12ZO+GIXjmdA9hQk/HuBm5u9xWPIOydG/2SvLEZcnY3xg3D8d2IJXRolzSm2jBRgEGSO4rMgRBU6MpdNMg=="
+  "resolved" "https://registry.npmjs.org/react-native-media-controls/-/react-native-media-controls-2.3.0.tgz"
+  "version" "2.3.0"
 
 "react-native-multitap@^0.0.5":
   "integrity" "sha512-p/Jsiq60tdL7J9vR3A3onWCKaSIve3+3qzz13D6BAaK7BSirnsDTMNv6/djEtS72g3ndR6C4SXAVVm945jwY1w=="
@@ -7195,10 +7193,22 @@
   "resolved" "https://registry.npmjs.org/react-native-size-matters/-/react-native-size-matters-0.3.1.tgz"
   "version" "0.3.1"
 
+"react-native-slider@^0.11.0":
+  "integrity" "sha512-jV9K87eu9uWr0uJIyrSpBLnCKvVlOySC2wynq9TFCdV9oGgjt7Niq8Q1A8R8v+5GHsuBw/s8vEj1AAkkUi+u+w=="
+  "resolved" "https://registry.npmjs.org/react-native-slider/-/react-native-slider-0.11.0.tgz"
+  "version" "0.11.0"
+  dependencies:
+    "prop-types" "^15.5.6"
+
 "react-native-sound@^0.11.2":
   "integrity" "sha512-LmGc8lgOK3qecYMVQpyHvww/C+wgT6sWeMpVbOe4NCRGC2yKd4fo4U0KBUo9PO7AqKESO3I/2GZg1/C0+bwiiA=="
   "resolved" "https://registry.npmjs.org/react-native-sound/-/react-native-sound-0.11.2.tgz"
   "version" "0.11.2"
+
+"react-native-swipe-gestures@^1.0.5":
+  "integrity" "sha512-Ns7Bn9H/Tyw278+5SQx9oAblDZ7JixyzeOczcBK8dipQk2pD7Djkcfnf1nB/8RErAmMLL9iXgW0QHqiII8AhKw=="
+  "resolved" "https://registry.npmjs.org/react-native-swipe-gestures/-/react-native-swipe-gestures-1.0.5.tgz"
+  "version" "1.0.5"
 
 "react-native-tab-view@^3.1.1", "react-native-tab-view@>= 3.0.0":
   "integrity" "sha512-M5pRN6utQfytKWoKlKVzg5NbkYu308qNoW1khGTtEOTs1k14p2dHJ/BWOJoJYHKbPVUyZldbG9MFT7gUl4YHnw=="
@@ -7219,6 +7229,13 @@
     "prop-types" "^15.7.2"
     "yargs" "^16.1.1"
 
+"react-native-video-controls@^2.8.1":
+  "integrity" "sha512-dBmrE3TAKaR1gYMfbukjAM6Xo8OMZyRrxPzZtnaUgWcvGo11PQwzaI/j8HPD5fLgO+rlweP2pDpEJyIBsJvJkw=="
+  "resolved" "https://registry.npmjs.org/react-native-video-controls/-/react-native-video-controls-2.8.1.tgz"
+  "version" "2.8.1"
+  dependencies:
+    "lodash" "^4.16.4"
+
 "react-native-video-processing@^2.0.0":
   "integrity" "sha512-f6t+56AbG0FZQEHk0drIyP59+h5xrB7z7pdvyr1ZepDy0EfXla3ZV0MXe6cEZKYvTaK4qTlMPZnsOxWWLWHOtQ=="
   "resolved" "https://registry.npmjs.org/react-native-video-processing/-/react-native-video-processing-2.0.0.tgz"
@@ -7230,7 +7247,7 @@
     "babel-preset-react-native-stage-0" "1.0.1"
     "lodash" "^4.16.6"
 
-"react-native-video@^5.2.0":
+"react-native-video@^5.2.0", "react-native-video@>=2.0.0":
   "integrity" "sha512-5SK1lxyzrCkZF+WuxUxLR1Pt65E0rsWB1w1GrGxSLdC9zWYBumcmuHl+wPJ7UQvznjaH2Ze7uU1R3arejI7+WQ=="
   "resolved" "https://registry.npmjs.org/react-native-video/-/react-native-video-5.2.0.tgz"
   "version" "5.2.0"
@@ -7239,7 +7256,7 @@
     "prop-types" "^15.7.2"
     "shaka-player" "^2.5.9"
 
-"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.67 || 1000.0.0", "react-native@>=0.11", "react-native@>=0.42.0", "react-native@>=0.46", "react-native@>=0.8.0", "react-native@0.66.4":
+"react-native@*", "react-native@^0.0.0-0 || 0.60 - 0.67 || 1000.0.0", "react-native@>=0.42.0", "react-native@>=0.46", "react-native@>=0.46.0", "react-native@>=0.60", "react-native@>=0.8.0", "react-native@0.66.4":
   "integrity" "sha512-9vx5dlSfQlKbbDtr8+xMon6qsmSu7jvjdXWZpEKh3XVKpUidbbODv7048gwVKX8YAel1egeR7hN8vzSeI6ssTw=="
   "resolved" "https://registry.npmjs.org/react-native/-/react-native-0.66.4.tgz"
   "version" "0.66.4"
@@ -7336,7 +7353,7 @@
     "global" "^4.3.0"
     "react-proxy" "^1.1.7"
 
-"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.3 || ^17", "react@^17.0.0", "react@>=16.3.0", "react@17.0.2":
+"react@*", "react@^16.0.0 || ^17.0.0", "react@^16.8.0 || ^17.0.0", "react@^16.8.3 || ^17", "react@^17.0.0", "react@>=16", "react@>=16.3.0", "react@17.0.2":
   "integrity" "sha512-gnhPt75i/dq/z3/6q/0asP78D0u592D5L1pd7M8P+dck6Fu/jJeL6iVVK23fptSUZj8Vjf++7wXA8UNclGQcbA=="
   "resolved" "https://registry.npmjs.org/react/-/react-17.0.2.tgz"
   "version" "17.0.2"

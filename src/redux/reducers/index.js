@@ -7,6 +7,7 @@ import {block} from "./block";
 import {blockedUserPost} from './blockUserPost';
 import {token} from './token';
 import {initialPost} from './initialPost';
+import {feedState} from './feedState';
 
 const Reducers = combineReducers({
     auth,
@@ -16,7 +17,8 @@ const Reducers = combineReducers({
     block,
     blockedUserPost,
     initialPost,
-    token
+    token,
+    feedState
 })
 
 export default Reducers;

@@ -48,8 +48,7 @@ export default function PostSingleOverlay({ user, post, minute, second, action, 
    * is optimistic, meaning we don't wait for a response from the
    * server and always assume the write/delete action is successful
    */
-  const handleUpdateLike = useMemo(
-    () =>
+  const handleUpdateLike = useMemo(() =>
       throttle(500, true, (currentLikeStateInst) => {
         setCurrentLikeState({
           state: !currentLikeStateInst.state,

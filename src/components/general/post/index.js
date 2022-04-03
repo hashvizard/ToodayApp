@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef, forwardRef, useImperativeHandle } from 'react'
-import { Text, View, TouchableWithoutFeedback, ActivityIndicator, AppState,Image } from 'react-native';
+import { Text, View, TouchableWithoutFeedback, ActivityIndicator, AppState, Image } from 'react-native';
 import { Caption } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
@@ -10,10 +10,11 @@ import PostSingleOverlay from './overlay'
 import { useUser } from '../../../hooks/useUser'
 import { useIsFocused } from '@react-navigation/native';
 
+import VideoPlayer from 'react-native-video-controls';
+const PostSingle = forwardRef(({ item, profile }, parentRef) => {
 
-const PostSingle = forwardRef(({ item,profile }, parentRef) => {
-
-    const user = useUser(item.creator).data
+    const [appState, setAppState] = useState(AppState.currentState);
+    /* const user = useUser(item.creator).data */
     const ref = useRef(null);
     const isFocused = useIsFocused();
 
@@ -21,7 +22,7 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
         play, unload, stop
     }));
 
-    const [appState, setAppState] = useState(AppState.currentState);
+  
 
     useEffect(() => {
         const appStateListener = AppState.addEventListener(
@@ -34,12 +35,12 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
             appStateListener?.remove();
         };
     }, []);
+
     /****
      * Variable and Function for Action Control
      ****/
 
-    const [action, setAction] = useState(null);
-
+  
 
     const [video, setVideo] = useState(null);
     const [poster, setPoster] = useState(null);
@@ -51,22 +52,20 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
     }, [])
 
 
-    const like = require('../../../../Animations/like.json');
-    const dislike = require('../../../../Animations/dislike.json');
-    const [update, setupdate] = useState(true);
-    const [forward, setforward] = useState(10);
-    const [activeforwardseek, setactiveforwardseek] = useState(true);
-    const [activebackwardseek, setactivebackwardseek] = useState(true);
-    const [backword, setbackword] = useState(10);
+    // const like = require('../../../../Animations/like.json');
+    // const dislike = require('../../../../Animations/dislike.json');
+    // const [update, setupdate] = useState(true);
+    // const [forward, setforward] = useState(10);
+    // const [backword, setbackword] = useState(10);
 
-    useEffect(() => {
-        setTimeout(() => {
-            setbackword(10);
-            setforward(10);
-            setactiveforwardseek(true);
-            setactivebackwardseek(true)
-        }, 500);
-    }, [update])
+    // useEffect(() => {
+    //     setTimeout(() => {/* 
+    //         setbackword(10);
+    //         setforward(10); *//* 
+    //         setactiveforwardseek(true);
+    //         setactivebackwardseek(true) */
+    //     }, 500);
+    // }, [update])
 
 
 
@@ -74,10 +73,7 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
      * Variable and Function for Video Player Control
      ****/
 
-    const [paused, setpaused] = useState(true);
-    const [currentPosition, setcurrentPosition] = useState(0);
-    const [duration, setduration] = useState({ minute: 0, second: 0 });
-    const [buffering, setbuffering] = useState(null)
+    const [paused, setpaused] = useState(false);
 
 
 
@@ -86,8 +82,6 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
             return;
         }
         try {
-            setcurrentPosition(0);
-            await ref.current.seek(0);
             setpaused(false);
         } catch (e) {
             console.log(e)
@@ -95,36 +89,8 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
     }
 
 
-    // Seeking Forward
-    useEffect(() => {
-        const SeekForward = async () => {
-            if (forward != 10) {
-                await ref.current.seek(Math.abs(currentPosition + forward));
-            }
-        }
-        SeekForward();
-    }, [forward])
-
-    // Seeking Backward
-    useEffect(() => {
-        const SeekBackward = async () => {
-            if (backword != 10) {
-                await ref.current.seek(Math.abs(currentPosition - backword));
-            }
-        }
-        SeekBackward();
-    }, [backword])
 
 
-    const setDuration = async (position) => {
-        setcurrentPosition(Math.floor(position.currentTime));
-        let total_duration = Math.floor(position.seekableDuration);
-        let current_duration = Math.floor(position.currentTime);
-        let remaning_seconds = total_duration - current_duration;
-        var minutes = Math.floor(remaning_seconds / 60);
-        var seconds = remaning_seconds - minutes * 60;
-        setduration({ minute: minutes, second: seconds });
-    }
 
     const stop = async () => {
         if (ref.current == null)
@@ -149,44 +115,20 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
     /**** Seek Ends Here ****/
 
     return (<>
-        <View style={videoStyles.Video_Details_Container}>
-            {/* Animation for LIKE AND DISLIKE */}
-            {action ?
-                <View style={videoStyles.like_and_dislike}>
-                    <LottieView
-                        source={action == 'like' || null ? like : dislike}
-                        colorFilters={[{
-                            keypath: "button",
-                            color: "black"
-                        }, {
-                            keypath: "Sending Loader",
-                            color: "#F00000"
-                        }]}
-                        renderMode='AUTOMATIC'
-                        style={{
-                            width: 120,
-                            height: 120
-                        }}
-                        autoPlay={true}
-                        loop={true}
-                        onLayout={() => {
-                            setTimeout(() => { setAction(null) }, 2000);
-                        }}
-                    />
-                </View>
-                : null
-            }
-            {/****
+
+        {/* Animation for LIKE AND DISLIKE */}
+
+        {/****
              * 
              * Performing Actions on Video Button 
              * Seek Forward - Backward - Play - Pause
              * 
              ****/}
 
-            <View style={{ }}>
-                <View style={{ ...videoStyles.containers }}>
-                    {/* Backward Button */}
-                    <View style={videoStyles.actionsContainer}>
+        {/*     <View style={{ }}>
+                <View style={{ ...videoStyles.containers }}> */}
+        {/* Backward Button */}
+        {/*     <View style={videoStyles.actionsContainer}>
                         <MultiTap
                             onSingleTap={() => setpaused(!paused)}
                             onDoubleTap={() => {
@@ -223,17 +165,17 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
                                 </View>
                             </View>
                         </MultiTap>
-                    </View>
-                    {/* Pause and Play Button */}
-                    <TouchableWithoutFeedback onPress={() => setpaused(!paused)} >
+                    </View> */}
+        {/* Pause and Play Button */}
+        {/*   <TouchableWithoutFeedback onPress={() => setpaused(!paused)} >
                         <View style={{ ...videoStyles.actionsContainer, ...videoStyles.playPause }}>
                             {paused && !buffering && !action ? <Icon name='pause' size={30} color='white' style={{zIndex:15,position:"absolute"}} /> : null}
                             {buffering && !paused && !action ? <ActivityIndicator size="small" color="white" /> : null}
                         </View>
-                    </TouchableWithoutFeedback>
+                    </TouchableWithoutFeedback> */}
 
-                    {/* Forward Button */}
-                    <View style={videoStyles.actionsContainer}>
+        {/* Forward Button */}
+        {/*    <View style={videoStyles.actionsContainer}>
                         <MultiTap
                             onSingleTap={() => setpaused(!paused)}
                             onDoubleTap={() => {
@@ -273,14 +215,14 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
                         </MultiTap>
                     </View>
                 </View>
-            </View>
-            <PostSingleOverlay user={user} profile={profile} post={item} minute={duration.minute} second={duration.second} action={(val) => setAction(val)} />
-        </View>
-        <Image
+            </View> */}
+        {/* <PostSingleOverlay user={user} profile={profile} post={item} minute={duration.minute} second={duration.second} action={(val) => setAction(val)} /> */}
+
+        {/*     <Image
         source={{uri:poster}} 
         style={{...videoStyles.backgroundVideo,borderWidth:2}}
-        />
-         
+        /> */}
+z
         {/*  <Video
             ref={ref}
             source={{ uri: video }}
@@ -294,6 +236,25 @@ const PostSingle = forwardRef(({ item,profile }, parentRef) => {
             poster={poster}
             posterResizeMode='cover'
         /> */}
+
+
+        <VideoPlayer
+            ref={ref}
+            source={{ uri: video, cache: { size: 50, expiresIn: 3600 }}} 
+            controlTimeout={3000}
+            repeat={true}
+            paused={appState == 'active' ? (isFocused ? paused : true) : true}
+            resizeMode='cover'
+           /*  onShowControls={() => dispatch(setFeedState(null))} */
+            seekColor="red"
+            toggleResizeModeOnFullscreen={false}
+            controlAnimationTiming={500}
+            videoStyle={{ height: "100%", width: "100%" }}
+            showOnStart={false}
+            tapAnywhereToPause={true}
+            style={{ ...videoStyles.screenHeight, width:"100%"}}
+        />
+
     </>
     )
 })

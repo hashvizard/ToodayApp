@@ -5,9 +5,9 @@ import { useDispatch } from 'react-redux'
 import ProfilePostListItem from '../../profile/postList/item';
 import { Title } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
-import { getLikedPosts } from '../../../Apis/LaravelApis/postApi';
+import { getViewedPosts } from '../../../Apis/LaravelApis/postApi';
 
-export default function LikedPosts(props) {
+export default function ViewedPosts(props) {
 
     const [userPosts, setUserPosts] = useState([]);
     const [nextpage, setnextpage] = useState(null)
@@ -19,7 +19,7 @@ export default function LikedPosts(props) {
         React.useCallback(() => {
             if(props.route.params.id){
             setloading(true);
-            dispatch(getLikedPosts(`liked/${props.route.params.id}`))
+            dispatch(getViewedPosts(`view/${props.route.params.id}`))
                 .then(data => {
                     setloading(false);
                     setUserPosts(data.posts.data);
@@ -39,7 +39,7 @@ export default function LikedPosts(props) {
     const onEnd = () => {
         if (nextpage != null && !refreshing) {
             setRefreshing(true);
-            dispatch(getLikedPosts(nextpage))
+            dispatch(getViewedPosts(nextpage))
                 .then(data => {
                     console.log(data.posts.data)
                     let dataa = [...userPosts, ...data.posts.data];
@@ -59,8 +59,8 @@ export default function LikedPosts(props) {
         {loading == true || userPosts.length <= 0 ?
             <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
                 <ActivityIndicator color="black" size="small" style={{ display: loading ? "flex" : "none" }} />
-                <Text style={{ marginTop: 25, display: loading ? "flex" : "none" }}>Loading <Title>Liked Posts</Title></Text>
-                <Text style={{ display: !loading && userPosts.length <= 0 ? "flex" : "none" }}>You haven't Liked any <Title>Posts</Title></Text>
+                <Text style={{ marginTop: 25, display: loading ? "flex" : "none" }}>Loading <Title>View Posts</Title></Text>
+                <Text style={{ display: !loading && userPosts.length <= 0 ? "flex" : "none" }}>You haven't Viewed any <Title>Posts</Title></Text>
             </View>
             :
             <FlatList

@@ -34,6 +34,9 @@ const videoStyles = StyleSheet.create({
     cropping: {
         flex: 1,
     },
+    screenHeight:{
+        height:SCREEN_HEIGHT
+    },
     bottomSpace: {
         bottom: NAVIGATION_BAR_HEIGHT + 40,
         height: "40%",

@@ -1,140 +1,130 @@
-import React, { useEffect, useRef, useState } from 'react'
-import { FlatList, View } from 'react-native'
-import PostSingle from '../../components/general/post'
-import { getFeed, getPostsByUserId } from '../../services/posts'
-import LoadingScreen from '../../components/FeedLoaders/LoadingScreen';
+import React, { useEffect, useState } from 'react'
 import NoDataFound from '../../components/FeedLoaders/NoDataFound';
-import Navbar from '../../components/FeedLoaders/Header/Navbar';
 import { useDispatch, useSelector } from 'react-redux';
-import { reportNull } from '../../redux/actions/report'
-import { blockNull, intialPostView } from '../../redux/actions';
-import videoStyles from '../../styles/VideoStyles';
-import { Avatar, IconButton, Paragraph, Subheading, Title } from 'react-native-paper';
+import { setFeedState, setIntialPost } from '../../redux/actions';
+import { getAllPosts, updateViews } from '../../Apis/LaravelApis/postApi';
+import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../HomeScreen/Header';
 import Footer from '../../HomeScreen/Footer';
-
-/**
- * Component that renders a list of posts meant to be 
- * used for the feed screen.
- * 
- * On start make fetch for posts then use a flatList 
- * to display/control the posts.
- */
-
+import VideoPlayer from 'react-native-video-controls';
+import { AppState } from 'react-native';
+import { useIsFocused } from '@react-navigation/native';
 
 export default function FeedScreen(props) {
-
-    const { setCurrentUserProfileItemInView, creator, profile } = props.route.params
-
-    const user = useSelector(state => state.auth)
-    const [posts, setPosts] = useState([])
-    const mediaRefs = useRef([])
-    const [loading, setloading] = useState(true);
+    const isFocused = useIsFocused();
     const dispatch = useDispatch();
-    const removePost = useSelector(state => state.report);
-    const removeBlockUserPosts = useSelector(state => state.blockedUserPost);
+    const [posts, setPosts] = useState([])
+    const [index, setIndex] = useState(0);
+    const [loading, setLoading] = useState(true);
+    const [nextPage, setnextPage] = useState(null);
+    const [currentPost, setcurrentPost] = useState({});
+    const [appState, setAppState] = useState(AppState.currentState);
+    const user = useSelector(state => state.auth.currentUser);
 
     useEffect(() => {
-        if (profile) {
-            getPostsByUserId(creator).then(setPosts).then(setloading(false))
-        } else {
-            getFeed(user).then(setPosts).then(setloading(false))
-        }
+        const appStateListener = AppState.addEventListener(
+            'change',
+            nextAppState => {
+                setAppState(nextAppState);
+            },
+        );
+        return () => {
+            appStateListener?.remove();
+        };
+    }, []);
+
+    useEffect(() => {
+        dispatch(getAllPosts('posts')).then((data) => {
+            setPosts(data?.data?.data);
+            setcurrentPost(data?.data?.data[index])
+            setnextPage(data?.data?.next_page_url)
+            setLoading(false);
+        }).catch(err => {
+            console.log(err.message);
+            setLoading(false);
+        })
     }, [])
 
-    useEffect(() => {
-        if (removePost.postId != null) {
-            setPosts(posts.filter(item => item.id !== removePost.postId));
-            dispatch(reportNull())
+
+    const config = {
+        velocityThreshold: 0.3,
+        directionalOffsetThreshold: 80
+    };
+
+    const onSwipeUp = () => {
+        if (index < posts.length) {
+            setcurrentPost(posts[index + 1])
+            setIndex(index + 1);
+            dispatch(setIntialPost(index + 1))
         }
-    }, [removePost])
-
-    useEffect(() => {
-        if (removeBlockUserPosts.userId != null) {
-            setPosts(posts.filter(item => item.creator !== removeBlockUserPosts.userId));
-            dispatch(blockNull())
+        if ((posts.length - 4) == index && nextPage != null) {
+            dispatch(getAllPosts(nextPage)).then((data) => {
+                let newData = [...posts, ...data?.data?.data];
+                setPosts(newData);
+                setnextPage(data?.data?.next_page_url)
+            }).catch(err => {
+                console.log(err.message);
+            })
         }
-    }, [removeBlockUserPosts])
-
-    /**
-     * Called any time a new post is shown when a user scrolls
-     * the FlatList, when this happens we should start playing 
-     * the post that is viewable and stop all the others
-     */
-    const onViewableItemsChanged = useRef(({ changed }) => {
-        changed.forEach(element => {
-            const cell = mediaRefs.current[element.key];
-            if (cell) {
-                if (element.isViewable) {
-                    if (!profile) {
-                        setCurrentUserProfileItemInView(element.item.creator)
-                    }
-                    dispatch(intialPostView(element.item.id, element.item.creator, element.item?.location));
-
-                    cell.play()
-                } else {
-                    cell.stop()
-                }
-            }
-
-        });
-    })
-
-    /**
-     * renders the item shown in the FlatList
-     * 
-     * @param {Object} item object of the post 
-     * @param {Integer} index position of the post in the FlatList 
-     * @returns 
-     */
-    const renderItem = ({ item, index }) => {
-        return (<PostSingle
-            item={item}
-            profile={profile}
-            ref={PostSingleRef => (mediaRefs.current[item.id] = PostSingleRef)}
-        />)
     }
 
-    if (loading || posts.length == 0) {
+    const onSwipeDown = () => {
+        if (index > 0) {
+            setcurrentPost(posts[index - 1])
+            setIndex(index - 1);
+            dispatch(setIntialPost(index - 1))
+        }
+    }
+
+    if (loading || posts?.length == 0) {
         return (
             <React.Fragment>
-                <Navbar profile={profile} />
-                <NoDataFound />
+                <NoDataFound val={false} />
             </React.Fragment>
         )
     }
-    // else if (!loading && posts.length == 0) {
-    //     return (
-    //         <React.Fragment>
-    //             <Navbar />
-    //             <NoDataFound />
-    //         </React.Fragment>
-    //     )
-    // }
-    return (
-        <React.Fragment>
-      <Header />
+    else if (!loading && posts?.length == 0) {
+        return (
+            <React.Fragment>
+                <NoDataFound val={true} />
+            </React.Fragment>
+        )
+    }
 
-                {/* Bootom */}
-         <Footer />
-        </React.Fragment>
-    )
+    const updateViewsData = (postData) => {
+        dispatch(updateViews({ post_id: postData.id, user_id: user.id }))
+            let allPosts = [...posts];
+            const position = allPosts.findIndex(object => {
+                return object.id === postData.id;
+            });
+            allPosts[position].views = allPosts[position].views + 1;
+            setPosts(allPosts);
+            onSwipeUp(); 
+    }
 
+    return (<>
+        <GestureRecognizer
+            onSwipeUp={() => onSwipeUp()}
+            onSwipeDown={() => onSwipeDown()}
+            config={config}
+            style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
+            <Header user={currentPost?.user} />
+            {currentPost ?
+                <VideoPlayer
+                    controlAnimationTiming={300}
+                    showOnStart={false}
+                    onShowControls={() => dispatch(setFeedState(null))}
+                    seekColor={"red"}
+                    controlTimeout={3000}
+                    source={{ uri: currentPost?.videoUrl, cache: { size: 50, expiresIn: 3600 } }}
+                    style={{ height: "100%", width: "100%" }}
+                    resizeMode='cover'
+                    paused={appState == 'active' ? (isFocused ? false : true) : true}
+                    repeat={false}
+                    tapAnywhereToPause={true}
+                    onEnd={() => updateViewsData(currentPost)}
+                /> : null}
+            <Footer post={currentPost} />
+        </GestureRecognizer>
+    </>)
 }
-{/*  <Navbar profile={profile} {...props} /> */}
-          {/*   <FlatList
-                data={posts}
-                style={{ flex: 1 }}
-                windowSize={4}
-                initialNumToRender={1}
-                maxToRenderPerBatch={2}
-                removeClippedSubviews
-                viewabilityConfig={{
-                    viewAreaCoveragePercentThreshold: 100
-                }}
-                renderItem={renderItem}
-                pagingEnabled
-                keyExtractor={item => item.id}
-                decelerationRate={'normal'}
-                onViewableItemsChanged={onViewableItemsChanged.current}
-            /> */}

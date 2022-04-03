@@ -6,4 +6,5 @@ export * from './block'
 export * from './removeblockposts'
 export * from './intialPost'
 export * from './profileUpdate'
+export * from './feedState'
 

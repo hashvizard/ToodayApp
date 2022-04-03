@@ -18,6 +18,7 @@ import CommentModal from '../../components/comment';
 import Settings from '../settings';
 import UserInfo from '../../components/auth/userInfo';
 import SplashScreen from '../../components/splash';
+import CameraScreen from '../../screens/camera';
 
 
 const Stack = createStackNavigator()
@@ -46,7 +47,7 @@ export default function Route() {
                     <Stack.Screen name="useriinfo" component={UserInfo} options={{ headerShown: true, title: "Select your city" }} />
                     :
                     <>
-                        <Stack.Screen name="home" component={HomeScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="home" component={FeedScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />
@@ -54,6 +55,7 @@ export default function Route() {
                         <Stack.Screen name="editProfile" component={EditProfileScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="comment" component={CommentModal} options={{ headerShown: false }} />
+                        <Stack.Screen name="add" component={CameraScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="settings" component={Settings} options={{ headerShown: false }} />
                     </>
             }

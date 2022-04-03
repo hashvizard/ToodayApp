@@ -50,14 +50,14 @@ const SettingPage = (props) => {
           <View style={{ paddingTop: 25, paddingBottom: 10, backgroundColor: "#f7f7f7" }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
               <View style={{ alignItems: "center" }}>
-                <Icon name="plus-circle" size={35} color="#5bc0de" />
-                <Caption>Posts</Caption>
-                <Subheading>{user.currentUser.posts}</Subheading>
+                <Icon name="eye" size={35} color="#5bc0de" />
+                <Caption>Views</Caption>
+                <Subheading>{user.currentUser.views}</Subheading>
               </View>
               <View style={{ alignItems: "center" }}>
-                <Icon name="heart-circle" size={35} color="#d9534f" />
-                <Caption>Likes</Caption>
-                <Subheading>{user.currentUser.likes}</Subheading>
+                <Icon name="plus-circle" size={35} color="#d9534f" />
+                <Caption>Posts</Caption>
+                <Subheading>{user.currentUser.posts}</Subheading>
               </View>
               <View style={{ alignItems: "center" }}>
                 <Icon name="comment" size={35} color="#f0ad4e" />
@@ -80,10 +80,10 @@ const SettingPage = (props) => {
               left={props => <List.Icon {...props} icon="video-vintage" color='#f0ad4e' />}
               title="My Posts" />
             <List.Item
-              left={props => <List.Icon {...props} icon="thumb-up" color='#5bc0de' />}
-              onPress={() => props.navigation.navigate('likedPosts', { id: user.currentUser.id })}
-              description="Posts that has been liked by you"
-              title="Liked Posts" />
+              left={props => <List.Icon {...props} icon="eye" color='#5bc0de' />}
+              onPress={() => props.navigation.navigate('viewedPosts', { id: user.currentUser.id })}
+              description="Posts that has been viewed by you."
+              title="Viewed Posts" />
             <List.Item
               left={props => <List.Icon {...props} icon="block-helper" color='#d9534f' />}
               description="Posts that has been liked by you"
