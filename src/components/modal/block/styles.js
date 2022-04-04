@@ -1,10 +1,14 @@
-import { StyleSheet } from 'react-native'
+import { StyleSheet,  Dimensions } from 'react-native';
+
+
+const SCREEN_HEIGHT = Dimensions.get('screen').height;
 
 const blockStyles = StyleSheet.create({
     container: {
-        backgroundColor: 'white',
-        padding: 15,
-        margin:15,
+        backgroundColor: 'rgba(0,0,0,0.5)',
+        paddingVertical: 15,
+        marginHorizontal:15,
+        marginBottom:SCREEN_HEIGHT/7,
         borderRadius:15
     }
 })

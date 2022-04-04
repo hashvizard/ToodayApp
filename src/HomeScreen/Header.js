@@ -1,14 +1,23 @@
 import { StyleSheet, Text, View } from 'react-native'
-import React from 'react'
+import React,{useEffect} from 'react'
 import videoStyles from '../styles/VideoStyles'
 import { Avatar, IconButton, Title, Button, Menu, Divider, Provider, Paragraph } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
-import { setFeedState } from '../redux/actions'
+import { blockAndRemove, openBlockModal, setFeedState } from '../redux/actions'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Header = ({user}) => {
+const Header = ({user,showBlock}) => {
+
     const dispatch=useDispatch();
     const feedState = useSelector(state => state.feedState);
+  
+    const BlockUser = ()=>{
+        dispatch(setFeedState(null));
+        showBlock(true)
+    }
+
+   
+    
 
     return (
         <View style={{ ...videoStyles.spaceTop, width: "100%", alignItems: "center", justifyContent: "space-between", position: "absolute", zIndex: 21 }}>
@@ -39,8 +48,9 @@ const Header = ({user}) => {
                             </View>
                             <View>
                                 <Menu.Item icon={({ size, color }) => (
-                                    <Icon name="cancel" color="white" size={24} />
-                                )} titleStyle={{ color: "white" }} color="white" onPress={() => { }} title="Block" />
+                                    <Icon name="cancel"  color="white" size={24} />
+                                )} titleStyle={{ color: "white" }} 
+                                color="white" onPress={() => { BlockUser(user.id)}} title="Block" />
                                 <Menu.Item
                                     icon={({ size, color }) => (
                                         <Icon name="help-circle" color="white" size={24} />

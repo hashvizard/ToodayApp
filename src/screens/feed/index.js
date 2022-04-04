@@ -9,6 +9,7 @@ import Footer from '../../HomeScreen/Footer';
 import VideoPlayer from 'react-native-video-controls';
 import { AppState } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
+import BlockModal from '../../components/modal/block'
 
 export default function FeedScreen(props) {
     const isFocused = useIsFocused();
@@ -20,6 +21,7 @@ export default function FeedScreen(props) {
     const [currentPost, setcurrentPost] = useState({});
     const [appState, setAppState] = useState(AppState.currentState);
     const user = useSelector(state => state.auth.currentUser);
+    const [showblcoked, setShowblcoked] = useState(false);
 
     useEffect(() => {
         const appStateListener = AppState.addEventListener(
@@ -93,14 +95,39 @@ export default function FeedScreen(props) {
 
     const updateViewsData = (postData) => {
         dispatch(updateViews({ post_id: postData.id, user_id: user.id }))
-            let allPosts = [...posts];
-            const position = allPosts.findIndex(object => {
-                return object.id === postData.id;
-            });
-            allPosts[position].views = allPosts[position].views + 1;
-            setPosts(allPosts);
-            onSwipeUp(); 
+        let allPosts = [...posts];
+        const position = allPosts.findIndex(object => {
+            return object.id === postData.id;
+        });
+        allPosts[position].views = allPosts[position].views + 1;
+        setPosts(allPosts);
+        onSwipeUp();
     }
+
+
+    const removePosts = (id) => {
+        let tempData = [...posts];
+        let newData = tempData.filter(function (el) {
+            return el.user.id != id;
+        });
+        if ((newData.length - 4) == index && nextPage != null) {
+            dispatch(getAllPosts(nextPage)).then((data) => {
+                let allData = [...newData, ...data?.data?.data];
+                setPosts(allData);
+                setnextPage(data?.data?.next_page_url)
+                setShowblcoked(false);
+                onSwipeUp();
+            }).catch(err => {
+                console.log(err.message);
+            })
+        } else {
+            setShowblcoked(false);
+            setPosts(newData);
+            onSwipeUp();
+        }
+    }
+
+
 
     return (<>
         <GestureRecognizer
@@ -108,8 +135,8 @@ export default function FeedScreen(props) {
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-            <Header user={currentPost?.user} />
-            {currentPost ?
+            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} />
+            {/*    {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
                     showOnStart={false}
@@ -123,8 +150,9 @@ export default function FeedScreen(props) {
                     repeat={false}
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
-                /> : null}
+                /> : null} */}
             <Footer post={currentPost} />
         </GestureRecognizer>
+        <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
     </>)
 }

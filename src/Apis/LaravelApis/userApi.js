@@ -40,3 +40,14 @@ export const removeBlockedUsers = (id) => dispatch => new Promise((resolve, reje
         resolve(response);
     }).catch(error => reject(error))
 })
+
+
+/**
+ * Add Blocked users
+*/
+
+export const addBlockedUsers = (data) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('blocked',data).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})

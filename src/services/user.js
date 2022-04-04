@@ -28,16 +28,16 @@ export const saveUserField = (field, value) => new Promise((resolve, reject) => 
         .catch(() => reject())
 })
 
-export const addUserToBlockList = (value) => new Promise((resolve, reject) => {
-    firestore()
-        .collection('user')
-        .doc(auth().currentUser.uid)
-        .update({
-            blocked: firestore.FieldValue.arrayUnion(value)
-        })
-        .then(() => resolve())
-        .catch(() => reject())
-})
+// export const addUserToBlockList = (value) => new Promise((resolve, reject) => {
+//     firestore()
+//         .collection('user')
+//         .doc(auth().currentUser.uid)
+//         .update({
+//             blocked: firestore.FieldValue.arrayUnion(value)
+//         })
+//         .then(() => resolve())
+//         .catch(() => reject())
+// })
 
 
 

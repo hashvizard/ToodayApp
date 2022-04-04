@@ -13,7 +13,6 @@ import FeedScreen from '../../screens/feed';
 import UserLogin from '../../components/auth/login';
 import UserCity from '../../components/auth/city';
 import Error from '../../components/error';
-import BlockModal from '../../components/modal/block';
 import CommentModal from '../../components/comment';
 import Settings from '../settings';
 import UserInfo from '../../components/auth/userInfo';
@@ -62,7 +61,6 @@ export default function Route() {
             <Stack.Screen name="Error" component={Error} options={{ headerShown: false }} />
         </Stack.Navigator>
         <ReportModal />
-        <BlockModal />
     </>
     )
 }

@@ -1011,9 +1011,8 @@ export default class VideoPlayer extends Component {
           {seekbarControl}
           <SafeAreaView
             style={[styles.controls.row, styles.controls.bottomControlGroup]}>
-            {playPauseControl}
-         
             {timerControl}
+            {playPauseControl}
           </SafeAreaView>
      
       </Animated.View>
