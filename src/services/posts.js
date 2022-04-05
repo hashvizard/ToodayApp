@@ -94,19 +94,19 @@ export const addReviews = (userId, creator, comment) => {
     })
 }
 
-export const reportVideo = (postId, index, creator, comment) => new Promise((resolve, reject) => {
-  firestore()
-    .collection('post')
-    .doc(postId)
-    .collection('report')
-    .add({
-      creator,
-      index,
-      comment,
-      creation: firestore.FieldValue.serverTimestamp(),
-    }).then(() => resolve())
-    .catch(() => reject())
-});
+// export const reportVideo = (postId, index, creator, comment) => new Promise((resolve, reject) => {
+//   firestore()
+//     .collection('post')
+//     .doc(postId)
+//     .collection('report')
+//     .add({
+//       creator,
+//       index,
+//       comment,
+//       creation: firestore.FieldValue.serverTimestamp(),
+//     }).then(() => resolve())
+//     .catch(() => reject())
+// });
 
 export const commentListner = (postId, setCommentList) => {
   commentListnerInstance = firestore()

@@ -6,17 +6,20 @@ import { useDispatch, useSelector } from 'react-redux'
 import { blockAndRemove, openBlockModal, setFeedState } from '../redux/actions'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 
-const Header = ({user,showBlock}) => {
+const Header = ({user,showBlock,showReport}) => {
 
     const dispatch=useDispatch();
     const feedState = useSelector(state => state.feedState);
   
     const BlockUser = ()=>{
         dispatch(setFeedState(null));
-        showBlock(true)
+        showBlock()
     }
 
-   
+    const ReportVideo = ()=>{
+        dispatch(setFeedState(null));
+        showReport()
+    }
     
 
     return (
@@ -55,7 +58,7 @@ const Header = ({user,showBlock}) => {
                                     icon={({ size, color }) => (
                                         <Icon name="help-circle" color="white" size={24} />
                                     )}
-                                    titleStyle={{ color: "white" }} color="white" onPress={() => { }} title="Report" />
+                                    titleStyle={{ color: "white" }} color="white" onPress={() => { ReportVideo()}} title="Report" />
                                 <Divider />
                                 <Menu.Item
                                     icon={({ size, color }) => (

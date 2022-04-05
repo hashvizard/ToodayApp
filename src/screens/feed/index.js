@@ -10,6 +10,7 @@ import VideoPlayer from 'react-native-video-controls';
 import { AppState } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import BlockModal from '../../components/modal/block'
+import ReportModal from '../../components/modal/report'
 
 export default function FeedScreen(props) {
     const isFocused = useIsFocused();
@@ -22,6 +23,7 @@ export default function FeedScreen(props) {
     const [appState, setAppState] = useState(AppState.currentState);
     const user = useSelector(state => state.auth.currentUser);
     const [showblcoked, setShowblcoked] = useState(false);
+    const [showReport, setshowReport] = useState(false);
 
     useEffect(() => {
         const appStateListener = AppState.addEventListener(
@@ -127,7 +129,27 @@ export default function FeedScreen(props) {
         }
     }
 
-
+    const removeReportedPost = (id) => {
+        let tempData = [...posts];
+        let newData = tempData.filter(function (el) {
+            return el.id != id;
+        });
+        if ((newData.length - 4) == index && nextPage != null) {
+            dispatch(getAllPosts(nextPage)).then((data) => {
+                let allData = [...newData, ...data?.data?.data];
+                setPosts(allData);
+                setnextPage(data?.data?.next_page_url)
+                setshowReport(false);
+                onSwipeUp();
+            }).catch(err => {
+                console.log(err.message);
+            })
+        } else {
+            setPosts(newData);
+            onSwipeUp();
+            setshowReport(false);
+        }
+    }
 
     return (<>
         <GestureRecognizer
@@ -135,7 +157,7 @@ export default function FeedScreen(props) {
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} />
+            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() =>setshowReport(true)} />
             {/*    {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
@@ -154,5 +176,6 @@ export default function FeedScreen(props) {
             <Footer post={currentPost} />
         </GestureRecognizer>
         <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
+        <ReportModal id={currentPost?.id} showModal={showReport} hideModalNow={() => setshowReport(false)} removeReportedPost={(id) => removeReportedPost(id)} />
     </>)
 }

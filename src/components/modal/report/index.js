@@ -4,64 +4,71 @@ import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import { clearModal } from '../../../redux/actions/modal';
 import { reportAndRemove } from '../../../redux/actions/report';
-import { IconButton, Colors, RadioButton, Button } from 'react-native-paper';
+import { IconButton, Colors, RadioButton, Button, Divider } from 'react-native-paper';
 import { REPORT } from '../../../constants'
-import { reportVideo } from '../../../services/posts'
 import styles from './styles'
+import { reportVideo } from '../../../Apis/LaravelApis/postApi';
 
-const ReportModal = () => {
-    const modalState = useSelector(state => state.modal);
+const ReportModal = ({showModal,hideModalNow,id,removeReportedPost}) => {
+  
     const bottomSheetRef = useRef(null)
     const dispatch = useDispatch();
     const currentUser = useSelector(state => state.auth.currentUser)
     const [loading, setloading] = useState(false)
     const [checked, setChecked] = React.useState(null);
-    const [id, setid] = useState(null);
     // variables
 
+    const handleClosePress = useCallback(() => {
+        bottomSheetRef.current?.close();
+        hideModalNow()
+    }, []);
 
     useEffect(() => {
-        if (modalState.open && bottomSheetRef.current) {
-            setid(modalState.data)
+        if (showModal && bottomSheetRef.current) {
             bottomSheetRef.current.expand()
+        }else{
+            handleClosePress();
         }
         return () => {
             setChecked(null)
             setloading(false)
-            dispatch(clearModal())
         }
-    }, [modalState])
+    }, [showModal])
 
-    const handleClosePress = useCallback(() => {
-        dispatch(clearModal())
-        bottomSheetRef.current?.close();
-    }, []);
+  
 
     const handleReport = () => {
         setloading(true)
-        reportVideo(id, checked, currentUser.uid, REPORT[checked])
-            .then(() => {
-                setChecked(null)
-                setloading(false)
-                handleClosePress()
-                dispatch(clearModal())
-                dispatch(reportAndRemove(id))
-            })
+        let data = {reason:REPORT[checked],post_id:id,user_id:currentUser.id}
+        dispatch(reportVideo(data)).then((data)=>{
+            if(data.status){
+                removeReportedPost(id);
+            }else{
+                handleClosePress();
+            }
+        }).catch((err)=>{
+            handleClosePress();
+            console.log(err);
+        })
     }
 
 
     // render
     const renderSectionHeader = useCallback(
         ({ section }) => (
-            <View style={styles.sectionHeaderContainer}>
-                <Text>Report this Video</Text>
+           <>
+           <View style={styles.sectionHeaderContainer}>
+                <Text style={{fontSize:18,fontWeight:"bold"}}>Report this Video</Text>
                 <IconButton
                     icon="close"
                     color={Colors.red500}
-                    size={20}
+                    size={30}
                     onPress={() => handleClosePress()}
                 />
+             
             </View>
+           <Divider />
+           </>
         ),
         []
     );
@@ -70,10 +77,11 @@ const ReportModal = () => {
         ({ section }) => (
             <View style={styles.sectionFooterContainer}>
                 <Button style={{ width: "100%" }}
-                    icon="camera"
+                    icon="bug"
                     disabled={checked == null ? true : false}
                     loading={loading}
-                    contentStyle={{ justifyContent: loading ? "space-between" : 'center' }}
+                    color="#f0ad4e"
+                    contentStyle={{ justifyContent: loading ? "space-around" : 'center' }}
                     mode="contained" onPress={() => handleReport()}>
                     {loading ? 'Reporting' : 'Report'}
                 </Button>
@@ -84,12 +92,12 @@ const ReportModal = () => {
 
     const renderItem = useCallback(
         ({ item, index }) => (
-            <View style={styles.itemContainer}>
+            <View  style={styles.itemContainer}>
                 <RadioButton
                     status={checked === index ? 'checked' : 'unchecked'}
                     onPress={() => setChecked(index)}
                 />
-                <Text>{item}</Text>
+                <Text onPress={() => setChecked(index)}>{item}</Text>
             </View>
         ),
         [checked]
@@ -97,11 +105,10 @@ const ReportModal = () => {
     return (
         <BottomSheet
             ref={bottomSheetRef}
-            snapPoints={["70%"]}
+            snapPoints={["50%"]}
             index={-1}
             onClose={handleClosePress}
-            handleHeight={40}
-            enablePanDownToClose>
+            handleHeight={40}>
             <BottomSheetFlatList
                 data={REPORT}
                 stickyHeaderIndices={[0]}

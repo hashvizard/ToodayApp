@@ -42,3 +42,12 @@ export const updtaeViews = (data) => dispatch => new Promise((resolve, reject) =
     }).catch(error => reject(error))
 })
 
+/**
+ * Update Views
+*/
+
+export const reportVideo = (data) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('report',data).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})

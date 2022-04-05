@@ -7,7 +7,6 @@ import SavePostScreen from '../../screens/savePost';
 import EditProfileScreen from '../../screens/profile/edit';
 import ReviewModal from '../../screens/profile/reviews';
 import EditProfileFieldScreen from '../../screens/profile/edit/field';
-import ReportModal from '../../components/modal/report';
 import ProfileScreen from '../../screens/profile';
 import FeedScreen from '../../screens/feed';
 import UserLogin from '../../components/auth/login';
@@ -60,7 +59,6 @@ export default function Route() {
             }
             <Stack.Screen name="Error" component={Error} options={{ headerShown: false }} />
         </Stack.Navigator>
-        <ReportModal />
     </>
     )
 }
