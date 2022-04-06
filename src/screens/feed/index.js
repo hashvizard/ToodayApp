@@ -11,8 +11,10 @@ import { AppState } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import BlockModal from '../../components/modal/block'
 import ReportModal from '../../components/modal/report'
+import { useFocusEffect } from '@react-navigation/native';
 
 export default function FeedScreen(props) {
+  
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const [posts, setPosts] = useState([])
@@ -24,6 +26,16 @@ export default function FeedScreen(props) {
     const user = useSelector(state => state.auth.currentUser);
     const [showblcoked, setShowblcoked] = useState(false);
     const [showReport, setshowReport] = useState(false);
+
+    useFocusEffect(
+        React.useCallback(() => {
+            if(props.route?.params?.totalComments && posts.length != 0){
+            let newData = [...posts];
+            newData[index].comments=props.route?.params?.totalComments;
+            setPosts(newData);
+            }
+        }, [props.route?.params?.totalComments])
+      );
 
     useEffect(() => {
         const appStateListener = AppState.addEventListener(

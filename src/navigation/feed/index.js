@@ -25,12 +25,12 @@ const FeedNavigation = () => {
                 name="feedList"
                 component={FeedScreen}
                 initialParams={{ setCurrentUserProfileItemInView, profile: false }} />
-                
+          {/*       
             <Screen
                 name="comment"
                 component={CommentModal}
             />
-            
+             */}
 
         </Navigator>
         </CurrentUserProfileItemInViewContext.Provider>

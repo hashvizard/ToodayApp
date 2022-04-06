@@ -51,3 +51,23 @@ export const reportVideo = (data) => dispatch => new Promise((resolve, reject) =
         resolve(response);
     }).catch(error => reject(error))
 })
+
+/**
+ * get Post Coomments
+*/
+
+export const getPostComments = (url) => dispatch => new Promise((resolve, reject) => {
+    getDataApi(url).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+/**
+ * Add a Review to user Post
+*/
+
+export const addComment = (data) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('comment',data).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})

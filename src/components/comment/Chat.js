@@ -5,7 +5,7 @@ import { changeDateForamt } from '../../helpers';
 import { useUser } from '../../hooks/useUser'
 
 const Chat = ({ item }) => {
-    const user = useUser(item.item.creator).data
+  
     return (<View>
         <View style={[{
             overflow: "hidden",
@@ -14,11 +14,11 @@ const Chat = ({ item }) => {
             flexWrap: "wrap"
         }]}>
             <View style={{ flexDirection: "row", alignItems: 'center' }}>
-                <Avatar.Image size={25} source={{ uri: user?.photoURL }} style={{ marginRight: 10 }} />
-                <Text style={styles.Text}>{item.item.comment}</Text>
+                <Avatar.Image size={30} source={{ uri: item?.item?.user?.profile}} style={{ marginRight: 10 }} />
+                <Text  textBreakStrategy='highQuality' style={styles.Text}>{item?.item?.comment}</Text>
             </View>
             <View style={{ flexDirection: "row", justifyContent: "flex-end", width: "100%", marginTop: 5 }}>
-                <Text style={styles.TextTime}> {user?.displayName} | {changeDateForamt(item.item.creation?.seconds * 1000)} ago</Text>
+                <Text style={styles.TextTime}> { item?.item?.user?.name} | {changeDateForamt(new Date(item.item?.created_at))} ago</Text>
             </View>
         </View>
     </View>

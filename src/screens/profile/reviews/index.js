@@ -10,6 +10,7 @@ import { TouchableOpacity } from 'react-native-gesture-handler';
 import { addProfileReviews, getProfileReviews } from '../../../Apis/LaravelApis/userApi';
 
 
+
 export default function ReviewModal(props) {
 
     const initialUserId = useSelector(state => state.initialPost.userId);
@@ -20,7 +21,7 @@ export default function ReviewModal(props) {
     const [nextUrl, setNextUrl] = useState(null)
     const currentUser = useSelector(state => state.auth.currentUser)
     const [refreshing, setRefreshing] = React.useState(false);
-    const [loading, setloading] = React.useState(false)
+    const [loading, setloading] = React.useState(true)
     const [totalReviews, settotalReviews] = React.useState(0)
   
  
@@ -44,7 +45,7 @@ export default function ReviewModal(props) {
             }
           
             return () => {
-                clearReviewListener();
+             
                 setReviewList('')
             }
         }, [initialUserId, props.route.params?.id])
@@ -97,8 +98,11 @@ export default function ReviewModal(props) {
     }
 
     const ScrollToBottom=()=>{
+        if (reviewList.length != 0) {
         flatListRef.scrollToIndex({ animated: true, index: 0 });
+        }
     }
+    const element = <TextInput.Icon  name="send" onPress={() => handleReviewSend()} />
 
   
     return (<>
@@ -150,7 +154,8 @@ export default function ReviewModal(props) {
 }
                 <TextInput
                     style={{ backgroundColor: 'transparent'}}
-                    mode='outlined'
+                    mode='flat'
+                    right={element}
                     onSubmitEditing={()=> handleReviewSend()}
                     value={review}
                     onChangeText={setReview}

@@ -81,7 +81,7 @@ const Footer = ({post}) => {
                     animated={true}
                     color="white"
                     size={34}
-                    onPress={() => console.log('Pressed')}
+                    onPress={() => RootNavigation.navigate('comment',{id:post.id})}
                 />
                 <Text style={{ color: "white" }}>{post?.comments}</Text>
             </View>
