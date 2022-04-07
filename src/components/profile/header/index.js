@@ -9,8 +9,8 @@ export default function ProfileHeader({ user }) {
     const navigation = useNavigation()
     return (
         <View style={styles.container}>
-            <Avatar.Icon size={80} icon={"account"} />
-            <Text style={styles.emailText}>{user.email}</Text>
+            <Avatar.Image size={80} source={{uri: user?.profile}} />
+            <Text style={styles.emailText}>{user?.email}</Text>
             <View style={styles.counterContainer}>
                 <View style={styles.counterItemContainer}>
                     <Text style={styles.counterNumberText}>0</Text>

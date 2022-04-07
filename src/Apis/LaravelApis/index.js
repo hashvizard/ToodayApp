@@ -60,4 +60,25 @@ export const updateUserName = (name) => dispatch => new Promise((resolve, reject
     }).catch(error => reject(error))
 })
 
+/**
+ * Update user Bio
+*/
+
+export const updateUserBio = (bio) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('profile/bio',bio).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+
+/**
+ * Update user Profession
+*/
+
+export const updateUserprofession = (profession) => dispatch => new Promise((resolve, reject) => {
+    postDataApi('profile/profession',profession).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
 

@@ -12,7 +12,7 @@ import { getPostsByUserId } from '../../services/posts'
 import { useFocusEffect } from '@react-navigation/native';
 
 export default function ProfileScreen({ route }) {
-    const initialUserId = useSelector(state => state.initialPost.userId);
+   
     const [userPosts, setUserPosts] = useState([])
 
     let providerUserId = null
@@ -20,7 +20,7 @@ export default function ProfileScreen({ route }) {
         providerUserId = useContext(CurrentUserProfileItemInViewContext)
     }
 
-    const user = useUser(initialUserId ? initialUserId : providerUserId).data;
+    const user = route?.params.user
 
 
     useFocusEffect(

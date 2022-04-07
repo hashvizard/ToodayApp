@@ -20,7 +20,7 @@ const ProfileEdit = (props) => {
 
     const [showModal, setshowModal] = useState({ 'type': '', 'show': false });
 
-
+    console.log(user)
     useEffect(() => { }, [showModal])
 
 
@@ -30,7 +30,7 @@ const ProfileEdit = (props) => {
             includeBase64: true,
             allowsEditing: true,
         })
-        if(result.didCancel){
+        if (result.didCancel) {
             setLoading(false);
         }
         else if (result) {
@@ -51,17 +51,25 @@ const ProfileEdit = (props) => {
     }
 
     return (<>
-        <ScrollView style={{ flex: 1, backgroundColor: "white"}}>
+        <ScrollView style={{ flex: 1, backgroundColor: "white" }}>
             <View
                 style={styles.imageContainer} >
                 <Avatar.Image
                     size={100} source={{ uri: user.currentUser.profile }}
                 />
                 <Button icon="camera-plus" onPress={() => pickFromGallery()} loading={loading} mode="text" >
-                   {loading?"Updating":"Add Profile"}
+                    {loading ? "Updating" : "Add Profile"}
                 </Button>
             </View>
             <View >
+            <List.Item
+                    style={{ padding: 15 }}
+                    onPress={() => setshowModal({ 'type': 'bio', 'show': true })}
+                    titleNumberOfLines={5}
+                    titleStyle={{fontSize:15,fontWeight:"100",color:"darkgrey"}}
+                    title={user?.currentUser?.bio}
+                    right={props => <List.Icon {...props} color="#5bc0de" icon="bio"  />}
+                />
                 <List.Item
                     style={{ padding: 15 }}
                     title="Name"
@@ -78,10 +86,19 @@ const ProfileEdit = (props) => {
                     right={props => <List.Icon {...props} color="#5bc0de" icon="pencil" />}
                     left={props => <List.Icon {...props} color="#d9534f" icon="map-marker" />}
                 />
+                <List.Item
+                    style={{ padding: 15 }}
+                    title="Profession"
+                    onPress={() => setshowModal({ 'type': 'profession', 'show': true })}
+                    description={user?.currentUser?.profession}
+                    right={props => <List.Icon {...props} color="#5bc0de" icon="pencil" />}
+                    left={props => <List.Icon {...props} color="#5bc0de" icon="account-tie" />}
+                />
+              
             </View>
         </ScrollView>
         {showModal.show ?
-            <UpdateModal data={showModal.type == 'name' ? user.currentUser.name : user.currentUser.city}
+            <UpdateModal data={showModal.type == 'name' ? user.currentUser.name : showModal.type == 'bio'? user.currentUser.bio: showModal.type == 'profession'? user.currentUser.profession : user.currentUser.city}
                 type={showModal.type} changeModal={() => setshowModal({ 'type': '', 'show': false })} />
             : null
         }

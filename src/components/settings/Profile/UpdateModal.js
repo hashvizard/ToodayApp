@@ -7,7 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { updateCity, updateName } from '../../../redux/actions';
 import { IconButton, Colors } from 'react-native-paper';
 import CityFinder from '../../../helpers/CityFinder';
-import { updateUserCity, updateUserName } from '../../../Apis/LaravelApis';
+import { updateUserBio, updateUserCity, updateUserName, updateUserprofession } from '../../../Apis/LaravelApis';
 import { USER_STATE_CHANGE } from '../../../redux/constants';
 const UpdateModal = ({ data, type, changeModal }) => {
 
@@ -84,6 +84,43 @@ const UpdateModal = ({ data, type, changeModal }) => {
       .catch((err) => { setSave(false); console.log(err) })
   }
 
+  const updateProfessionData = () => {
+    setSave(true);
+    dispatch(updateUserprofession({ profession: name }))
+      .then(() => {
+        let data = user.currentUser;
+        data.profession = name;
+        dispatch({
+          type: USER_STATE_CHANGE,
+          currentUser: data,
+          loaded: true
+        })
+        setSave(false);
+        Keyboard.dismiss();
+        handleClosePress();
+      })
+      .catch((err) => { setSave(false); console.log(err) })
+  }
+
+
+  const updateBioData = () => {
+    setSave(true);
+    dispatch(updateUserBio({ bio: name }))
+      .then(() => {
+        let data = user.currentUser;
+        data.bio = name;
+        dispatch({
+          type: USER_STATE_CHANGE,
+          currentUser: data,
+          loaded: true
+        })
+        setSave(false);
+        Keyboard.dismiss();
+        handleClosePress();
+      })
+      .catch((err) => { setSave(false); console.log(err) })
+  }
+
   const ChangeName = (<>
     <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Enter your name :</Text>
     <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -111,6 +148,62 @@ const UpdateModal = ({ data, type, changeModal }) => {
       </Button>
     </View>
   </>);
+
+const ChangeBio = (<>
+  <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Tell us about yourself :</Text>
+  <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <BottomSheetTextInput
+      autoFocus={true}
+      maxLength={150}
+      onChangeText={(text) => setName(text)}
+      style={{
+        ...styles.input,
+        borderBottomWidth: 2,
+        borderColor: "green"
+      }} value={name} />
+    <Text style={{ paddingHorizontal: 15 }}>{name?.length}</Text>
+  </View>
+  <View style={{ marginTop: 20, marginHorizontal: 15, flexDirection: "row", justifyContent: "space-between" }}>
+    <Button
+      color='#d9534f'
+      onPress={() => { Keyboard.dismiss(); handleClosePress() }}
+      icon="cancel" style={{ marginRight: 15 }} mode="text" >
+      Cancel
+    </Button>
+    <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
+      onPress={() => updateBioData()}>
+      Save
+    </Button>
+  </View>
+</>);
+
+const ChangeProfession = (<>
+  <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Update your Profession:</Text>
+  <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <BottomSheetTextInput
+      autoFocus={true}
+      maxLength={22}
+      onChangeText={(text) => setName(text)}
+      style={{
+        ...styles.input,
+        borderBottomWidth: 2,
+        borderColor: "green"
+      }} value={name} />
+    <Text style={{ paddingHorizontal: 15 }}>{name.length}</Text>
+  </View>
+  <View style={{ marginTop: 20, marginHorizontal: 15, flexDirection: "row", justifyContent: "space-between" }}>
+    <Button
+      color='#d9534f'
+      onPress={() => { Keyboard.dismiss(); handleClosePress() }}
+      icon="cancel" style={{ marginRight: 15 }} mode="text" >
+      Cancel
+    </Button>
+    <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
+      onPress={() => updateProfessionData()}>
+      Save
+    </Button>
+  </View>
+</>);
 
   const ChangeLocation = (<>
     <Text style={{ padding: 10, color: notFound ? "red" : "black", fontWeight: "bold" }}>{notFound ? "We are not available in your city !" : 'Update your current City'}</Text>
@@ -156,7 +249,7 @@ const UpdateModal = ({ data, type, changeModal }) => {
         behavior="padding"
         style={videoStyles.commentcontainer}
       >
-        {type == 'name' ? ChangeName : ChangeLocation}
+        {type == 'name' ? ChangeName : type == 'bio'? ChangeBio: type == 'profession'? ChangeProfession: ChangeLocation}
       </KeyboardAvoidingView>
     </BottomSheet>
   )
