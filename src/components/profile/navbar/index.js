@@ -3,14 +3,13 @@ import { View, Text, TouchableOpacity } from 'react-native'
 import styles from './styles'
 import  Feather  from 'react-native-vector-icons/Feather'
 import * as RootNavigation from '../../../../RootNavigation';
+import { useSelector } from 'react-redux';
 
-export default function ProfileNavBar({ user }) {
+export default function ProfileNavBar() {
+    const user = useSelector(state=>state.auth.currentUser);
     return (
         <View style={styles.container}>
-            <TouchableOpacity>
-                <Feather name="search" size={20} />
-            </TouchableOpacity>
-            <Text style={styles.text}>{user?.name}</Text>
+            <Text style={styles.text}>{user?.city}</Text>
             <TouchableOpacity
             onPress={()=>RootNavigation.navigate('home')}
             >

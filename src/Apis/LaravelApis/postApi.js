@@ -11,6 +11,16 @@ export const getUserPosts = (url) => dispatch => new Promise((resolve, reject) =
 })
 
 /**
+ * Get User Profile Reviews
+*/
+
+export const getProfilePosts = (url) => dispatch => new Promise((resolve, reject) => {
+    getDataApi(url).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+/**
  * Get User Liked Posts
 */
 

@@ -23,7 +23,6 @@ export default function ReviewModal(props) {
     const [refreshing, setRefreshing] = React.useState(false);
     const [loading, setloading] = React.useState(true)
     const [totalReviews, settotalReviews] = React.useState(0)
-  
  
     useFocusEffect(
         React.useCallback(() => {
@@ -137,7 +136,7 @@ export default function ReviewModal(props) {
                 <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
                         <ActivityIndicator color="white" size="small" style={{display:loading?"flex":"none"}} />
                         <Text style={{marginTop:25,display:loading?"flex":"none"}}>Loading <Title>Reviews</Title></Text>
-                        <Text style={{display:!loading && reviewList.length <= 0 ?"flex":"none"}}>You don't have any <Title>Reviews</Title></Text>
+                        <Text style={{display:!loading && reviewList.length <= 0 ?"flex":"none"}}>No <Title>Reviews</Title> Found</Text>
                 </View>
                 :
                  <FlatList

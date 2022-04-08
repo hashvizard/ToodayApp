@@ -31,7 +31,7 @@ const Header = ({user,showBlock,showReport}) => {
                         <Avatar.Image size={30} source={{ uri: user?.profile }} />
                         <Title style={{ marginLeft: 15, flexWrap: "wrap", color: "white" }}>{user?.name}</Title>
                         </TouchableOpacity>
-                    <Paragraph style={{ display: feedState.open == "INFO" ? "flex" : "none", alignSelf: "center", color: "white" }}>Enginear</Paragraph>
+                    <Paragraph style={{ display: feedState.open == "INFO" ? "flex" : "none", alignSelf: "center", color: "white" }}>{user?.profession}</Paragraph>
                 </View>
                 <View style={{ width: "35%", alignItems: "flex-end" }}>
                     {feedState.open != "INFO" ?

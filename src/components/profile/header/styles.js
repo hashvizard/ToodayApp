@@ -1,14 +1,13 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: 20,
         alignItems: 'center',
-        paddingHorizontal: 65,
+        padding:15,
         borderBottomWidth: 1,
         borderColor: 'lightgray'
     },
     counterContainer: {
-        paddingBottom: 20,
+        paddingVertical: 20,
         flexDirection: 'row',
     },
     counterItemContainer: {
