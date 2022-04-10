@@ -1,9 +1,22 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar, Dimensions, Appearance } from 'react-native';
+
+const MODE = Appearance.getColorScheme();
+const SCREEN_HEIGHT = Dimensions.get('screen').height;
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight || 24;
+const NAVIGATION_BAR_HEIGHT = SCREEN_HEIGHT - Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
+  
     container: {
+        marginTop: STATUS_BAR_HEIGHT,
+        marginBottom: NAVIGATION_BAR_HEIGHT,
         flex: 1,
-        paddingTop: 30,
+        width: "100%",
         backgroundColor: 'white'
+    },
+    imgComponent:{
+        paddingTop: STATUS_BAR_HEIGHT + 20,
+        padding: 20,backgroundColor:"white", flexDirection: "row", alignItems: "center", justifyContent: "space-between" 
     },
     uploadingContainer: {
         flex: 1,

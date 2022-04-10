@@ -3,30 +3,33 @@ import React, { useState } from 'react'
 import { ActivityIndicator, Image, Text, KeyboardAvoidingView, View, TouchableOpacity } from 'react-native'
 import styles from './styles'
 import Feather from 'react-native-vector-icons/Feather'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { createPost } from '../../redux/actions'
 import { ProcessingManager } from 'react-native-video-processing';
 import Video from 'react-native-video';
 import videoStyles from '../../styles/VideoStyles'
-import { IconButton, TextInput, Button } from 'react-native-paper';
+import { TextInput, Button } from 'react-native-paper';
 import LottieView from 'lottie-react-native';
 import { Title, Caption, } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ScrollView } from 'react-native-gesture-handler'
 export default function SavePostScreen(props) {
     const [description, setDescription] = useState('')
     const [requestRunning, setRequestRunning] = useState(false)
     const [uploaded, setuploaded] = useState(false)
     const [paused, setpaused] = useState(true);
-    const [loaction,setlocation] = useState('');
+    const [location, setlocation] = useState('');
     const navigation = useNavigation()
     const dispatch = useDispatch();
-    const element = <TextInput.Icon name="check-circle" color="white" size={35} onPress={() => handleSavePost()} />
-    const location = <TextInput.Icon name="map-marker" color="red"  />
 
+    const locationIcon = <TextInput.Icon name="map-marker" color="#f0ad4e" />
+
+    const user = useSelector(state => state.auth.currentUser);
+    
     const handleSavePost = async () => {
         setRequestRunning(true)
         let data = await getData(props.route.params.source)
-        dispatch(createPost(description, data.path, data.thumbnail,loaction))
+        dispatch(createPost(description, data.path, data.thumbnail, location))
             .then(() => setuploaded(true))
             .catch((err) => { setRequestRunning(false); console.log(err) })
     }
@@ -81,52 +84,64 @@ export default function SavePostScreen(props) {
     }
 
     return (
-        <View style={{ flex: 1 }}>
-            <Image
-                resizeMode='cover'
-                style={{ height: "100%", width: "100%" }}
-                source={{ uri: props.route.params.source }}
-            />
-            <IconButton
-                icon="close"
-                size={30}
-                color='red'
-                style={{ ...videoStyles.statusbarheightheight, alignSelf: "flex-end", position: "absolute", zIndex: 20 }}
-                onPress={() => props.navigation.goBack()}
-            />
-            <TouchableOpacity
-                onPress={() => setpaused(!paused)}
-                style={{ position: "absolute", height: "100%", justifyContent: "center", alignItems: "center", width: "100%", zIndex: 10 }}>
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={{ ...styles.imgComponent }}>
+                <View style={{ width: "60%" }}>
+                    <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", }}
+                        onPress={() => props.navigation.goBack()}
+                    >
+                        <Icon name='arrow-left' size={35} color="#292b2c" />
+                        <Text style={{ marginLeft: 20, fontSize: 18, color: "#292b2c" }}>Go Back</Text>
+                    </TouchableOpacity>
 
-            </TouchableOpacity>
+                    <Text style={{ color: "#292b2c", marginVertical: 20 }}>This Post will only be visible to  <Title style={{ color: "black" }}> {user.city} </Title> City</Text>
+
+
+                </View>
+                <Image
+                    resizeMode='cover'
+                    style={{ aspectRatio: 9 / 16, width: "30%", borderRadius: 10, resizeMode: "cover", borderWidth: 1, borderColor: "darkgrey" }}
+                    source={{ uri: props.route.params.source }}
+                />
+            </View>
             <KeyboardAvoidingView
                 behavior="padding"
-                style={{ ...videoStyles.commentcontainer, position: "absolute", bottom: 0, zIndex: 20 }}
+                style={{ ...videoStyles.stylePost }}
             >
+                <ScrollView contentContainerStyle={{ backgroundColor: "white" }}>
+                    <TextInput
+                        style={{ margin: 10, backgroundColor: "white" }}
+                        mode='flat'
+                        multiline={true}
+                        autoFocus={true}
+                        returnKeyType="done"
+                        placeholderTextColor="black"
+                        outlineColor='red'
+                        textAlignVertical='center'
+                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
+                        maxLength={150}
+                        value={description}
+                        onChangeText={(text) => setDescription(text)}
+                        placeholder='Write post Description..' />
 
-                <TextInput
-                    style={{ backgroundColor: 'rgba(0,0,0,0.4)', width: "100%"}}
-                    mode='flat'
-                    theme={{ colors: { text: 'white' } }}
-                    placeholderTextColor="white"
-                    textAlignVertical='center'
-                    maxLength={95}
-                    value={description}
-                    onChangeText={(text)=> setDescription(text)}
-                    placeholder='Write post Description..' />
-
-                <TextInput
-                    style={{ backgroundColor: 'rgba(0,0,0,0.4)', width: "100%" }}
-                    mode='flat'
-                    theme={{ colors: { text: 'white' } }}
-                    placeholderTextColor="white"
-                    textAlignVertical='center'
-                    right={element}
-                    left={location}
-                    maxLength={15}
-                    value={location}
-                    onChangeText={(text)=> setlocation(text)}
-                    placeholder='Enter the locality' />
+                    <TextInput
+                        style={{ margin: 10, backgroundColor: "white" }}
+                        mode='flat'
+                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
+                        placeholderTextColor="black"
+                        textAlignVertical='center'
+                        textContentType="location"
+                        right={locationIcon}
+                        maxLength={30}
+                        value={location}
+                        onChangeText={(text) => setlocation(text)}
+                        placeholder='Enter the locality' />
+                    <Button icon="video-outline" disabled={location != '' && description != ''?false:true}
+                        mode="contained" style={{ padding: 5, marginTop: 25, margin: 10, backgroundColor: "#f0ad4e" }}
+                        onPress={() => handleSavePost()}>
+                        Post Now
+                    </Button>
+                </ScrollView>
             </KeyboardAvoidingView>
         </View>
     )

@@ -2,7 +2,6 @@ import React, { useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { createStackNavigator } from '@react-navigation/stack';
 import { userAuthStateListener } from '../../redux/actions';
-import HomeScreen from '../home';
 import SavePostScreen from '../../screens/savePost';
 import EditProfileScreen from '../../screens/profile/edit';
 import ReviewModal from '../../screens/profile/reviews';
@@ -17,6 +16,8 @@ import Settings from '../settings';
 import UserInfo from '../../components/auth/userInfo';
 import SplashScreen from '../../components/splash';
 import CameraScreen from '../../screens/camera';
+import Gallery from '../../screens/camera/Gallery';
+import GalleryView from '../../screens/camera/GalleryView';
 
 
 const Stack = createStackNavigator()
@@ -46,7 +47,7 @@ export default function Route() {
                     :
                     <>
                         <Stack.Screen name="home" component={FeedScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false,title:"Description" }} />
                         <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="profileReviews" component={ReviewModal} options={{ headerShown: false }} />
@@ -55,6 +56,7 @@ export default function Route() {
                         <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="comment" component={CommentModal} options={{ headerShown: false }} />
                         <Stack.Screen name="add" component={CameraScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="gallery" component={GalleryView} options={{ headerShown: true,title:"Collection" }} />
                         <Stack.Screen name="settings" component={Settings} options={{ headerShown: false }} />
                     </>
             }

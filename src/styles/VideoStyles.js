@@ -19,6 +19,11 @@ const videoStyles = StyleSheet.create({
         flex: 1,
         width: "100%",
     },
+    stylePost:{
+        marginBottom: NAVIGATION_BAR_HEIGHT,
+        flex: 1,
+        width: "100%",
+    },
     spaceBottom:{
         bottom: NAVIGATION_BAR_HEIGHT,
     },

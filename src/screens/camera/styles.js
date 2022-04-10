@@ -11,17 +11,37 @@ const styles = StyleSheet.create({
     },
     camera: {
         flex: 1,
-      
+
+    },
+    galleryVideos: {
+        aspectRatio: 9 / 16,
+        resizeMode: "cover",
+        marginRight: 8,
+        borderRadius: 8,
+        width: 70,
+    },
+    galleryViewVideos: {
+        width: "33.3%",
+        height: 100,
+        borderWidth: 0.5,
+        aspectRatio: 9 / 16,
+        borderColor: "lightgrey"
+
+    },
+    galleryImages: {
+        height: "100%",
+        resizeMode: "cover",
+        width: "100%",
     },
     bottomBarContainer: {
-        alignItems: 'center',
-        justifyContent:"space-between",
-        paddingHorizontal:30,
-        width:"100%",
+        width: "100%",
         position: 'absolute',
         bottom: NAVIGATION_BAR_HEIGHT,
-        flexDirection: 'row',
-        marginBottom: 30,
+    },
+    botom: {
+        paddingBottom: NAVIGATION_BAR_HEIGHT,
+
+
     },
     recordButtonContainer: {
         flex: 1,
@@ -29,6 +49,8 @@ const styles = StyleSheet.create({
     },
     recordButton: {
         borderWidth: 8,
+        alignItems: "center",
+        justifyContent: "center",
         borderColor: '#ff404087',
         backgroundColor: '#ff4040',
         borderRadius: 100,
@@ -51,10 +73,10 @@ const styles = StyleSheet.create({
     sideBarContainer: {
         top: STATUS_BAR_HEIGHT + 30,
         right: 0,
-        flexDirection:"row",
-        width:"100%",
-        justifyContent:"space-between",
-        alignItems:"center",
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
+        alignItems: "center",
         paddingHorizontal: 20,
         position: 'absolute'
     },
@@ -65,7 +87,9 @@ const styles = StyleSheet.create({
     },
     sideBarButton: {
         alignItems: 'center',
-        marginBottom: 25
+        padding: 10, borderRadius: 30,
+        elevation: 5,
+        backgroundColor: "rgba(0,0,0,0.5)"
     }
 });
 

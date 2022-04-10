@@ -170,7 +170,7 @@ export default function FeedScreen(props) {
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
             <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() =>setshowReport(true)} />
-            {/*    {currentPost ?
+              {/*  {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
                     showOnStart={false}
