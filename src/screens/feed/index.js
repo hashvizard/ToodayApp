@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import NoDataFound from '../../components/FeedLoaders/NoDataFound';
 import { useDispatch, useSelector } from 'react-redux';
 import { setFeedState, setIntialPost } from '../../redux/actions';
-import { getAllPosts, updateViews } from '../../Apis/LaravelApis/postApi';
+import { getAllPosts, updtaeViews } from '../../Apis/LaravelApis/postApi';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../HomeScreen/Header';
 import Footer from '../../HomeScreen/Footer';
@@ -12,9 +12,12 @@ import { useIsFocused } from '@react-navigation/native';
 import BlockModal from '../../components/modal/block'
 import ReportModal from '../../components/modal/report'
 import { useFocusEffect } from '@react-navigation/native';
+import { ProcessingManager } from 'react-native-video-processing';
+import { UploadVideos } from '../../helpers/UploadVideos';
+
 
 export default function FeedScreen(props) {
-  
+
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const [posts, setPosts] = useState([])
@@ -29,15 +32,66 @@ export default function FeedScreen(props) {
 
     useFocusEffect(
         React.useCallback(() => {
-            if(props.route?.params?.totalComments && posts.length != 0){
-            let newData = [...posts];
-            newData[index].comments=props.route?.params?.totalComments;
-            setPosts(newData);
+            if (props.route.params?.data) {
+                updateVideo(props.route.params?.data);
             }
-        }, [props.route?.params?.totalComments])
-      );
+            //    BackgroundService.updateNotification({taskDesc: 'New ExampleTask description'});
+            if (props.route?.params?.totalComments && posts.length != 0) {
+                let newData = [...posts];
+                newData[index].comments = props.route?.params?.totalComments;
+                setPosts(newData);
+            }
+        }, [props.route?.params?.totalComments, props.route?.params?.data])
+    );
+
+    const updateVideo = async (datas) => {
+        let data = await getData(datas.video)
+        let options = {
+            taskName: 'Example',
+            taskTitle: 'ExampleTask title',
+            taskDesc: 'ExampleTask desc',
+            user: user,
+            postDescription: datas.description,
+            path: data.path,
+            thumbnail: data.thumbnail,
+            location: datas.location,
+            taskIcon: {
+                name: 'ic_launcher',
+                type: 'mipmap',
+            },
+            color: '#ff00ff',
+            linkingURI: 'exampleScheme://chat/jane',
+            parameters: {
+                delay: 1000,
+            },
+        };
+
+      /*   try {
+            console.log('Trying to start background service');
+            await UploadVideos(options);
+            console.log('Successful start!');
+        } catch (e) {
+            console.log('Error', e);
+        } */
+
+    }
+
+
+    const getData = async (path) => {
+        const origin = await ProcessingManager.getVideoInfo(path);
+        const result = await ProcessingManager.compress(path, {
+            width: origin.size && origin.size.width / 3,
+            height: origin.size && origin.size.height / 3,
+            bitrateMultiplier: 3,
+            removeAudio: false,
+            minimumBitrate: 300000
+        });
+        const thumbnail = await ProcessingManager.getPreviewForSecond(result.source);
+        return { path: result.source, thumbnail: thumbnail };
+    }
 
     useEffect(() => {
+
         const appStateListener = AppState.addEventListener(
             'change',
             nextAppState => {
@@ -108,7 +162,7 @@ export default function FeedScreen(props) {
     }
 
     const updateViewsData = (postData) => {
-        dispatch(updateViews({ post_id: postData.id, user_id: user.id }))
+        dispatch(updtaeViews({ post_id: postData.id, user_id: user.id }))
         let allPosts = [...posts];
         const position = allPosts.findIndex(object => {
             return object.id === postData.id;
@@ -169,8 +223,8 @@ export default function FeedScreen(props) {
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() =>setshowReport(true)} />
-              {/*  {currentPost ?
+            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
+            {/* {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
                     showOnStart={false}

@@ -19,7 +19,6 @@ import CameraScreen from '../../screens/camera';
 import Gallery from '../../screens/camera/Gallery';
 import GalleryView from '../../screens/camera/GalleryView';
 
-
 const Stack = createStackNavigator()
 
 
