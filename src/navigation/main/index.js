@@ -18,6 +18,7 @@ import SplashScreen from '../../components/splash';
 import CameraScreen from '../../screens/camera';
 import Gallery from '../../screens/camera/Gallery';
 import GalleryView from '../../screens/camera/GalleryView';
+import ProfileFeed from '../../screens/feed/ProfileFeed';
 
 const Stack = createStackNavigator()
 
@@ -46,6 +47,7 @@ export default function Route() {
                     :
                     <>
                         <Stack.Screen name="home" component={FeedScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="profileFeed" component={ProfileFeed} options={{ headerShown: false }} />
                         <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false,title:"Description" }} />
                         <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />

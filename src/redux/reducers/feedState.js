@@ -1,8 +1,9 @@
-import { SET_OPEN_STATE ,INTIAL_POST} from '../constants';
+import { SET_OPEN_STATE, INTIAL_POST, ACTIVE_FEED_STATE } from '../constants';
 
 const initialState = {
     open: null,
     index: 0,
+    active: 'feed'
 }
 
 
@@ -17,6 +18,11 @@ export const feedState = (state = initialState, action) => {
             return {
                 ...state,
                 index: action.index
+            }
+        case ACTIVE_FEED_STATE:
+            return {
+                ...state,
+                active: action.active
             }
         default:
             return state;

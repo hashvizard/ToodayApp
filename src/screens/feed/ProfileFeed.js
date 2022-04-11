@@ -16,13 +16,12 @@ import { ProcessingManager } from 'react-native-video-processing';
 import { UploadVideos } from '../../helpers/UploadVideos';
 
 
-export default function FeedScreen(props) {
+export default function ProfileFeed(props) {
 
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const [posts, setPosts] = useState([])
     const [index, setIndex] = useState(0);
-    const [loading, setLoading] = useState(true);
     const [nextPage, setnextPage] = useState(null);
     const [currentPost, setcurrentPost] = useState({});
     const [appState, setAppState] = useState(AppState.currentState);
@@ -31,15 +30,10 @@ export default function FeedScreen(props) {
     const [showReport, setshowReport] = useState(false);
 
     // Checking Feed State
-    const FeedState = useSelector(state => state.feedState.active)
+    const FeedState = useSelector(state=>state.feedState.active)
 
     useFocusEffect(
         React.useCallback(() => {
-            // If user navigated from uploading Screen
-            if (props.route.params?.data) {
-                updateVideo(props.route.params?.data);
-            }
-            // If user navigated from comment Screen
             if (props.route?.params?.totalComments && posts.length != 0) {
                 let newData = [...posts];
                 newData[index].comments = props.route?.params?.totalComments;
@@ -108,16 +102,11 @@ export default function FeedScreen(props) {
     }, []);
 
     useEffect(() => {
-        dispatch(getAllPosts('posts')).then((data) => {
-            setPosts(data?.data?.data);
-            setcurrentPost(data?.data?.data[0])
-            setIndex(0)
-            setnextPage(data?.data?.next_page_url)
-            setLoading(false);
-        }).catch(err => {
-            console.log(err.message);
-            setLoading(false);
-        })
+        dispatch(activeFeedState('profile'))
+        setPosts(props.route.params?.videos)
+        setnextPage(props.route.params?.nextpage)
+        setIndex(props.route.params?.currentIndex)
+        setcurrentPost(props.route.params?.videos[props.route.params?.currentIndex])
     }, [])
 
 
@@ -158,17 +147,10 @@ export default function FeedScreen(props) {
         }
     }
 
-    if (loading || posts?.length == 0) {
+    if (posts?.length == 0) {
         return (
             <React.Fragment>
                 <NoDataFound val={false} />
-            </React.Fragment>
-        )
-    }
-    else if (!loading && posts?.length == 0) {
-        return (
-            <React.Fragment>
-                <NoDataFound val={true} />
             </React.Fragment>
         )
     }
@@ -254,7 +236,7 @@ export default function FeedScreen(props) {
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
                 /> : null} */}
-            <Footer post={currentPost} goBack={() => props.navigation.goBack()} />
+            <Footer post={currentPost} goBack={()=>props.navigation.goBack()} />
         </GestureRecognizer>
         <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
         <ReportModal id={currentPost?.id} showModal={showReport} hideModalNow={() => setshowReport(false)} removeReportedPost={(id) => removeReportedPost(id)} />

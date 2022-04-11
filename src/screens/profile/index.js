@@ -13,33 +13,46 @@ import { useFocusEffect } from '@react-navigation/native';
 import ProfilePostListItem from '../../components/profile/postList/item'
 import { getProfilePosts } from '../../Apis/LaravelApis/postApi'
 import { Title } from 'react-native-paper'
+import * as RootNavigation from '../../../RootNavigation';
 
 export default function ProfileScreen({ route },props) {
     const [userPosts, setUserPosts] = useState([])
     const dispatch = useDispatch();
-    const user = route?.params.user
+    const user = route?.params?.user
     const [nextpage, setnextpage] = useState(null)
     const [refreshing, setRefreshing] = useState(false);
     const [loading, setloading] = useState(true)
 
-    useFocusEffect(
-        React.useCallback(() => {
-            dispatch(getProfilePosts(`posts/user/${user?.id}`))
-            .then((data)=>{
-                setloading(false);
-                setUserPosts(data?.data?.data);
-                setnextpage(data?.data?.next_page_url);
-            })
-            .catch(err=>{
-                console.log(err)
-            })
-            return () => {
-             /*    setloading(false);
-                setUserPosts([]);
-                setnextpage(null); */
-            }
-        }, [user])
-    );
+ 
+    useEffect(() => {
+        console.log(route?.params?.user.id)
+        dispatch(getProfilePosts(`posts/user/${route?.params?.user.id}`))
+        .then((data)=>{
+            setloading(false);
+            setUserPosts(data?.data?.data);
+            setnextpage(data?.data?.next_page_url);
+        })
+        .catch(err=>{
+            console.log(err)
+        })
+        return () => {
+         /*    setloading(false);
+            setUserPosts([]);
+            setnextpage(null); */
+        }
+    }, [route?.params?.user.id])
+    
+
+    const goBackHome =(postion)=>{
+        RootNavigation.navigate('profileFeed',{
+            from:"profile",
+            videos:userPosts,
+            nextpage:nextpage,
+            currentIndex:postion
+        })
+        console.log(postion);
+    }
+
 
     const onEnd = () => {
         if (nextpage != null && !refreshing) {
@@ -81,7 +94,7 @@ export default function ProfileScreen({ route },props) {
                 ListFooterComponent={() => <ActivityIndicator color='black' size="small" style={{ marginVertical: 10, display: refreshing ? "flex" : "none" }} />}
                 onEndReached={onEnd}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (<ProfilePostListItem item={item} />)}
+                renderItem={({ item,index }) => (<ProfilePostListItem item={item} index={index} goHome={(postion)=>goBackHome(postion)} />)}
             />
         }
             </View>
