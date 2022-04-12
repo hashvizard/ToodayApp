@@ -11,7 +11,8 @@ const Header = ({user,showBlock,showReport}) => {
 
     const dispatch=useDispatch();
     const feedState = useSelector(state => state.feedState);
-  
+    const currentuser = useSelector(state => state.auth.currentUser);
+
     const BlockUser = ()=>{
         dispatch(setFeedState(null));
         showBlock()
@@ -27,16 +28,18 @@ const Header = ({user,showBlock,showReport}) => {
         <View style={{ ...videoStyles.spaceTop, width: "100%", alignItems: "center", justifyContent: "space-between", position: "absolute", zIndex: 21 }}>
             <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", width: "100%", justifyContent: 'space-between' }}>
                 <View style={{ alignItems: "flex-start", justifyContent: "flex-start", alignSelf: "flex-start", width: "55%", padding: 15 }}>
-                        <TouchableOpacity onPress={()=> RootNavigation.navigate('profileOther',{user:user})} style={{ flexDirection: "row", alignItems: "center" }}>
+                        <TouchableOpacity onPress={()=> {
+                            currentuser.id == user?.id ?RootNavigation.navigate('settings') :RootNavigation.navigate('profileOther',{user:user});
+                            
+                            }} style={{ flexDirection: "row", alignItems: "center" }}>
                         <Avatar.Image size={30} source={{ uri: user?.profile }} />
                         <Title style={{ marginLeft: 15, flexWrap: "wrap", color: "white" }}>{user?.name}</Title>
                         </TouchableOpacity>
                     <Paragraph style={{ display: feedState.open == "INFO" ? "flex" : "none", alignSelf: "center", color: "white" }}>{user?.profession}</Paragraph>
                 </View>
-                <View style={{ width: "35%", alignItems: "flex-end" }}>
+                <View style={{ width: "35%", alignItems: "flex-end",display:currentuser.id == user?.id?"none":"flex" }}>
                     {feedState.open != "INFO" ?
                         <IconButton
-
                             icon="dots-horizontal"
                             style={{ marginRight: 10 }}
                             color="white"
