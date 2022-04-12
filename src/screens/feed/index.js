@@ -140,7 +140,7 @@ export default function FeedScreen(props) {
     }
 
     const DataUpdater = async () => {
-        await dispatch(props.route?.params?.from == 'profile' ? getProfilePosts(nextPage) : getAllPosts(nextPage))
+        await dispatch(getAllPosts(nextPage))
             .then((data) => {
                 let newData = [...posts, ...data?.data?.data];
                 setPosts(newData);

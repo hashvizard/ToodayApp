@@ -18,7 +18,7 @@ export default function CommentModal(props) {
     const [nextUrl, setNextUrl] = useState(null)
     const [refreshing, setRefreshing] = React.useState(false);
 
-    const feedState = useSelector(state=>state.feedState.active);
+    const feedState = useSelector(state => state.feedState.active);
 
 
     useFocusEffect(
@@ -92,17 +92,20 @@ export default function CommentModal(props) {
     }
     const element = <TextInput.Icon name="send" onPress={() => handleCommentSend()} />
 
-    const NavigateBack =()=>{
+    const NavigateBack = () => {
 
         switch (feedState) {
             case 'profile':
-                props.navigation.navigate('profileFeed',{totalComments:totalComments})
+                props.navigation.navigate('profileFeed', { totalComments: totalComments })
+                break;
+            case 'View':
+                props.navigation.navigate('ViewedFeed', { totalComments: totalComments })
                 break;
             default:
-                props.navigation.navigate('home',{totalComments:totalComments});
+                props.navigation.navigate('home', { totalComments: totalComments });
                 break;
         }
-      
+
     }
     return (<>
         <ImageBackground

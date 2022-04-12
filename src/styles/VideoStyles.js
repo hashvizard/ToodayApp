@@ -27,6 +27,9 @@ const videoStyles = StyleSheet.create({
     spaceBottom:{
         bottom: NAVIGATION_BAR_HEIGHT,
     },
+    spaceBottomView:{
+        marginBottom: NAVIGATION_BAR_HEIGHT,
+    },
     spaceTop:{
         top: STATUS_BAR_HEIGHT,
     },

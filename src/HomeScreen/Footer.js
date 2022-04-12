@@ -4,12 +4,12 @@ import videoStyles from '../styles/VideoStyles'
 import { IconButton, Paragraph, Subheading } from 'react-native-paper'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
-import { setFeedState, setIntialPost } from '../redux/actions';
+import { activeFeedState, setFeedState, setIntialPost } from '../redux/actions';
 import * as RootNavigation from '../../RootNavigation';
 
 
 const Footer = (props) => {
-console.log("sds",props)
+    console.log("sds", props)
     const dispatch = useDispatch();
     const feedState = useSelector(state => state.feedState);
     const [show, setshow] = useState(props.post?.description?.length > 80 ? true : false)
@@ -21,14 +21,33 @@ console.log("sds",props)
                 return FeedView;
             case 'profile':
                 return otherProfileState;
+            case 'View':
+                return otherProfileState;
             default:
                 return null;
         }
     }
 
+    const updateFeedState =()=>{
+        switch (ActiveFeed) {
+            case 'profile':
+                dispatch(activeFeedState('feed'))
+                props?.goBack()
+                break;
+                return otherProfileState;
+            case 'View':
+                dispatch(activeFeedState('feed'))    
+                props?.goBack()
+                break;
+            default:
+                return null;
+        }
+        
+    }
+ 
 
-       // Showing This View for Other Profile Posts
-       const otherProfileState = (<>
+    // Showing This View for Other Profile Posts
+    const otherProfileState = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "100%", }}>
                 <FontAwesome name='map-marker' size={24} color="red" />
@@ -69,7 +88,7 @@ console.log("sds",props)
                     animated={true}
                     color="white"
                     size={40}
-                    onPress={() => props?.goBack()}
+                    onPress={() => updateFeedState()}
                 />
             </View>
         </View>

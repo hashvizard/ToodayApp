@@ -8,16 +8,24 @@ import { activeFeedState } from '../../../redux/actions';
 
 export default function ProfileNavBar() {
     const user = useSelector(state => state.auth.currentUser);
-    const dispatch = useDispatch();
+    const feedstate = useSelector(state => state.feedState.active);
+    
+    const NavigateBack = ()=>{
+        switch (feedstate) {
+            case 'View':
+                RootNavigation.navigate('ViewedFeed');
+                break;
+            default:
+
+                RootNavigation.navigate('home');
+        }
+    }
+
     return (
         <View style={styles.container}>
             <Text style={styles.text}>{user?.city}</Text>
             <TouchableOpacity
-                onPress={() => {
-                    dispatch(activeFeedState('feed'))
-                    RootNavigation.navigate('home')
-                }
-                }>
+                onPress={() => NavigateBack()}>
                 <Feather name="x" size={24} />
             </TouchableOpacity>
         </View>

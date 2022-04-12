@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { FlatList, View, ActivityIndicator, Text } from 'react-native'
 import videoStyles from '../../../styles/VideoStyles';
 import { useDispatch } from 'react-redux'
@@ -6,7 +6,7 @@ import ProfilePostListItem from '../../profile/postList/item';
 import { Title } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import { getViewedPosts } from '../../../Apis/LaravelApis/postApi';
-
+import * as RootNavigation from '../../../../RootNavigation';
 export default function ViewedPosts(props) {
 
     const [userPosts, setUserPosts] = useState([]);
@@ -15,27 +15,32 @@ export default function ViewedPosts(props) {
     const [loading, setloading] = useState(false)
 
     const dispatch = useDispatch();
-    useFocusEffect(
-        React.useCallback(() => {
-            if(props.route.params.id){
-            setloading(true);
-            dispatch(getViewedPosts(`view/${props.route.params.id}`))
-                .then(data => {
-                    setloading(false);
-                    setUserPosts(data.posts.data);
-                    setnextpage(data.posts.next_page_url);
-                }).catch(err => console.log("wewe", err));
 
-            }
-            return () => {
+
+    useEffect(() => {
+        setloading(true);
+        dispatch(getViewedPosts(`view/${props.route.params.id}`))
+            .then(data => {
                 setloading(false);
-                setUserPosts([]);
-                setnextpage(null);
-            }
-        }, [props.route.params.id])
-    );
+                setUserPosts(data.posts.data);
+                setnextpage(data.posts.next_page_url);
+            }).catch(err => console.log("wewe", err));
+        return () => {
+            /*    setloading(false);
+               setUserPosts([]);
+               setnextpage(null); */
+        }
+    }, [props.route.params.id])
 
-
+    const goBackHome = (postion) => {
+        RootNavigation.navigate('ViewedFeed', {
+            from: "View",
+            videos: userPosts,
+            nextpage: nextpage,
+            currentIndex: postion
+        })
+        console.log(postion);
+    }
     const onEnd = () => {
         if (nextpage != null && !refreshing) {
             setRefreshing(true);
@@ -55,7 +60,7 @@ export default function ViewedPosts(props) {
         }
     }
 
-    return (<View style={{ flex: 1, ...videoStyles.spaceBottom }}>
+    return (<View style={{ flex: 1, ...videoStyles.spaceBottomView }}>
         {loading == true || userPosts.length <= 0 ?
             <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
                 <ActivityIndicator color="black" size="small" style={{ display: loading ? "flex" : "none" }} />
@@ -73,7 +78,7 @@ export default function ViewedPosts(props) {
                 ListFooterComponent={() => <ActivityIndicator color='black' size="small" style={{ marginVertical: 10, display: refreshing ? "flex" : "none" }} />}
                 onEndReached={onEnd}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item }) => (<ProfilePostListItem item={item} />)}
+                renderItem={({ item, index }) => (<ProfilePostListItem item={item} index={index} goHome={(postion) => goBackHome(postion)} />)}
             />
         }
     </View>)

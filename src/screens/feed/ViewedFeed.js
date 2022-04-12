@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux';
 import { activeFeedState, setFeedState, setIntialPost } from '../../redux/actions';
-import { getAllPosts, getProfilePosts, updtaeViews } from '../../Apis/LaravelApis/postApi';
+import { getAllPosts, getProfilePosts, getViewedPosts, updtaeViews } from '../../Apis/LaravelApis/postApi';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Footer from '../../HomeScreen/Footer';
 import VideoPlayer from 'react-native-video-controls';
-import { ActivityIndicator, AppState,View } from 'react-native';
+import { ActivityIndicator, AppState, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
+import Header from '../../HomeScreen/Header';
+import BlockModal from '../../components/modal/block'
+import ReportModal from '../../components/modal/report'
 
-
-export default function ProfileFeed(props) {
+export default function ViewedFeed(props) {
 
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
@@ -21,6 +23,8 @@ export default function ProfileFeed(props) {
     const [appState, setAppState] = useState(AppState.currentState);
     const user = useSelector(state => state.auth.currentUser);
 
+    const [showblcoked, setShowblcoked] = useState(false);
+    const [showReport, setshowReport] = useState(false);
     useFocusEffect(
         React.useCallback(() => {
             if (props.route?.params?.totalComments && posts.length != 0) {
@@ -45,7 +49,7 @@ export default function ProfileFeed(props) {
     }, []);
 
     useEffect(() => {
-        dispatch(activeFeedState('profile'))
+        dispatch(activeFeedState('View'))
         setPosts(props.route.params?.videos)
         setnextPage(props.route.params?.nextpage)
         setIndex(props.route.params?.currentIndex)
@@ -72,7 +76,7 @@ export default function ProfileFeed(props) {
     }
 
     const DataUpdater = async () => {
-        await dispatch(getProfilePosts(nextPage))
+        await dispatch(getViewedPosts(nextPage))
             .then((data) => {
                 let newData = [...posts, ...data?.data?.data];
                 setPosts(newData);
@@ -92,8 +96,8 @@ export default function ProfileFeed(props) {
 
     if (posts?.length == 0) {
         return (
-            <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-               <ActivityIndicator size="small" color={"black"}  />
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <ActivityIndicator size="small" color={"black"} />
             </View>
         )
     }
@@ -110,12 +114,57 @@ export default function ProfileFeed(props) {
     }
 
 
+    const removePosts = (id) => {
+        let tempData = [...posts];
+        let newData = tempData.filter(function (el) {
+            return el.user.id != id;
+        });
+        if ((newData.length - 4) == index && nextPage != null) {
+            dispatch(getAllPosts(nextPage)).then((data) => {
+                let allData = [...newData, ...data?.data?.data];
+                setPosts(allData);
+                setnextPage(data?.data?.next_page_url)
+                setShowblcoked(false);
+                onSwipeUp();
+            }).catch(err => {
+                console.log(err.message);
+            })
+        } else {
+            setShowblcoked(false);
+            setPosts(newData);
+            onSwipeUp();
+        }
+    }
+
+    const removeReportedPost = (id) => {
+        let tempData = [...posts];
+        let newData = tempData.filter(function (el) {
+            return el.id != id;
+        });
+        if ((newData.length - 4) == index && nextPage != null) {
+            dispatch(getAllPosts(nextPage)).then((data) => {
+                let allData = [...newData, ...data?.data?.data];
+                setPosts(allData);
+                setnextPage(data?.data?.next_page_url)
+                setshowReport(false);
+                onSwipeUp();
+            }).catch(err => {
+                console.log(err.message);
+            })
+        } else {
+            setPosts(newData);
+            onSwipeUp();
+            setshowReport(false);
+        }
+    }
+
     return (<>
         <GestureRecognizer
             onSwipeUp={() => onSwipeUp()}
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
+            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
             {/* {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
@@ -131,7 +180,9 @@ export default function ProfileFeed(props) {
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
                 /> : null} */}
-            <Footer post={currentPost} goBack={()=>props.navigation.goBack()} />
+            <Footer post={currentPost} goBack={() => props.navigation.goBack()} />
+            <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
+            <ReportModal id={currentPost?.id} showModal={showReport} hideModalNow={() => setshowReport(false)} removeReportedPost={(id) => removeReportedPost(id)} />
         </GestureRecognizer>
     </>)
 }
