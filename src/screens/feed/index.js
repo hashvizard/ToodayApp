@@ -235,10 +235,7 @@ export default function FeedScreen(props) {
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-            {FeedState == 'profile' ?
-                null :
                 <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
-            }
             {/* {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}

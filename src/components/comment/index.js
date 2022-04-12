@@ -18,6 +18,9 @@ export default function CommentModal(props) {
     const [nextUrl, setNextUrl] = useState(null)
     const [refreshing, setRefreshing] = React.useState(false);
 
+    const feedState = useSelector(state=>state.feedState.active);
+
+
     useFocusEffect(
         React.useCallback(() => {
             setloading(true);
@@ -89,6 +92,18 @@ export default function CommentModal(props) {
     }
     const element = <TextInput.Icon name="send" onPress={() => handleCommentSend()} />
 
+    const NavigateBack =()=>{
+
+        switch (feedState) {
+            case 'profile':
+                props.navigation.navigate('profileFeed',{totalComments:totalComments})
+                break;
+            default:
+                props.navigation.navigate('home',{totalComments:totalComments});
+                break;
+        }
+      
+    }
     return (<>
         <ImageBackground
             style={{
@@ -100,7 +115,7 @@ export default function CommentModal(props) {
                 style={videoStyles.commentcontainer}
             >
                 <TouchableOpacity
-                    onPress={() => props.navigation.navigate('home',{totalComments:totalComments})}
+                    onPress={() => NavigateBack()}
                     style={{ alignItems: "center", justifyContent: "space-between", flexDirection: "row", paddingTop: 10 }}>
                     <View style={{ alignItems: "center", flexDirection: "row" }}>
                         <IconButton
