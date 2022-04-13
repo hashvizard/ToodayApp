@@ -1,4 +1,4 @@
-import { View, Text } from 'react-native'
+import { View, Text, Alert } from 'react-native'
 import React, { useState, useMemo, useEffect } from 'react'
 import videoStyles from '../styles/VideoStyles'
 import { IconButton, Paragraph, Subheading } from 'react-native-paper'
@@ -9,7 +9,6 @@ import * as RootNavigation from '../../RootNavigation';
 
 
 const Footer = (props) => {
-    console.log("sds", props)
     const dispatch = useDispatch();
     const feedState = useSelector(state => state.feedState);
     const [show, setshow] = useState(props.post?.description?.length > 80 ? true : false)
@@ -23,28 +22,31 @@ const Footer = (props) => {
                 return otherProfileState;
             case 'View':
                 return otherProfileState;
+            case 'UserPosts':
+                return UserPostView;
             default:
                 return null;
         }
     }
 
-    const updateFeedState =()=>{
-        switch (ActiveFeed) {
-            case 'profile':
-                dispatch(activeFeedState('feed'))
-                props?.goBack()
-                break;
-                return otherProfileState;
-            case 'View':
-                dispatch(activeFeedState('feed'))    
-                props?.goBack()
-                break;
-            default:
-                return null;
-        }
-        
+    const updateFeedState = () => {
+        dispatch(activeFeedState('feed'))
+        props?.goBack()
     }
- 
+
+    const deleteAlert = (id) =>
+    Alert.alert(
+      "Delete Post",
+      "Are you sure you want to delete this post ?",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "Confirm", onPress: () => props.deletePost(id)}
+      ]
+    );
 
     // Showing This View for Other Profile Posts
     const otherProfileState = (<>
@@ -94,6 +96,71 @@ const Footer = (props) => {
         </View>
     </>);
 
+    // Showing This View for UserPostView
+    const UserPostView = (<>
+        <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
+            <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "75%", }}>
+                <FontAwesome name='map-marker' size={24} color="red" />
+                <Subheading style={{ marginLeft: 15, color: 'white' }}>{props?.post?.location}</Subheading>
+                <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
+                    {show ? `${props?.post?.description.substr(0, 80)}... ` : props?.post?.description}</Paragraph>
+                <Text
+                    onPress={() => setshow(!show)}
+                    style={{ display: props?.post?.description.length > 80 ? 'flex' : 'none', color: "#5bc0de", }}>
+                    {show ? 'See full description' : 'Show Less'}
+                </Text>
+            </View>
+            <View style={{ width: "25%", alignItems: "flex-end" }}>
+                <View style={{}}>
+                    <IconButton
+                        icon="trash-can"
+                        animated={true}
+                        color="#d9534f"
+                        size={40}
+                        onPress={() => deleteAlert(props?.post.id)}
+                    />
+                    <IconButton
+                        icon="pencil"
+                        color="white"
+                        animated={true}
+                        size={40}
+                        onPress={() => console.log('Pressed')}
+                    />
+                </View>
+            </View>
+        </View>
+
+        <View style={{
+            flexDirection: "row", justifyContent: "space-between", alignItems: "center"
+        }}>
+            <View style={{ flexDirection: "row", paddingHorizontal: 10, alignItems: "center", justifyContent: "space-between", width: "75%" }}>
+                <IconButton
+                    icon="eye"
+                    color="#5bc0de"
+                    animated={true}
+                    size={34}
+                />
+                <Text style={{ color: "white" }}>{props?.post?.views}</Text>
+                <IconButton
+                    icon="comment"
+                    animated={true}
+                    color="white"
+                    size={34}
+                    onPress={() => RootNavigation.navigate('comment', { id: props?.post.id })}
+                />
+                <Text style={{ color: "white" }}>{props?.post?.comments}</Text>
+            </View>
+            <View style={{ width: "25%", alignItems: "flex-end" }}>
+                <IconButton
+                    icon="close-circle"
+                    animated={true}
+                    color="white"
+                    size={40}
+                    onPress={() => updateFeedState()}
+                />
+            </View>
+        </View>
+    </>);
 
     // Showing This View for Feed State
     const FeedView = (<>

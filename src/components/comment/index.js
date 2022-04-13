@@ -101,6 +101,9 @@ export default function CommentModal(props) {
             case 'View':
                 props.navigation.navigate('ViewedFeed', { totalComments: totalComments })
                 break;
+                case 'UserPosts':
+                    props.navigation.navigate('UserFeeds', { totalComments: totalComments })
+                    break;
             default:
                 props.navigation.navigate('home', { totalComments: totalComments });
                 break;

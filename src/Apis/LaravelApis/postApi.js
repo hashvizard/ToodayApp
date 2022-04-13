@@ -81,3 +81,13 @@ export const addComment = (data) => dispatch => new Promise((resolve, reject) =>
         resolve(response);
     }).catch(error => reject(error))
 })
+
+/**
+ * Remove Post 
+*/
+
+export const removePost = (id) => dispatch => new Promise((resolve, reject) => {
+    delDataApi(`posts/${id}`).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})

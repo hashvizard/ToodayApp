@@ -20,6 +20,7 @@ import Gallery from '../../screens/camera/Gallery';
 import GalleryView from '../../screens/camera/GalleryView';
 import ProfileFeed from '../../screens/feed/ProfileFeed';
 import ViewedFeed from '../../screens/feed/ViewedFeed';
+import UserFeed from '../../screens/feed/UserFeed';
 
 const Stack = createStackNavigator()
 
@@ -50,6 +51,7 @@ export default function Route() {
                         <Stack.Screen name="home" component={FeedScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="profileFeed" component={ProfileFeed} options={{ headerShown: false }} />
                         <Stack.Screen name="ViewedFeed" component={ViewedFeed} options={{ headerShown: false }} />
+                        <Stack.Screen name="UserFeeds" component={UserFeed} options={{ headerShown: false }} />
                         <Stack.Screen name="savePost" component={SavePostScreen} options={{ headerShown: false,title:"Description" }} />
                         <Stack.Screen name="userPosts" component={FeedScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="profileOther" component={ProfileScreen} options={{ headerShown: false }} />
