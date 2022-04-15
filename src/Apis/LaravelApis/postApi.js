@@ -1,4 +1,4 @@
-import { delDataApi, getDataApi, postDataApi } from "../apis"
+import { delDataApi, getDataApi, postDataApi, putDataApi } from "../apis"
 
 /**
  * Get User Profile Reviews
@@ -76,6 +76,17 @@ export const getPostComments = (url) => dispatch => new Promise((resolve, reject
 
 export const addComment = (data) => dispatch => new Promise((resolve, reject) => {
     postDataApi('comment',data).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+
+/**
+ * Remove Post 
+*/
+
+export const updatePost = (url,data) => dispatch => new Promise((resolve, reject) => {
+    putDataApi(url,data).then(response => {
         resolve(response);
     }).catch(error => reject(error))
 })

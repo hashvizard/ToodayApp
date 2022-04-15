@@ -9,6 +9,7 @@ import * as RootNavigation from '../../RootNavigation';
 
 
 const Footer = (props) => {
+    console.log(props.post)
     const dispatch = useDispatch();
     const feedState = useSelector(state => state.feedState);
     const [show, setshow] = useState(props.post?.description?.length > 80 ? true : false)
@@ -124,7 +125,8 @@ const Footer = (props) => {
                         color="white"
                         animated={true}
                         size={40}
-                        onPress={() => console.log('Pressed')}
+                        onPress={() => RootNavigation.navigate('editPost',
+                        {source:props.post?.photoUrl,desc:props.post?.description,location:props.post?.location,id:props.post?.id})}
                     />
                 </View>
             </View>

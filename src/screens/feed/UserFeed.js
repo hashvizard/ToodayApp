@@ -27,6 +27,13 @@ export default function UserFeed(props) {
                 newData[index].comments = props.route?.params?.totalComments;
                 setPosts(newData);
             }
+            if (props.route?.params?.videodata) {
+                let newData = [...posts];
+                newData[index].description = props.route?.params?.videodata?.description;
+                newData[index].location = props.route?.params?.videodata?.location;
+                setPosts(newData);
+            }
+
         }, [props.route.params])
     );
 
