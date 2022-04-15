@@ -27,7 +27,6 @@ export default function CommentModal(props) {
             if (props.route.params?.id) {
                 dispatch(getPostComments(`comment/${props.route.params.id}`))
                     .then(data => {
-                        console.log(data.data.data[0])
                         setloading(false);
                         settotalComments(data.data.total);
                         setCommentList(data.data.data);
@@ -62,9 +61,6 @@ export default function CommentModal(props) {
                     setComment('');
                     Keyboard.dismiss();
                 }
-                else {
-                    console.log(data.message);
-                }
             }).catch(err => {
                 console.log("er", err);
             });
@@ -86,8 +82,6 @@ export default function CommentModal(props) {
                     console.log(err)
                     setRefreshing(false);
                 });
-        } else {
-            console.log(nextUrl)
         }
     }
     const element = <TextInput.Icon name="send" onPress={() => handleCommentSend()} />

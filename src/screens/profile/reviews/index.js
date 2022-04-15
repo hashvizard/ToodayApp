@@ -39,7 +39,7 @@ export default function ReviewModal(props) {
             else {
                 dispatch(getProfileReviews(`reviews/${initialUserId}`))
                     .then(data => {
-                        console.log(data);
+                       
                     }).catch(err => console.log(err));
             }
           
@@ -67,9 +67,6 @@ export default function ReviewModal(props) {
                     setReviewList([...data.data, ...reviewList]);
                     settotalReviews(totalReviews+1);
                 }
-                else {
-                    console.log(data.message);
-                }
             }).catch(err => {
                 console.log(err);
             });
@@ -91,8 +88,6 @@ export default function ReviewModal(props) {
                     console.log(err)
                     setRefreshing(false);
                 });
-        } else {
-            console.log(nextUrl)
         }
     }
 

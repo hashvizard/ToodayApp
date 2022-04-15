@@ -18,6 +18,14 @@ export default function UserPosts(props) {
 
     const dispatch = useDispatch();
 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (props.route.params?.from == "UserPosts") {
+                setUserPosts(props.route.params?.videos);
+                setnextpage(props.route.params?.nextpage);
+            }
+        }, [props.route.params?.from, props.route.params?.videos, props.route.params?.nextpage])
+    );
 
     useEffect(() => {
         setloading(true);
@@ -27,14 +35,7 @@ export default function UserPosts(props) {
                 setUserPosts(data.posts.data);
                 setnextpage(data.posts.next_page_url);
             }).catch(err => console.log("wewe", err));
-
-        
-        return () => {
-      /*       setloading(false);
-            setUserPosts([]);
-            setnextpage(null); */
-        }
-    }, [props.route.params.id])
+    }, [])
 
     const goBackHome = (postion) => {
         RootNavigation.navigate('UserFeeds', {
@@ -43,7 +44,6 @@ export default function UserPosts(props) {
             nextpage: nextpage,
             currentIndex: postion
         })
-        console.log(postion);
     }
 
     const onEnd = () => {
@@ -51,7 +51,6 @@ export default function UserPosts(props) {
             setRefreshing(true);
             dispatch(getUserPosts(nextpage))
                 .then(data => {
-                    console.log(data.posts.data)
                     let dataa = [...userPosts, ...data.posts.data];
                     setUserPosts(dataa);
                     setnextpage(data.posts.next_page_url);
@@ -60,9 +59,7 @@ export default function UserPosts(props) {
                     console.log(err)
                     setRefreshing(false);
                 });
-        } else {
-            console.log(nextpage)
-        }
+        } 
     }
 
     return (<View style={{ flex: 1, ...videoStyles.spaceBottomView }}>
@@ -83,7 +80,7 @@ export default function UserPosts(props) {
                 ListFooterComponent={() => <ActivityIndicator color='black' size="small" style={{ marginVertical: 10, display: refreshing ? "flex" : "none" }} />}
                 onEndReached={onEnd}
                 keyExtractor={(item) => item.id}
-                renderItem={({ item,index }) => (<ProfilePostListItem item={item} index={index} goHome={(postion) => goBackHome(postion)}  />)}
+                renderItem={({ item, index }) => (<ProfilePostListItem item={item} index={index} goHome={(postion) => goBackHome(postion)} />)}
             />
         }
     </View>)

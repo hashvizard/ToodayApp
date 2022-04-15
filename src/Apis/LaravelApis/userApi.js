@@ -5,7 +5,6 @@ import { delDataApi, getDataApi, postDataApi } from "../apis"
 */
 
 export const getProfileReviews = (url) => dispatch => new Promise((resolve, reject) => {
-    console.log(url)
     getDataApi(url).then(response => {
         resolve(response);
     }).catch(error => reject(error))

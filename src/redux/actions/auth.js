@@ -47,15 +47,11 @@ export const userAuthStateListener = () => dispatch => {
             
             dispatch(getUserData()).then(data => {
                 if (data.status) {
-                    console.log("after token",data?.data[0])
                     dispatch({
                         type: USER_STATE_CHANGE,
                         currentUser: data?.data[0],
                         loaded: true
                     })
-                }
-                else {
-                    console.log(data.message)
                 }
             }).catch(err => {
                 console.log(err);

@@ -10,8 +10,7 @@ const Navbar = (props) => {
 
     const User = useSelector(state => state.auth);
     const post = useSelector(state => state.initialPost);
-    console.log(User);
-    console.log(props)
+  
     return (
         <View style={{ ...videoStyles.header }}>
             <View style={{

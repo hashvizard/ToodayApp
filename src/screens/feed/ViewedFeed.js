@@ -11,6 +11,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import Header from '../../HomeScreen/Header';
 import BlockModal from '../../components/modal/block'
 import ReportModal from '../../components/modal/report'
+import * as RootNavigation from '../../../RootNavigation';
 
 export default function ViewedFeed(props) {
 
@@ -65,9 +66,7 @@ export default function ViewedFeed(props) {
     const onSwipeUp = () => {
 
         if (index < posts.length - 1) {
-            console.log(index, posts.length)
             setcurrentPost(posts[index + 1])
-            console.log(posts[index + 1])
             setIndex(index + 1);
         }
         if ((posts.length - 4) == index && nextPage != null) {
@@ -180,7 +179,13 @@ export default function ViewedFeed(props) {
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
                 /> : null} */}
-            <Footer post={currentPost} goBack={() => props.navigation.goBack()} />
+            <Footer post={currentPost} goBack={() => {
+                RootNavigation.navigate('viewedPosts', {
+                    from: "View",
+                    videos: posts,
+                    nextpage: nextPage,
+                })
+            }} />
             <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
             <ReportModal id={currentPost?.id} showModal={showReport} hideModalNow={() => setshowReport(false)} removeReportedPost={(id) => removeReportedPost(id)} />
         </GestureRecognizer>

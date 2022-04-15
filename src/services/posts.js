@@ -186,7 +186,6 @@ export const getLikedPostByUserId = (uid = auth().currentUser.uid) => new Promis
         const id = doc.id
         return { id, ...data }
       });
-      console.log(posts);
       resolve(posts)
     })
 })

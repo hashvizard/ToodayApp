@@ -5,10 +5,10 @@ import { getAllPosts, getProfilePosts, updtaeViews } from '../../Apis/LaravelApi
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Footer from '../../HomeScreen/Footer';
 import VideoPlayer from 'react-native-video-controls';
-import { ActivityIndicator, AppState,View } from 'react-native';
+import { ActivityIndicator, AppState, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
-
+import * as RootNavigation from '../../../RootNavigation';
 
 export default function ProfileFeed(props) {
 
@@ -20,6 +20,7 @@ export default function ProfileFeed(props) {
     const [currentPost, setcurrentPost] = useState({});
     const [appState, setAppState] = useState(AppState.currentState);
     const user = useSelector(state => state.auth.currentUser);
+    const [profileUser, setProfileUser] = useState(null);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -46,6 +47,7 @@ export default function ProfileFeed(props) {
 
     useEffect(() => {
         dispatch(activeFeedState('profile'))
+        setProfileUser(props.route.params?.user);
         setPosts(props.route.params?.videos)
         setnextPage(props.route.params?.nextpage)
         setIndex(props.route.params?.currentIndex)
@@ -61,9 +63,7 @@ export default function ProfileFeed(props) {
     const onSwipeUp = () => {
 
         if (index < posts.length - 1) {
-            console.log(index, posts.length)
             setcurrentPost(posts[index + 1])
-            console.log(posts[index + 1])
             setIndex(index + 1);
         }
         if ((posts.length - 4) == index && nextPage != null) {
@@ -92,8 +92,8 @@ export default function ProfileFeed(props) {
 
     if (posts?.length == 0) {
         return (
-            <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
-               <ActivityIndicator size="small" color={"black"}  />
+            <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+                <ActivityIndicator size="small" color={"black"} />
             </View>
         )
     }
@@ -131,7 +131,14 @@ export default function ProfileFeed(props) {
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
                 /> : null} */}
-            <Footer post={currentPost} goBack={()=>props.navigation.goBack()} />
+            <Footer post={currentPost} goBack={() => {
+                RootNavigation.navigate('profileOther', {
+                    from: "user",
+                    user: profileUser,
+                    videos: posts,
+                    nextpage: nextPage,
+                })
+            }} />
         </GestureRecognizer>
     </>)
 }

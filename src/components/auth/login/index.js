@@ -33,7 +33,6 @@ export default function UserLogin(props) {
         dispatch(login(googleCredential))
             .then((data) => {
                 dispatch(createNewuser(data)).then((data) => {
-                    console.log(data)
                     if(!data.status){
                         props.navigation.navigate("Error", { error:data.message });
                     }else{

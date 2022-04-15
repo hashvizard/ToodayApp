@@ -36,7 +36,6 @@ export const getViewedPosts = (url) => dispatch => new Promise((resolve, reject)
 
 export const getAllPosts = (url) => dispatch => new Promise((resolve, reject) => {
     getDataApi(url).then(response => {
-        console.log(response);
         resolve(response);
     }).catch(error => reject(error))
 })
@@ -47,7 +46,6 @@ export const getAllPosts = (url) => dispatch => new Promise((resolve, reject) =>
 
 export const updtaeViews = (data) => dispatch => new Promise((resolve, reject) => {
     postDataApi('view',data).then(response => {
-        console.log(response);
         resolve(response);
     }).catch(error => reject(error))
 })

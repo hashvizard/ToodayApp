@@ -35,18 +35,18 @@ const Footer = (props) => {
     }
 
     const deleteAlert = (id) =>
-    Alert.alert(
-      "Delete Post",
-      "Are you sure you want to delete this post ?",
-      [
-        {
-          text: "Cancel",
-          onPress: () => console.log("Cancel Pressed"),
-          style: "cancel"
-        },
-        { text: "Confirm", onPress: () => props.deletePost(id)}
-      ]
-    );
+        Alert.alert(
+            "Delete Post",
+            "Are you sure you want to delete this post ?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Confirm", onPress: () => props.deletePost(id) }
+            ]
+        );
 
     // Showing This View for Other Profile Posts
     const otherProfileState = (<>

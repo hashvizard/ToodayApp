@@ -129,9 +129,7 @@ export default function FeedScreen(props) {
     const onSwipeUp = () => {
 
         if (index < posts.length - 1) {
-            console.log(index, posts.length)
             setcurrentPost(posts[index + 1])
-            console.log(posts[index + 1])
             setIndex(index + 1);
         }
         if ((posts.length - 4) == index && nextPage != null) {

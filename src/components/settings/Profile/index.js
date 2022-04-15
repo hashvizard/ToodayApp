@@ -20,7 +20,7 @@ const ProfileEdit = (props) => {
 
     const [showModal, setshowModal] = useState({ 'type': '', 'show': false });
 
-    console.log(user)
+    
     useEffect(() => { }, [showModal])
 
 

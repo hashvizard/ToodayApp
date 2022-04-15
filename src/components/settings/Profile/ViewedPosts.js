@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { FlatList, View, ActivityIndicator, Text } from 'react-native'
 import videoStyles from '../../../styles/VideoStyles';
 import { useDispatch } from 'react-redux'
@@ -16,6 +16,14 @@ export default function ViewedPosts(props) {
 
     const dispatch = useDispatch();
 
+    useFocusEffect(
+        React.useCallback(() => {
+            if (props.route.params?.from == "View") {
+                setUserPosts(props.route.params?.videos);
+                setnextpage(props.route.params?.nextpage);
+            }
+        }, [props.route.params?.from, props.route.params?.videos, props.route.params?.nextpage])
+    );
 
     useEffect(() => {
         setloading(true);
@@ -25,12 +33,7 @@ export default function ViewedPosts(props) {
                 setUserPosts(data.posts.data);
                 setnextpage(data.posts.next_page_url);
             }).catch(err => console.log("wewe", err));
-        return () => {
-            /*    setloading(false);
-               setUserPosts([]);
-               setnextpage(null); */
-        }
-    }, [props.route.params.id])
+    }, [])
 
     const goBackHome = (postion) => {
         RootNavigation.navigate('ViewedFeed', {
@@ -39,14 +42,12 @@ export default function ViewedPosts(props) {
             nextpage: nextpage,
             currentIndex: postion
         })
-        console.log(postion);
     }
     const onEnd = () => {
         if (nextpage != null && !refreshing) {
             setRefreshing(true);
             dispatch(getViewedPosts(nextpage))
                 .then(data => {
-                    console.log(data.posts.data)
                     let dataa = [...userPosts, ...data.posts.data];
                     setUserPosts(dataa);
                     setnextpage(data.posts.next_page_url);
@@ -55,8 +56,6 @@ export default function ViewedPosts(props) {
                     console.log(err)
                     setRefreshing(false);
                 });
-        } else {
-            console.log(nextpage)
         }
     }
 

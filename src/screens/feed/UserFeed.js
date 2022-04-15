@@ -31,7 +31,6 @@ export default function UserFeed(props) {
     );
 
 
-
     useEffect(() => {
         const appStateListener = AppState.addEventListener(
             'change',
@@ -58,8 +57,23 @@ export default function UserFeed(props) {
         directionalOffsetThreshold: 80
     };
 
-    const onSwipeUp = () => {
 
+    const deleteUp = (data) => {
+        if (index <= data.length) {
+            if (index > 0) {
+                setcurrentPost(data[index - 1])
+                setIndex(index - 1)
+            } else {
+                setcurrentPost(data[index])
+            }
+            setPosts(data);
+        }
+        if ((data.length - 4) == index && nextPage != null) {
+            DataUpdater()
+        }
+    }
+
+    const onSwipeUp = () => {
         if (index < posts.length - 1) {
             setcurrentPost(posts[index + 1])
             setIndex(index + 1);
@@ -109,45 +123,26 @@ export default function UserFeed(props) {
 
 
     const removePosts = (id) => {
-        console.log("i am in")
         dispatch(removePost(id)).then((data) => {
-            console.log("i am in 2")
             if (data?.status) {
-                console.log("i am in 3")
                 let tempData = [...posts];
                 let newData = tempData.filter(function (el) {
                     return el.id != id;
                 });
 
-                if ((newData.length - 4) == index && nextPage != null) {
-                    dispatch(getAllPosts(nextPage)).then((data) => {
-                        let allData = [...newData, ...data?.data?.data];
-                        console.log("I camed in")
-                        if (allData?.length == 0) {
-                            console.log("I camed in again")  
-                            RootNavigation.navigate('profilePosts');
-                        } else {
-                            setPosts(allData);
-                            setnextPage(data?.data?.next_page_url)
-                            onSwipeUp();
-                        }
-                    }).catch(err => {
-                        console.log(err.message);
+                if ((newData?.length) == 0) {
+                    RootNavigation.navigate('profilePosts', {
+                        from: "UserPosts",
+                        videos: newData,
+                        nextpage: nextPage,
                     })
                 } else {
-                    console.log("i am in 4", tempData?.length)
-                    if ((tempData?.length - 2)  == 0) {
-                        props.navigation.goback();
-                    } else {
-                        setPosts(newData);
-                        onSwipeUp();
-                    }
+                    deleteUp(newData);
                 }
             }
         }).catch(err => {
             console.log(err)
         })
-
     }
 
 
@@ -173,7 +168,15 @@ export default function UserFeed(props) {
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
                 /> : null} */}
-            <Footer post={currentPost} goBack={() => props.navigation.goBack()} deletePost={(id) => removePosts(id)} />
+            <Footer post={currentPost}
+                goBack={() => {
+                    RootNavigation.navigate('profilePosts', {
+                        from: "UserPosts",
+                        videos: posts,
+                        nextpage: nextPage,
+                    })
+                }}
+                deletePost={(id) => removePosts(id)} />
         </GestureRecognizer>
     </>)
 }
