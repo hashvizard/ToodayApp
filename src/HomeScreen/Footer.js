@@ -1,4 +1,4 @@
-import { View, Text, Alert } from 'react-native'
+import { View, Text, Alert, ActivityIndicator, } from 'react-native'
 import React, { useState, useMemo, useEffect } from 'react'
 import videoStyles from '../styles/VideoStyles'
 import { IconButton, Paragraph, Subheading } from 'react-native-paper'
@@ -126,7 +126,7 @@ const Footer = (props) => {
                         animated={true}
                         size={40}
                         onPress={() => RootNavigation.navigate('editPost',
-                        {source:props.post?.photoUrl,desc:props.post?.description,location:props.post?.location,id:props.post?.id})}
+                            { source: props.post?.photoUrl, desc: props.post?.description, location: props.post?.location, id: props.post?.id })}
                     />
                 </View>
             </View>
@@ -167,9 +167,15 @@ const Footer = (props) => {
     // Showing This View for Feed State
     const FeedView = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
-            <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "75%", }}>
+            <View style={{ flexDirection: "column", padding: 20, alignItems: "flex-start", flexWrap: "wrap", zIndex: 0, width: "75%", }}>
+            <View style={{ flexDirection: "row",display:props.uploading?"flex":"none", alignItems: "center", alignSelf: "flex-start", elevation: 10, padding: 10,marginLeft:-7,marginBottom:15,borderRadius:10, backgroundColor: "rgba(0,0,0,0.5)" }}>
+                    <ActivityIndicator size="small" color='white' />
+                    <Text style={{ color: "white", marginLeft: 10 }}>Uploading {props.progress}</Text>
+                </View>
+                <View style={{flexDirection:"row",alignItems:"center"}}>
                 <FontAwesome name='map-marker' size={24} color="red" />
                 <Subheading style={{ marginLeft: 15, color: 'white' }}>{props?.post?.location}</Subheading>
+                </View>
                 <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
                     {show ? `${props?.post?.description.substr(0, 80)}... ` : props?.post?.description}</Paragraph>
                 <Text

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React,{useEffect} from 'react'
 import videoStyles from '../styles/VideoStyles'
-import { Avatar, IconButton, Title, Button, Menu, Divider, Provider, Paragraph } from 'react-native-paper'
+import { Avatar, IconButton, Title, Button, Menu, Divider, Provider, Paragraph, ActivityIndicator } from 'react-native-paper'
 import { useDispatch, useSelector } from 'react-redux'
 import { blockAndRemove, openBlockModal, setFeedState } from '../redux/actions'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
@@ -29,7 +29,7 @@ const Header = ({user,showBlock,showReport}) => {
             <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", width: "100%", justifyContent: 'space-between' }}>
                 <View style={{ alignItems: "flex-start", justifyContent: "flex-start", alignSelf: "flex-start", width: "55%", padding: 15 }}>
                         <TouchableOpacity onPress={()=> {
-                            currentuser.id == user?.id ?RootNavigation.navigate('settings') :RootNavigation.navigate('profileOther',{user:user});
+                            currentuser.id == user?.id ?RootNavigation.navigate('settings',{ myParam: undefined }) :RootNavigation.navigate('profileOther',{user:user});
                             
                             }} style={{ flexDirection: "row", alignItems: "center" }}>
                         <Avatar.Image size={30} source={{ uri: user?.profile }} />
