@@ -63,7 +63,7 @@ export default function FeedScreen(props) {
                 { name: 'location', data: datas.location },
                 { name: 'description', data: datas.description },
             ]).uploadProgress({ interval : 5000 },(written, total) => {
-                console.log('uploaded',parseFloat(written).toFixed(2) * 100)
+                console.log('uploaded',(parseFloat(written).toFixed(2)) * 100)
             })
             .then((response) => response.json())
             .then((RetrivedData) => {
