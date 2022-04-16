@@ -29,6 +29,20 @@ const headersOption = async () => {
 }
 
 /**
+ * header
+ */
+ const fileHeadersOption = async () => {
+    let token = await AsyncStorage.getItem('tooday_user_token');
+    return {
+        headers: {
+           
+            "Authorization": `Bearer ${token}`,
+            "Accept": 'application/json'
+        }
+    };
+}
+
+/**
  * call API
  * 
  * @param {string} url 
@@ -38,6 +52,22 @@ const headersOption = async () => {
 export const postDataApi = async (url, data) => {
     try {
         const response = await axios.post(BASE_URL + url, data, await headersOption());
+        return response.data;
+    } catch (err) {
+        return err.response.data;
+    }
+};
+
+/**
+ * call API
+ * 
+ * @param {string} url 
+ * @param {object} data 
+ * @returns 
+ */
+ export const postfileApi = async (url, data) => {
+    try {
+        const response = await axios.post(BASE_URL + url, data, await fileHeadersOption());
         return response.data;
     } catch (err) {
         return err.response.data;

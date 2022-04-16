@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import NoDataFound from '../../components/FeedLoaders/NoDataFound';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeFeedState, setFeedState, setIntialPost } from '../../redux/actions';
-import { getAllPosts, getProfilePosts, updtaeViews } from '../../Apis/LaravelApis/postApi';
+import { addPost, getAllPosts, getProfilePosts, updtaeViews } from '../../Apis/LaravelApis/postApi';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../HomeScreen/Header';
 import Footer from '../../HomeScreen/Footer';
@@ -14,7 +14,8 @@ import ReportModal from '../../components/modal/report'
 import { useFocusEffect } from '@react-navigation/native';
 import { ProcessingManager } from 'react-native-video-processing';
 import { UploadVideos } from '../../helpers/UploadVideos';
-
+import RNFetchBlob from 'react-native-fetch-blob'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export default function FeedScreen(props) {
 
@@ -50,34 +51,27 @@ export default function FeedScreen(props) {
 
     const updateVideo = async (datas) => {
         let data = await getData(datas.video)
-        let options = {
-            taskName: 'Example',
-            taskTitle: 'ExampleTask title',
-            taskDesc: 'ExampleTask desc',
-            user: user,
-            postDescription: datas.description,
-            path: data.path,
-            thumbnail: data.thumbnail,
-            location: datas.location,
-            taskIcon: {
-                name: 'ic_launcher',
-                type: 'mipmap',
-            },
-            color: '#ff00ff',
-            linkingURI: 'exampleScheme://chat/jane',
-            parameters: {
-                delay: 1000,
-            },
-        };
+        let token = await AsyncStorage.getItem('tooday_user_token');
 
-        /*   try {
-              console.log('Trying to start background service');
-              await UploadVideos(options);
-              console.log('Successful start!');
-          } catch (e) {
-              console.log('Error', e);
-          } */
-
+        RNFetchBlob.fetch('POST', 'http://10.0.2.2:8000/api/posts', {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': "multipart/form-data",
+        },
+            [
+                { name: 'photoUrl', filename: 'tooday.png', data: data.thumbnail },
+                { name: 'videoUrl', filename: 'tooday.mp4', type: 'video/mp4', data: RNFetchBlob.wrap(data.path) },
+                { name: 'location', data: datas.location },
+                { name: 'description', data: datas.description },
+            ]).uploadProgress({ interval : 5000 },(written, total) => {
+                console.log('uploaded',parseFloat(written).toFixed(2) * 100)
+            })
+            .then((response) => response.json())
+            .then((RetrivedData) => {
+                console.log(RetrivedData);
+            })
+            .catch((err) => {
+                console.log(err);
+            })
     }
 
 
@@ -91,6 +85,7 @@ export default function FeedScreen(props) {
             minimumBitrate: 300000
         });
         const thumbnail = await ProcessingManager.getPreviewForSecond(result.source);
+
         return { path: result.source, thumbnail: thumbnail };
     }
 
@@ -233,7 +228,7 @@ export default function FeedScreen(props) {
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-                <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
+            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
             {/* {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
