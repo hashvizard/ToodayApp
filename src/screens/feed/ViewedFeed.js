@@ -164,7 +164,7 @@ export default function ViewedFeed(props) {
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
             <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
-            {/* {currentPost ?
+            {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
                     showOnStart={false}
@@ -178,7 +178,7 @@ export default function ViewedFeed(props) {
                     repeat={false}
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
-                /> : null} */}
+                /> : null}
             <Footer post={currentPost} goBack={() => {
                 RootNavigation.navigate('viewedPosts', {
                     from: "View",

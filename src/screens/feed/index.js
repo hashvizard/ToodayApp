@@ -273,7 +273,7 @@ export default function FeedScreen(props) {
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
             <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
-            {/* {currentPost ?
+            {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
                     showOnStart={false}
@@ -287,7 +287,7 @@ export default function FeedScreen(props) {
                     repeat={false}
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
-                /> : null} */}
+                /> : null}
             <Footer progress={progress} uploading={uploading} post={currentPost} goBack={() => props.navigation.goBack()} />
         </GestureRecognizer>
         <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />

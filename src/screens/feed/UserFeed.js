@@ -160,7 +160,7 @@ export default function UserFeed(props) {
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-            {/* {currentPost ?
+            {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
                     showOnStart={false}
@@ -174,7 +174,7 @@ export default function UserFeed(props) {
                     repeat={false}
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
-                /> : null} */}
+                /> : null}
             <Footer post={currentPost}
                 goBack={() => {
                     RootNavigation.navigate('profilePosts', {
