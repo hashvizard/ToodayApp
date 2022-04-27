@@ -32,12 +32,15 @@ export default function UserLogin(props) {
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
         dispatch(login(googleCredential))
             .then((data) => {
-                dispatch(createNewuser(data)).then((data) => {
-                    if(!data.status){
-                        props.navigation.navigate("Error", { error:data.message });
+                
+                dispatch(createNewuser(data)).then((newData) => {
+                   
+                    if(!newData.status){
+                        props.navigation.navigate("Error", { error:newData.message });
                     }else{
-                        dispatch(setUserData(data))}
+                        dispatch(setUserData(newData))}
                 }).catch((error) => {
+                    console.log(error)
                     props.navigation.navigate("Error", { error });
                 })
                 setsigninStatus(false);

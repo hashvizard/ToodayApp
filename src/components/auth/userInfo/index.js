@@ -33,13 +33,12 @@ const UserInfo = () => {
       let data = userInfo;
       data.city_id = cityData.data[0].id;
       data.city = cityData.data[0].city;
-
+     
       dispatch({ type: USER_STATE_CHANGE, currentUser: data, loaded: true })
       setUpdating(false);
 
     }).catch(err => {
       setUpdating(false);
-      console.log(err)
 
     })
   }

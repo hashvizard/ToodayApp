@@ -88,9 +88,10 @@ export const getCurrentUserData = () => dispatch => {
 export const setUserData = (user) => dispatch => {
   
     setToken(user.data.token).then(() => {
+        console.log("yyy",user.data.user)
         return dispatch({
             type: USER_STATE_CHANGE,
-            currentUser: user.data.user[0],
+            currentUser: user.data.user,
             loaded: true
         })
     }).catch((e) => {
