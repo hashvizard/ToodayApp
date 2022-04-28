@@ -7,7 +7,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../HomeScreen/Header';
 import Footer from '../../HomeScreen/Footer';
 import VideoPlayer from 'react-native-video-controls';
-import { AppState } from 'react-native';
+import { AppState, StatusBar } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import BlockModal from '../../components/modal/block'
 import ReportModal from '../../components/modal/report'
@@ -267,12 +267,13 @@ export default function FeedScreen(props) {
     }
 
     return (<>
+    <StatusBar barStyle='light-content' translucent={true}/>
         <GestureRecognizer
             onSwipeUp={() => onSwipeUp()}
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-            <Header user={currentPost?.user} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
+            <Header user={currentPost?.user} post={currentPost} showBlock={() => setShowblcoked(true)} showReport={() => setshowReport(true)} />
             {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
@@ -288,7 +289,7 @@ export default function FeedScreen(props) {
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
                 /> : null}
-            <Footer progress={progress} uploading={uploading} post={currentPost} goBack={() => props.navigation.goBack()} />
+            <Footer user={currentPost?.user} progress={progress} uploading={uploading} post={currentPost} goBack={() => props.navigation.goBack()} />
         </GestureRecognizer>
         <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
         <ReportModal id={currentPost?.id} showModal={showReport} hideModalNow={() => setshowReport(false)} removeReportedPost={(id) => removeReportedPost(id)} />

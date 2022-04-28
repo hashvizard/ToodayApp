@@ -1,7 +1,7 @@
 import { SET_OPEN_STATE, INTIAL_POST, ACTIVE_FEED_STATE } from '../constants';
 
 const initialState = {
-    open: null,
+    open: 'BOTTOM',
     index: 0,
     active: 'feed'
 }

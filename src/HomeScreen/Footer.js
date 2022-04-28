@@ -1,7 +1,7 @@
-import { View, Text, Alert, ActivityIndicator, } from 'react-native'
+import { View, Text, Alert, ActivityIndicator, TouchableOpacity, } from 'react-native'
 import React, { useState, useMemo, useEffect } from 'react'
 import videoStyles from '../styles/VideoStyles'
-import { IconButton, Paragraph, Subheading } from 'react-native-paper'
+import { Avatar, IconButton, Paragraph, Subheading, Title } from 'react-native-paper'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeFeedState, setFeedState, setIntialPost } from '../redux/actions';
@@ -14,6 +14,7 @@ const Footer = (props) => {
     const feedState = useSelector(state => state.feedState);
     const [show, setshow] = useState(props.post?.description?.length > 80 ? true : false)
     const ActiveFeed = useSelector(state => state.feedState.active);
+    const currentuser = useSelector(state => state.auth.currentUser);
 
     const RenderFunction = () => {
         switch (ActiveFeed) {
@@ -53,8 +54,10 @@ const Footer = (props) => {
     const otherProfileState = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "100%", }}>
+
                 <FontAwesome name='map-marker' size={24} color="red" />
                 <Subheading style={{ marginLeft: 15, color: 'white' }}>{props.post?.location}</Subheading>
+
                 <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
                     {show ? `${props.post?.description.substr(0, 80)}... ` : props.post?.description}</Paragraph>
                 <Text
@@ -167,14 +170,18 @@ const Footer = (props) => {
     // Showing This View for Feed State
     const FeedView = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
-            <View style={{ flexDirection: "column", padding: 20, alignItems: "flex-start", flexWrap: "wrap", zIndex: 0, width: "75%", }}>
-            <View style={{ flexDirection: "row",display:props.uploading?"flex":"none", alignItems: "center", alignSelf: "flex-start", elevation: 10, padding: 10,marginLeft:-7,marginBottom:15,borderRadius:10, backgroundColor: "rgba(0,0,0,0.5)" }}>
+            <View style={{ flexDirection: "column", padding: 20, alignItems: "flex-start", flexWrap: "wrap", zIndex: 0, width: "85%", }}>
+                <View style={{ flexDirection: "row", display: props.uploading ? "flex" : "none", alignItems: "center", alignSelf: "flex-start", elevation: 10, padding: 10, marginLeft: -7, marginBottom: 15, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.5)" }}>
                     <ActivityIndicator size="small" color='white' />
-                    <Text style={{ color: "white", marginLeft: 10 }}>Uploading {props.progress}</Text>
+                    <Text style={{ color: "reds", marginLeft: 10 }}>Uploading {props.progress}</Text>
                 </View>
-                <View style={{flexDirection:"row",alignItems:"center"}}>
-                <FontAwesome name='map-marker' size={24} color="red" />
-                <Subheading style={{ marginLeft: 15, color: 'white' }}>{props?.post?.location}</Subheading>
+                <View>
+                    <TouchableOpacity onPress={() => {
+                        currentuser.id == props.user?.id ? RootNavigation.navigate('settings', { myParam: undefined }) : RootNavigation.navigate('profileOther', { user: props.user });
+                    }} style={{ flexDirection: "row", alignItems: "center" }}>
+                        <Avatar.Image size={30} source={{ uri: props.user?.profile }} />
+                        <Title style={{ marginLeft: 15, flexWrap: "wrap", color: "white" }}>{props.user?.name}</Title>
+                    </TouchableOpacity>
                 </View>
                 <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
                     {show ? `${props?.post?.description.substr(0, 80)}... ` : props?.post?.description}</Paragraph>
@@ -184,13 +191,21 @@ const Footer = (props) => {
                     {show ? 'See full description' : 'Show Less'}
                 </Text>
             </View>
-            <View style={{ width: "25%", alignItems: "flex-end" }}>
+            <View style={{ width: "15%", alignItems: "flex-end" }}>
+
+                <IconButton
+                    icon="plus-circle"
+                    animated={true}
+                    color="white"
+                    size={40}
+                    onPress={() => RootNavigation.navigate('add')}
+                />
                 <IconButton
                     style={{ display: feedState.open != "BOTTOM" ? "flex" : "none" }}
-                    icon="rotate-left"
+                    icon="chevron-up"
                     color="white"
                     animated={true}
-                    size={45}
+                    size={40}
                     onPress={() => dispatch(setFeedState("BOTTOM"))}
                 />
                 <View style={{ display: feedState.open == "BOTTOM" ? "flex" : "none" }}>
@@ -202,13 +217,6 @@ const Footer = (props) => {
                         onPress={() => RootNavigation.navigate('settings')}
                     />
 
-                    <IconButton
-                        icon="plus-circle"
-                        animated={true}
-                        color="white"
-                        size={40}
-                        onPress={() => RootNavigation.navigate('add')}
-                    />
                     <IconButton
                         icon="bell-circle"
                         color="white"
@@ -243,7 +251,7 @@ const Footer = (props) => {
             </View>
             <View style={{ width: "25%", alignItems: "flex-end" }}>
                 <IconButton
-                    icon="rotate-right"
+                    icon="chevron-down"
                     animated={true}
                     color="white"
                     size={40}
