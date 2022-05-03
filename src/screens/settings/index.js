@@ -1,4 +1,4 @@
-import { Text, View, Image, ScrollView, Alert } from 'react-native'
+import { Text, View, Image, ScrollView, Alert, StatusBar } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import styles from './styles'
 import { useSelector } from 'react-redux'
@@ -32,6 +32,7 @@ const SettingPage = (props) => {
  
   return (
     <View style={styles.container} >
+      <StatusBar barStyle='dark-content' />
       {user.currentUser && <>
         <View style={{ padding: 20, alignItems: "center" }}>
 
@@ -46,8 +47,8 @@ const SettingPage = (props) => {
 
         </View>
         <Divider />
-        <ScrollView >
-          <View style={{ paddingTop: 25, paddingBottom: 10, backgroundColor: "#f7f7f7" }}>
+        <ScrollView showsVerticalScrollIndicator={false} >
+          <View style={{ paddingTop: 25, paddingBottom: 10, backgroundColor: "white" }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
               <View style={{ alignItems: "center" }}>
                 <Icon name="eye" size={35} color="#5bc0de" />
@@ -95,6 +96,7 @@ const SettingPage = (props) => {
               description="About us, Privacy Policy, Terms & Condition"
               title="Help Center" />
             <List.Item
+            style={styles.marginBottomNav}
               titleStyle={{ color: '#d9534f' }}
               onPress={createTwoButtonAlert}
               left={props => <List.Icon {...props} color="#d9534f" icon="logout" />}
