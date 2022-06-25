@@ -148,7 +148,7 @@ export default function ReviewModal(props) {
 }
                 <TextInput
                     style={{ backgroundColor: 'transparent'}}
-                    mode='flat'
+                    mode='outlined'
                     right={element}
                     onSubmitEditing={()=> handleReviewSend()}
                     value={review}

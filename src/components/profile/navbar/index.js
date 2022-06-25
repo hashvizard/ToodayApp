@@ -26,7 +26,7 @@ export default function ProfileNavBar() {
             <Text style={styles.text}>{user?.city}</Text>
             <TouchableOpacity
                 onPress={() => NavigateBack()}>
-                <Feather name="x" size={24} />
+                <Feather name="x" size={24} color="#d9534f" />
             </TouchableOpacity>
         </View>
     )

@@ -10,13 +10,16 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor:"white",
-        marginBottom: NAVIGATION_BAR_HEIGHT,
+
     },
     textInput: {
         margin: 10,
         backgroundColor: 'lightgray',
         padding: 5,
         borderRadius: 4,
+    },
+    marginBottomNav:{
+        marginBottom: NAVIGATION_BAR_HEIGHT,
     }
 });
 

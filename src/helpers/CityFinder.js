@@ -95,9 +95,9 @@ const CityFinder = (props) => {
                         var City_clue = CapitilizeWords(item.long_name);
                         address_clues = [...address_clues, City_clue];
                     });
-
+ 
                     cities = address_clues.filter(element => CityData.includes(element));
-
+                   
                     if (cities.length != 0) {
                         setSave(false);
                         props.city(cities[0])

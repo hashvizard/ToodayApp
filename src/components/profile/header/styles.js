@@ -4,10 +4,11 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         padding:15,
         borderBottomWidth: 1,
-        borderColor: 'lightgray'
+        borderColor: 'lightgray',
     },
     counterContainer: {
-        paddingVertical: 20,
+        paddingTop: 20,
+        paddingBottom:10,
         flexDirection: 'row',
     },
     counterItemContainer: {

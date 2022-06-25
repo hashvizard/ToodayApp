@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react'
-import { View, Text, FlatList, ActivityIndicator } from 'react-native'
+import { View, Text, FlatList, ActivityIndicator, StatusBar } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
 import styles from './style'
 import ProfileNavBar from '../../components/profile/navbar'
@@ -41,7 +41,7 @@ export default function ProfileScreen(props) {
             .catch(err => {
                 console.log(err)
             })
-    }, [])
+    }, [props.route?.params?.user.id])
 
 
     const goBackHome = (postion) => {
@@ -73,6 +73,7 @@ export default function ProfileScreen(props) {
 
     return (
         <SafeAreaView style={styles.container}>
+            <StatusBar barStyle='dark-content' />
             <ProfileNavBar />
             <ProfileHeader user={props.route?.params?.user} />
             <View style={styles.container}>

@@ -35,18 +35,18 @@ export default function Route() {
         dispatch(userAuthStateListener());
     }, [])
 
-    if (!currentUserObj.loaded) {
+    if (!currentUserObj?.loaded) {
         return (<>
             <SplashScreen />
         </>)
     }
-
+console.log(currentUserObj)
     return (<>
         <Stack.Navigator>
-            {currentUserObj.currentUser === null ?
+            {currentUserObj?.currentUser === null ?
                 <Stack.Screen name="auth" component={UserLogin} options={{ headerShown: false }} />
-                : currentUserObj.currentUser?.city_id === null ?
-                    <Stack.Screen name="useriinfo" component={UserInfo} options={{ headerShown: true, title: "Select your city" }} />
+                : currentUserObj?.currentUser?.city_id === null ?
+                    <Stack.Screen name="userInfo" component={UserInfo} options={{ headerShown: true, title: "Select your city" }} />
                     :
                     <>
                         <Stack.Screen name="home" component={FeedScreen} options={{ headerShown: false }} />

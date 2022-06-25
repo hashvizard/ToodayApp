@@ -8,7 +8,7 @@ import { QueryClient, QueryClientProvider } from 'react-query'
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
 import withCodePush from './CodePush'
-import { LogBox } from 'react-native';
+import { LogBox, StatusBar } from 'react-native';
 import { navigationRef } from './RootNavigation';
 import { NavigationContainer } from '@react-navigation/native';
 
@@ -32,6 +32,7 @@ const App = () => {
   LogBox.ignoreAllLogs();
   return (
     <SafeAreaProvider>
+      <StatusBar barStyle='dark-content' />
       <PaperProvider theme={theme}>
         <Provider store={store}>
           <QueryClientProvider client={queryClient}>

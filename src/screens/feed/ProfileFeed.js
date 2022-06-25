@@ -5,7 +5,7 @@ import { getAllPosts, getProfilePosts, updtaeViews } from '../../Apis/LaravelApi
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Footer from '../../HomeScreen/Footer';
 import VideoPlayer from 'react-native-video-controls';
-import { ActivityIndicator, AppState, View } from 'react-native';
+import { ActivityIndicator, AppState, StatusBar, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import * as RootNavigation from '../../../RootNavigation';
@@ -111,12 +111,13 @@ export default function ProfileFeed(props) {
 
 
     return (<>
+    <StatusBar barStyle='light-content' />
         <GestureRecognizer
             onSwipeUp={() => onSwipeUp()}
             onSwipeDown={() => onSwipeDown()}
             config={config}
             style={{ height: "100%", width: "100%", backgroundColor: "black" }}>
-            {/* {currentPost ?
+            {currentPost ?
                 <VideoPlayer
                     controlAnimationTiming={300}
                     showOnStart={false}
@@ -130,7 +131,7 @@ export default function ProfileFeed(props) {
                     repeat={false}
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
-                /> : null} */}
+                /> : null}
             <Footer post={currentPost} goBack={() => {
                 RootNavigation.navigate('profileOther', {
                     from: "user",
