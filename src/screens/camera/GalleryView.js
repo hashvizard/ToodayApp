@@ -33,8 +33,10 @@ const GalleryView = (props) => {
                     after,
                     first: 20,
                     assetType: 'Videos',
+                    include: ['filename', 'imageSize'],
                 })
                     .then((res) => {
+                       
                         if (oldData) {
                             let datas = [...oldData, ...res.edges];
                             setData(datas)
@@ -56,7 +58,7 @@ const GalleryView = (props) => {
         },
         []
     );
-
+   
     const askPermission = async () => {
         if (Platform.OS === 'android') {
             const result = await PermissionsAndroid.request(
@@ -106,7 +108,7 @@ const GalleryView = (props) => {
                     <TouchableOpacity style={styles.galleryViewVideos} onPress={() => props.navigation.navigate('savePost', { source: item.node.image.uri })}>
                         <Image
                             style={styles.galleryImages}
-                            source={{ uri: item.node.image.uri }}
+                            source={{ uri: item?.node?.image?.uri }}
                         />
                     </TouchableOpacity>
                 )}
