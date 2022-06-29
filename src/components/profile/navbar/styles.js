@@ -3,14 +3,13 @@ const styles = StyleSheet.create({
     container: {
         flexDirection: 'row',
         paddingHorizontal: 20,
+        justifyContent:"space-between",
         paddingVertical: 15,
-        borderBottomWidth: 1,
-        borderColor: 'lightgray'
+        backgroundColor:"#f7f7f7"
     },
     text: {
-        fontSize: 16,
-        color: 'black',
-        flex: 1,
+        fontSize: 21,
+        color: '#5bc0de',
         textAlign: 'center',
         fontWeight: 'bold'
     }

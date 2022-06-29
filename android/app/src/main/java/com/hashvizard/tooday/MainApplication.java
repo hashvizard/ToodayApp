@@ -14,6 +14,7 @@ import java.util.List;
 import androidx.multidex.MultiDexApplication;
 import com.facebook.react.bridge.JSIModulePackage; // <- added
 import com.swmansion.reanimated.ReanimatedJSIModulePackage; // <- added
+import com.microsoft.codepush.react.CodePush;
 
 public class MainApplication extends MultiDexApplication  implements ReactApplication {
 
@@ -41,6 +42,10 @@ public class MainApplication extends MultiDexApplication  implements ReactApplic
         protected JSIModulePackage getJSIModulePackage() {
           return new ReanimatedJSIModulePackage(); // <- add
       }
+      @Override
+        protected String getJSBundleFile() {
+            return CodePush.getJSBundleFile();
+        }
       };
 
   @Override

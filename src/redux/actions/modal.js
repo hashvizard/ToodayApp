@@ -1,11 +1,13 @@
-import { CLEAR_MODAL, MODAL_OPEN_COMMENT_SECTION } from '../constants'
+import { CLEAR_MODAL, REPORT_MODAL_OPEN } from '../constants'
 
-export const openCommentModal = (open, data) => (dispatch) => {
+
+// Modal to Report a Video
+export const openReportModal = (open, data) => (dispatch) => {
     return dispatch({
         data,
         open,
         modalType: 0,
-        type: MODAL_OPEN_COMMENT_SECTION
+        type: REPORT_MODAL_OPEN
     })
 }
 

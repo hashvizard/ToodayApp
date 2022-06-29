@@ -1,21 +1,72 @@
 
 import auth from '@react-native-firebase/auth'
 import firestore from '@react-native-firebase/firestore'
-import { USER_STATE_CHANGE } from '../constants'
+import { CREATE_TOKEN, USER_STATE_CHANGE } from '../constants'
 import { getPostsByUser } from './posts'
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { getUserData } from '../../Apis/LaravelApis';
+
+
+/**
+ * Token create and update
+ */
+
+export const getToken = () => new Promise((resolve, reject) => {
+    AsyncStorage.getItem('tooday_user_token').then(value => {
+        resolve(value);
+    }).catch(e => {
+        reject(e);
+    })
+})
+
+export const setToken = (token) => new Promise((resolve, reject) => {
+    AsyncStorage.setItem('tooday_user_token', token).then(
+        resolve(true)
+    ).catch(e => {
+        reject(e);
+    })
+})
+
+
+export const removeToken = () => new Promise((resolve, reject) => {
+    AsyncStorage.removeItem('tooday_user_token').then(() => {
+        resolve(true);
+    }).catch(e => {
+        reject(false);
+    })
+})
+
+/**
+ * Intializing user data
+ */
 
 export const userAuthStateListener = () => dispatch => {
-    auth().onAuthStateChanged((user) => {
-        if (user) {
-            dispatch(getCurrentUserData())
-            dispatch(getPostsByUser(auth().currentUser.uid))
+    getToken().then((value) => {
+        dispatch({ type: CREATE_TOKEN, token: value })
+        if (value != null) {
+            
+            dispatch(getUserData()).then(data => {
+                if (data.status) {
+                    dispatch({
+                        type: USER_STATE_CHANGE,
+                        currentUser: data?.data[0],
+                        loaded: true
+                    })
+                }
+            }).catch(err => {
+                console.log(err);
+            })
         } else {
             dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
         }
     })
 }
 
+
+
+
 export const getCurrentUserData = () => dispatch => {
+    dispatch()
     firestore()
         .collection('user')
         .doc(auth().currentUser.uid)
@@ -30,22 +81,74 @@ export const getCurrentUserData = () => dispatch => {
         })
 }
 
-export const login = (email, password) => dispatch => new Promise((resolve, reject) => {
-    auth().signInWithEmailAndPassword(email, password)
-        .then(() => {
-            resolve()
+/**
+ * Setting user data 
+ */
+
+export const setUserData = (user) => dispatch => {
+    setToken(user.data.token).then(() => {
+       console.log(user.data?.user[0])
+        return dispatch({
+            type: USER_STATE_CHANGE,
+            currentUser: user.data?.user[0],
+            loaded: true
         })
-        .catch(() => {
-            reject()
+    }).catch((e) => {
+        dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
+    })
+}
+
+/**
+ * Login with Google
+ */
+
+export const login = (googleCredential) => dispatch => new Promise((resolve, reject) => {
+    // Sign-in the user with the credential
+    auth().signInWithCredential(googleCredential)
+        .then((data) => {
+            if (!data.additionalUserInfo.isNewUser) {
+                let userData = {
+                    newUser: data.additionalUserInfo.isNewUser,
+                    name: data.user.displayName,
+                    email: data.user.email,
+                    profile: data.user.photoURL,
+                    uid: data.user.uid,
+                    city_id: null
+                }
+                resolve(userData);
+            } else {
+                let userData = {
+                    newUser: data.additionalUserInfo.isNewUser,
+                    uid: data.user.uid
+                }
+                resolve(userData);
+            }
+        })
+        .catch((e) => {
+            console.log(e);
+            reject(e)
         })
 })
 
-export const register = (email, password) => dispatch => new Promise((resolve, reject) => {
-    auth().createUserWithEmailAndPassword(email, password)
+
+/**
+ * Logout from Google
+ */
+
+export const logOut = () => dispatch => new Promise((resolve, reject) => {
+    // Sign-in the user with the credential
+    auth().signOut()
         .then(() => {
-            resolve()
+            removeToken().then(val=>{
+                if(val){
+                    dispatch({ type: USER_STATE_CHANGE, currentUser: null, loaded: true })
+                    resolve(true)
+                }else{
+                    reject(false)
+                }
+            })
         })
-        .catch((error) => {
-            reject(error)
+        .catch((e) => {
+            reject(e)
         })
 })

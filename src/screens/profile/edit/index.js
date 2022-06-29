@@ -6,8 +6,8 @@ import Feather  from 'react-native-vector-icons/Feather'
 import * as ImagePicker from 'react-native-image-picker'
 import { saveUserProfileImage } from '../../../services/user'
 import { useSelector } from 'react-redux'
-import { useNavigation } from '@react-navigation/native'
-import NavBarGeneral from '../../../components/general/navbar'
+import { useNavigation } from '@react-navigation/native'/* 
+import NavBarGeneral from '../../../components/general/navbar' */
 
 
 export default function EditProfileScreen() {
@@ -26,7 +26,7 @@ export default function EditProfileScreen() {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <NavBarGeneral />
+          {/*   <NavBarGeneral /> */}
             <View style={styles.imageContainer}>
                 <TouchableOpacity
                     style={styles.imageViewContainer}

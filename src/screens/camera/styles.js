@@ -1,18 +1,47 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, StatusBar, Dimensions, Appearance } from 'react-native';
+
+const MODE = Appearance.getColorScheme();
+const SCREEN_HEIGHT = Dimensions.get('screen').height;
+const STATUS_BAR_HEIGHT = StatusBar.currentHeight || 24;
+const NAVIGATION_BAR_HEIGHT = SCREEN_HEIGHT - Dimensions.get('window').height;
+
 const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
     camera: {
         flex: 1,
-      
+
+    },
+    galleryVideos: {
+        aspectRatio: 9 / 16,
+        resizeMode: "cover",
+        marginRight: 8,
+        borderRadius: 8,
+        width: 70,
+    },
+    galleryViewVideos: {
+        width: "33.3%",
+        height: 100,
+        borderWidth: 0.5,
+        aspectRatio: 9 / 16,
+        borderColor: "lightgrey"
+
+    },
+    galleryImages: {
+        height: "100%",
+        resizeMode: "cover",
+        width: "100%",
     },
     bottomBarContainer: {
-        alignItems: 'center',
+        width: "100%",
         position: 'absolute',
-        bottom: 0,
-        flexDirection: 'row',
-        marginBottom: 30,
+        bottom: NAVIGATION_BAR_HEIGHT,
+    },
+    botom: {
+        paddingBottom: NAVIGATION_BAR_HEIGHT,
+
+
     },
     recordButtonContainer: {
         flex: 1,
@@ -20,6 +49,8 @@ const styles = StyleSheet.create({
     },
     recordButton: {
         borderWidth: 8,
+        alignItems: "center",
+        justifyContent: "center",
         borderColor: '#ff404087',
         backgroundColor: '#ff4040',
         borderRadius: 100,
@@ -40,9 +71,13 @@ const styles = StyleSheet.create({
         height: 50,
     },
     sideBarContainer: {
-        top: 60,
+        top: STATUS_BAR_HEIGHT + 30,
         right: 0,
-        marginHorizontal: 20,
+        flexDirection: "row",
+        width: "100%",
+        justifyContent: "space-between",
+        alignItems: "center",
+        paddingHorizontal: 20,
         position: 'absolute'
     },
     iconText: {
@@ -52,7 +87,9 @@ const styles = StyleSheet.create({
     },
     sideBarButton: {
         alignItems: 'center',
-        marginBottom: 25
+        padding: 10, borderRadius: 30,
+        elevation: 5,
+        backgroundColor: "rgba(0,0,0,0.5)"
     }
 });
 

@@ -10,7 +10,6 @@ const SearchScreen = () => {
     const [searchUsers, setSearchUsers] = useState([])
 
     useEffect(() => {
-        console.log(textInput)
         queryUsersByEmail(textInput)
             .then(setSearchUsers)
     }, [textInput])

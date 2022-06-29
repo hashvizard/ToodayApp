@@ -3,7 +3,7 @@ import React, { useState } from 'react'
 import { View, Text, TextInput } from 'react-native'
 import { Divider } from 'react-native-paper'
 import { SafeAreaView } from 'react-native-safe-area-context'
-import NavBarGeneral from '../../../../components/general/navbar'
+// import NavBarGeneral from '../../../../components/general/navbar'
 import { saveUserField } from '../../../../services/user'
 import  generalStyles  from '../../../../styles/generalStyles'
 import styles from './styles'
@@ -18,7 +18,7 @@ export default function EditProfileFieldScreen({ route }) {
     }
     return (
         <SafeAreaView style={styles.container}>
-            <NavBarGeneral title={title} leftButton={{ display: true, name: 'save', action: onSave }} />
+          {/*   <NavBarGeneral title={title} leftButton={{ display: true, name: 'save', action: onSave }} /> */}
             <Divider />
             <View style={styles.mainContainer}>
                 <Text style={styles.title}>{title}</Text>

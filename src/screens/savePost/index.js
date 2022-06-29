@@ -1,63 +1,83 @@
 import { StackActions, useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { ActivityIndicator, Image, Text, TextInput, TouchableOpacity, View } from 'react-native'
+import { ActivityIndicator, Image, Text, KeyboardAvoidingView, View, TouchableOpacity } from 'react-native'
 import styles from './styles'
-import  Feather  from 'react-native-vector-icons/Feather'
-import { useDispatch } from 'react-redux'
-import { createPost } from '../../redux/actions'
+import videoStyles from '../../styles/VideoStyles'
+import { TextInput, Button } from 'react-native-paper';
+import LottieView from 'lottie-react-native';
+import { Title, Caption, } from 'react-native-paper'
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
+import { ScrollView } from 'react-native-gesture-handler'
+import * as RootNavigation from '../../../RootNavigation';
+import { useSelector } from 'react-redux'
 
 export default function SavePostScreen(props) {
+
     const [description, setDescription] = useState('')
-    const [requestRunning, setRequestRunning] = useState(false)
-    const navigation = useNavigation()
+    const [location, setlocation] = useState('');
+    const locationIcon = <TextInput.Icon name="map-marker" color="#f0ad4e" />
+    const user = useSelector(state => state.auth.currentUser);
 
-    const dispatch = useDispatch();
-
-    const handleSavePost = () => {
-        setRequestRunning(true)
-        dispatch(createPost(description, props.route.params.source, props.route.params.sourceThumb))
-             .then(() => navigation.dispatch(StackActions.popToTop()))
-             .catch((err) => {setRequestRunning(false);console.log(err)})
+    const handleSavePost = async () => {
+        let videodata = { video: props.route.params.source, description: description, location: location };
+        RootNavigation.navigate('home', { data: videodata });
     }
 
-    if (requestRunning) {
-        return (
-            <View style={styles.uploadingContainer}>
-                <ActivityIndicator color='red' size='large' />
-            </View>
-        )
-    }
     return (
-        <View style={styles.container}>
-            <View style={styles.formContainer}>
-                <TextInput
-                    style={styles.inputText}
-                    maxLength={150}
-                    multiline
-                    onChangeText={(text) => setDescription(text)}
-                    placeholder="Describe your video"
-                />
+        <View style={{ flex: 1, backgroundColor: "white" }}>
+            <View style={{ ...styles.imgComponent }}>
+                <View style={{ width: "60%" }}>
+                    <TouchableOpacity style={{ flexDirection: "row", alignItems: "center", }}
+                        onPress={() => props.navigation.goBack()}>
+                        <Icon name='arrow-left' size={35} color="#292b2c" />
+                        <Text style={{ marginLeft: 20, fontSize: 18, color: "#292b2c" }}>Go Back</Text>
+                    </TouchableOpacity>
+                    <Text style={{ color: "#292b2c", marginVertical: 20 }}>This Post will only be visible to  <Title style={{ color: "black" }}> {user.city} </Title> City</Text>
+                </View>
                 <Image
-                    style={styles.mediaPreview}
-                    source={{ uri: props.route.params.sourceThumb }}
+                    resizeMode='cover'
+                    style={{ aspectRatio: 9 / 16, width: "30%", borderRadius: 10, resizeMode: "cover", borderWidth: 1, borderColor: "darkgrey" }}
+                    source={{ uri: props.route.params.source }}
                 />
             </View>
-            <View style={styles.spacer} />
-            <View style={styles.buttonsContainer}>
-                <TouchableOpacity
-                    onPress={() => navigation.goBack()}
-                    style={styles.cancelButton}>
-                    <Feather name="x" size={24} color="black" />
-                    <Text style={styles.cancelButtonText}>Cancel</Text>
-                </TouchableOpacity>
+            <KeyboardAvoidingView
+                behavior="padding"
+                style={{ ...videoStyles.stylePost }}>
+                <ScrollView contentContainerStyle={{ backgroundColor: "white" }}>
+                    <TextInput
+                        style={{ margin: 10, backgroundColor: "white" }}
+                        mode='flat'
+                        multiline={true}
+                        autoFocus={true}
+                        returnKeyType="done"
+                        placeholderTextColor="black"
+                        outlineColor='red'
+                        textAlignVertical='center'
+                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
+                        maxLength={150}
+                        value={description}
+                        onChangeText={(text) => setDescription(text)}
+                        placeholder='Write post Description..' />
 
-                <TouchableOpacity
-                    onPress={() => handleSavePost()}
-                    style={styles.postButton}>
-                    <Feather name="corner-left-up" size={24} color="white" />
-                    <Text style={styles.postButtonText}>Post</Text>
-                </TouchableOpacity>
-            </View>
+                    <TextInput
+                        style={{ margin: 10, backgroundColor: "white" }}
+                        mode='flat'
+                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
+                        placeholderTextColor="black"
+                        textAlignVertical='center'
+                        textContentType="location"
+                        right={locationIcon}
+                        maxLength={30}
+                        value={location}
+                        onChangeText={(text) => setlocation(text)}
+                        placeholder='Enter the locality' />
+                    <Button icon="video-outline" disabled={location != '' && description != '' ? false : true}
+                        mode="contained" style={{ padding: 5, marginTop: 25, margin: 10, backgroundColor: "#f0ad4e" }}
+                        onPress={() => handleSavePost()}>
+                        Post Now
+                    </Button>
+                </ScrollView>
+            </KeyboardAvoidingView>
         </View>
     )
 }
