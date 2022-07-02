@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState, useCallback } from 'react'
-import { View, Text, TouchableOpacity, Image } from 'react-native'
+import { View, Text, TouchableOpacity, Image,PermissionsAndroid,Platform } from 'react-native'
 import { RNCamera } from 'react-native-camera';
 import { Audio } from 'react-native-sound'
 import * as ImagePicker from 'react-native-image-picker'
@@ -39,9 +39,17 @@ export default function CameraScreen(props) {
 
             const audioStatus = await Audio.requestPermissionsAsync()
             setHasAudioPermissions(audioStatus.status == 'granted')
-
-            const galleryStatus = await ImagePicker.requestMediaLibraryPermissionsAsync()
+            if (Platform.OS === 'android') {
+            const galleryStatus = await PermissionsAndroid.request(
+                PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
+                {
+                  title: 'Permission Explanation',
+                  message: 'Tooday would like to access your Gallery',
+                },
+              );
             setHasGalleryPermissions(galleryStatus.status == 'granted')
+            
+            }
         })()
     }, [])
 

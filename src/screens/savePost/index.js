@@ -1,6 +1,6 @@
 import { StackActions, useNavigation } from '@react-navigation/native'
 import React, { useState } from 'react'
-import { ActivityIndicator, Image, Text, KeyboardAvoidingView, View, TouchableOpacity } from 'react-native'
+import { ActivityIndicator, Image, Text,Alert, KeyboardAvoidingView, View, TouchableOpacity } from 'react-native'
 import styles from './styles'
 import videoStyles from '../../styles/VideoStyles'
 import { TextInput, Button } from 'react-native-paper';
@@ -15,13 +15,27 @@ export default function SavePostScreen(props) {
 
     const [description, setDescription] = useState('')
     const [location, setlocation] = useState('');
-    const locationIcon = <TextInput.Icon name="map-marker" color="#f0ad4e" />
+    const locationIcon = <TextInput.Icon name="pound" color="#d9534f" />
     const user = useSelector(state => state.auth.currentUser);
 
     const handleSavePost = async () => {
         let videodata = { video: props.route.params.source, description: description, location: location };
         RootNavigation.navigate('home', { data: videodata });
     }
+
+const createTwoButtonAlert = () =>
+    Alert.alert(
+      "Uploading..",
+      "Sorry, Currently you can't share content with your city",
+      [
+        {
+          text: "Cancel",
+          onPress: () => console.log("Cancel Pressed"),
+          style: "cancel"
+        },
+        { text: "OK", onPress: () =>  RootNavigation.navigate('home')}
+      ]
+    );
 
     return (
         <View style={{ flex: 1, backgroundColor: "white" }}>
@@ -47,6 +61,19 @@ export default function SavePostScreen(props) {
                     <TextInput
                         style={{ margin: 10, backgroundColor: "white" }}
                         mode='flat'
+                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
+                        placeholderTextColor="black"
+                        textAlignVertical='center'
+                        textContentType="location"
+                        left={locationIcon}
+                        maxLength={25}
+                        value={location}
+                        onChangeText={(text) => setlocation(text)}
+                        placeholder='Enter the Title' />
+
+                    <TextInput
+                        style={{ margin: 10, backgroundColor: "white" }}
+                        mode='flat'
                         multiline={true}
                         autoFocus={true}
                         returnKeyType="done"
@@ -58,22 +85,11 @@ export default function SavePostScreen(props) {
                         value={description}
                         onChangeText={(text) => setDescription(text)}
                         placeholder='Write post Description..' />
-
-                    <TextInput
-                        style={{ margin: 10, backgroundColor: "white" }}
-                        mode='flat'
-                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
-                        placeholderTextColor="black"
-                        textAlignVertical='center'
-                        textContentType="location"
-                        right={locationIcon}
-                        maxLength={30}
-                        value={location}
-                        onChangeText={(text) => setlocation(text)}
-                        placeholder='Enter the locality' />
-                    <Button icon="video-outline" disabled={location != '' && description != '' ? false : true}
-                        mode="contained" style={{ padding: 5, marginTop: 25, margin: 10, backgroundColor: "#f0ad4e" }}
-                        onPress={() => handleSavePost()}>
+                    <Button icon="video-outline" 
+                         labelStyle={{color:"white"}}
+                    disabled={location != '' && description != '' ? false : true}
+                        mode="contained" style={{ padding: 5, marginTop: 25, margin: 10, backgroundColor: "#5bc0de" }}
+                        onPress={() => createTwoButtonAlert()}>
                         Post Now
                     </Button>
                 </ScrollView>

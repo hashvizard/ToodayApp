@@ -18,12 +18,6 @@ import RNFetchBlob from 'react-native-fetch-blob'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundService from 'react-native-background-actions';
 
-const sleep = (time) => new Promise((resolve) => setTimeout(() => resolve(), time));
-
-
-
-
-
 
 
 export default function FeedScreen(props) {
@@ -280,7 +274,7 @@ export default function FeedScreen(props) {
                     showOnStart={false}
                     onShowControls={() => dispatch(setFeedState(null))}
                     seekColor={"red"}
-                    controlTimeout={3000}
+                    controlTimeout={2000}
                     source={{ uri: currentPost?.videoUrl, cache: { size: 50, expiresIn: 3600 } }}
                     style={{ height: "100%", width: "100%" }}
                     resizeMode='cover'

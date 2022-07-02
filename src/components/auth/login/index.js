@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { View, Image, Text, ActivityIndicator } from 'react-native'
 import styles from './styles';
 import { useDispatch } from 'react-redux'
@@ -23,16 +23,27 @@ export default function UserLogin(props) {
     const dispatch = useDispatch();
 
     /**
+     * Closing the loader on return
+     */
+
+    useEffect(() => {
+      return () => {
+        setsigninStatus(false);
+      }
+    }, [])
+    
+
+    /**
      * dispatch login action
      */
     const onGoogleButtonPress = async () => {
-        setsigninStatus(true);
+       
         const { idToken } = await GoogleSignin.signIn();
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
         dispatch(login(googleCredential))
             .then((data) => {
-                
+                setsigninStatus(true);
                 dispatch(createNewuser(data)).then((newData) => {
                    
                     if(!newData.status){
@@ -43,7 +54,7 @@ export default function UserLogin(props) {
                     console.log(error)
                     props.navigation.navigate("Error", { error });
                 })
-                setsigninStatus(false);
+        
             })
             .catch((e) => {
                 setsigninStatus(false);

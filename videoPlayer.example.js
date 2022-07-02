@@ -105,7 +105,9 @@ export default class VideoPlayer extends Component {
     this.methods = {
       toggleFullscreen: this._toggleFullscreen.bind(this),
       togglePlayPause: this._togglePlayPause.bind(this),
+      togglePlay: this._togglePlay.bind(this),
       toggleControls: this._toggleControls.bind(this),
+      hideControls: this._hideControls.bind(this),
       toggleTimer: this._toggleTimer.bind(this),
     };
 
@@ -254,8 +256,8 @@ export default class VideoPlayer extends Component {
       // Seeking may be false here if the user released the seek bar while the player was still processing
       // the last seek command. In this case, perform the steps that have been postponed.
       if (!state.seeking) {
-        this.setControlTimeout();
-        state.paused = state.originallyPaused;
+        // this.setControlTimeout();
+        state.paused = true;
       }
 
       this.setState(state);
@@ -291,27 +293,15 @@ export default class VideoPlayer extends Component {
    * two toggles fullscreen mode.
    */
   _onScreenTouch() {
-    if (this.player.tapActionTimeout) {
-      clearTimeout(this.player.tapActionTimeout);
-      this.player.tapActionTimeout = 0;
-      this.methods.toggleFullscreen();
-      const state = this.state;
-      if (state.showControls) {
-        this.resetControlTimeout();
-      }
-    } else {
-      this.player.tapActionTimeout = setTimeout(() => {
-        const state = this.state;
-        if (this.player.tapAnywhereToPause && state.showControls) {
+    const state = this.state;
+    if(!state.showControls) { 
+        if (this.player.tapAnywhereToPause ) {
           this.methods.togglePlayPause();
-          this.resetControlTimeout();
-        } else {
           this.methods.toggleControls();
-        }
-        this.player.tapActionTimeout = 0;
-      }, this.props.doubleTapTime);
+          // this.resetControlTimeout();
     }
   }
+}
 
   /**
     | -------------------------------------------------------
@@ -455,22 +445,29 @@ export default class VideoPlayer extends Component {
    */
   _toggleControls() {
     let state = this.state;
-    state.showControls = !state.showControls;
-
-    if (state.showControls) {
+    state.showControls = true;
       this.showControlAnimation();
-      this.setControlTimeout();
+      // this.setControlTimeout();
       typeof this.events.onShowControls === 'function' &&
         this.events.onShowControls();
-    } else {
-      this.hideControlAnimation();
-      this.clearControlTimeout();
-      typeof this.events.onHideControls === 'function' &&
-        this.events.onHideControls();
-    }
 
     this.setState(state);
   }
+
+    /**
+   * Function to toggle controls based on
+   * current state.
+   */
+     _hideControls() {
+      let state = this.state;
+      state.showControls = false;
+        this.hideControlAnimation();
+        // this.setControlTimeout();
+        typeof this.events.onHideControls === 'function' &&
+          this.events.onHideControls();
+  
+      this.setState(state);
+    }
 
   /**
    * Toggle fullscreen changes resizeMode on
@@ -502,16 +499,31 @@ export default class VideoPlayer extends Component {
    */
   _togglePlayPause() {
     let state = this.state;
-    state.paused = !state.paused;
+    state.paused = true;
 
-    if (state.paused) {
+  
       typeof this.events.onPause === 'function' && this.events.onPause();
-    } else {
+    /* } else {
       typeof this.events.onPlay === 'function' && this.events.onPlay();
-    }
+    } */
 
     this.setState(state);
   }
+
+    /**
+   * Toggle playing state on <Video> component
+   */
+     _togglePlay() {
+      let state = this.state;
+      state.paused = false;
+      this.methods.hideControls();
+    
+        typeof this.events.onPause === 'function' && this.events.onPause();
+      /* } else {
+        typeof this.events.onPlay === 'function' && this.events.onPlay();
+      } */
+      this.setState(state);
+    }
 
   /**
    * Toggle between showing time remaining or
@@ -836,8 +848,8 @@ export default class VideoPlayer extends Component {
           state.seeking = false;
         } else {
           this.seekTo(time);
-          this.setControlTimeout();
-          state.paused = state.originallyPaused;
+          // this.setControlTimeout();
+          state.paused = true;
           state.seeking = false;
         }
         this.setState(state);
@@ -1070,7 +1082,7 @@ export default class VideoPlayer extends Component {
         : require('./assets/img/pause.png');
     return this.renderControl(
       <Image source={source} />,
-      this.methods.togglePlayPause,
+      this.methods.togglePlay,
       styles.controls.playPause,
     );
   }

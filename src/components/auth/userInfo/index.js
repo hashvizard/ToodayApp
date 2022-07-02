@@ -44,18 +44,18 @@ const UserInfo = () => {
   }
 
   return (
-    <View style={{ flex: 1, backgroundColor: "white" }}>
+    <View style={{ flex: 1, backgroundColor: "#f7f7f7" }}>
       <View style={{ width: "100%", height: 300 }}>
         <Image source={require('../../../../assets/map.png')} style={{ width: "100%", height: "100%", resizeMode: "contain" }} />
       </View>
       <View style={{ ...videoStyles.citySelectorStyle }}>
 
-        <View style={{ flexDirection: "row", alignItems: "center" }} >
+        <View style={{ flexDirection: "row", alignItems: "center",padding:6,elevation:1,backgroundColor:"white" }} >
           {city == '' ?
-            <Caption style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", marginLeft: 10 }} >Click on red map marker icon to get your city..</Caption>
-            : <View style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", marginLeft: 10 }}>
+            <Caption style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", marginLeft: 10 }} >Detect your location..</Caption>
+            : <View style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", backgroundColor:"#f7f7f7",padding:5,marginRight:10 }}>
               <Text>City</Text>
-              <Headline style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", fontWeight: "bold" }}>{city}</Headline>
+              <Headline style={{ flexGrow: 1, flexWrap: "wrap",color:"#5bc0de", width: "70%", fontWeight: "bold" }}>{city}</Headline>
             </View>}
           <CityFinder
             city={(city) => {
@@ -71,8 +71,9 @@ const UserInfo = () => {
           onPress={() => {
             updateCity();
           }}
+          labelStyle={{color:"white"}}
           contentStyle={{ justifyContent: "space-around" }}
-          disabled={city == '' || updating ? true : false} color='#f0ad4e' >
+          disabled={city == '' || updating ? true : false} color='#5cb85c' >
           {updating ? "Updating Data" : "Update City"}
         </Button>
       </View>

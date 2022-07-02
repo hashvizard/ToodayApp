@@ -125,7 +125,7 @@ export const login = (googleCredential) => dispatch => new Promise((resolve, rej
             }
         })
         .catch((e) => {
-            console.log(e);
+
             reject(e)
         })
 })

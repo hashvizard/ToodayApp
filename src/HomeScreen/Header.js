@@ -22,15 +22,17 @@ const Header = ({user,showBlock,showReport,post}) => {
         dispatch(setFeedState(null));
         showReport()
     }
-    
+    console.log(post,"I got this")
 
     return (
         <View style={{ ...videoStyles.spaceTop, width: "100%", alignItems: "center", justifyContent: "space-between", position: "absolute", zIndex: 21 }}>
             <View style={{ flexDirection: "row", alignItems: "center", flexWrap: "wrap", width: "100%", justifyContent: 'space-between' }}>
                 <View style={{ alignItems: "center",flexDirection:"row", justifyContent: "flex-start", alignSelf: "flex-start", width: "50%", padding: 15 }}>
-                <Feather name='map-pin' size={24} color="red" />
-                <Caption style={{ marginLeft: 15, color: 'white',flexWrap:"wrap" }}>{post?.location}  <Title style={{color:"white"}}> {currentuser?.city}</Title></Caption>
-              
+                <Feather name='hash' size={24} color="red" />
+                <View style={{width:"100%",marginLeft:10}}>
+                <Caption style={{color: 'white',flexWrap:"wrap" }}>{post?.location}</Caption>
+                <Title style={{color:"white"}}>{currentuser?.city}</Title>
+                </View>
                      {/*    <TouchableOpacity onPress={()=> {
                             currentuser.id == user?.id ?RootNavigation.navigate('settings',{ myParam: undefined }) :RootNavigation.navigate('profileOther',{user:user});
                             

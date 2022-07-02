@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import { PermissionsAndroid } from 'react-native'
+import { PermissionsAndroid, View } from 'react-native'
 import Geolocation from '@react-native-community/geolocation';
 import Geocoder from 'react-native-geocoding';
-import { IconButton, Colors, ActivityIndicator } from 'react-native-paper';
+import { IconButton, Colors, ActivityIndicator, Button } from 'react-native-paper';
 import { useDispatch } from 'react-redux';
 import { getAllCities } from '../Apis/LaravelApis';
 const ENV = require('../../credentials');
@@ -89,15 +89,15 @@ const CityFinder = (props) => {
             await Geocoder.from(lat, long)
                 .then(json => {
                     let cities = [];
-                    let address_clues = [];
+                    let address_clues = ['Dehradun'];
 
-                    json.results[0].address_components.map((item) => {
+              /*       json.results[0].address_components.map((item) => {
                         var City_clue = CapitilizeWords(item.long_name);
                         address_clues = [...address_clues, City_clue];
-                    });
- 
+                    }); */
+
                     cities = address_clues.filter(element => CityData.includes(element));
-                   
+
                     if (cities.length != 0) {
                         setSave(false);
                         props.city(cities[0])
@@ -143,20 +143,25 @@ const CityFinder = (props) => {
 
     if (save) {
         return (
-            <ActivityIndicator
-                style={{ marginRight: 30 }}
-                size="small"
-                animating={true} color={Colors.red800} />
+            <View style={{ alignItems: "center", elevation: 5, backgroundColor: "#f0ad4e", borderRadius: 10, height: 45, width: 45, alignSelf: "center", justifyContent: "center" }}>
+                <ActivityIndicator
+                    size="small"
+                    animating={true} color={"white"} />
+            </View>
         );
     } else {
         return (
-            <IconButton
-                icon="map-marker"
-                color={Colors.red500}
-                style={{ marginRight: 15 }}
-                size={35}
-                onPress={() => { setSave(true); requestLocationPermission() }}
-            />
+
+            <View style={{ alignItems: "center", elevation: 5, backgroundColor: "#d9534f", borderRadius: 10, height: 45, width: 45, alignSelf: "center", justifyContent: "center" }}>
+                <IconButton
+                    icon="map-marker"
+                    mode="outlined"
+                    color={"white"}
+                    style={{}}
+                    size={25}
+                    onPress={() => { setSave(true); requestLocationPermission() }}
+                />
+            </View>
         )
     }
 
