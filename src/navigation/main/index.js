@@ -22,7 +22,8 @@ import ProfileFeed from '../../screens/feed/ProfileFeed';
 import ViewedFeed from '../../screens/feed/ViewedFeed';
 import UserFeed from '../../screens/feed/UserFeed';
 import EditPost from '../../screens/editPost';
-
+import { IconButton } from 'react-native-paper';
+import * as RootNavigation from '../../../RootNavigation';
 const Stack = createStackNavigator()
 
 
@@ -63,7 +64,17 @@ console.log(currentUserObj)
                         <Stack.Screen name="editProfileField" component={EditProfileFieldScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="comment" component={CommentModal} options={{ headerShown: false }} />
                         <Stack.Screen name="add" component={CameraScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="gallery" component={GalleryView} options={{ headerShown: true, title: "Collection" }} />
+                        <Stack.Screen name="gallery" component={GalleryView} options={{ headerShown: true, title: "Collection" ,
+                         headerRight: () => (
+                            <IconButton
+                            icon="camera"
+                            color="#5bc0de"
+                            size={30}
+                            onPress={() => RootNavigation.navigate('add') }
+                            />
+                          ),}} 
+                        
+                        />
                         <Stack.Screen name="settings" component={Settings} options={{ headerShown: false }} />
                     </>
             }

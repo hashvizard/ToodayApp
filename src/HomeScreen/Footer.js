@@ -231,7 +231,7 @@ const Footer = (props) => {
             <View style={{ flexDirection: "column", padding: 20, alignItems: "flex-start", flexWrap: "wrap", zIndex: 0, width: "85%", }}>
                 <View style={{ flexDirection: "row", display: props.uploading ? "flex" : "none", alignItems: "center", alignSelf: "flex-start", elevation: 10, padding: 10, marginLeft: -7, marginBottom: 15, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.5)" }}>
                     <ActivityIndicator size="small" color='white' />
-                    <Text style={{ color: "reds", marginLeft: 10 }}>Uploading {props.progress}</Text>
+                    <Text style={{ color: "red", marginLeft: 10 }}>Uploading {props.progress}</Text>
                 </View>
 
                 <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
@@ -258,7 +258,7 @@ const Footer = (props) => {
                     animated={true}
                     color="white"
                     size={40}
-                    onPress={() => RootNavigation.navigate('add')}
+                    onPress={() => RootNavigation.navigate('gallery')}
                 />
                 <IconButton
                     style={{ display: feedState.open != "BOTTOM" ? "flex" : "none" }}
