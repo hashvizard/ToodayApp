@@ -15,7 +15,7 @@ const Chat = ({ item }) => {
         }]}>
             <View style={{ flexDirection: "row", alignItems: 'center' }}>
                 <Avatar.Image size={30} source={{ uri: item?.item?.user?.profile}} style={{ marginRight: 10 }} />
-                <Text  textBreakStrategy='highQuality' style={styles.Text}>{item?.item?.comment}</Text>
+                <Text   textBreakStrategy='highQuality' style={styles.Text}>{item?.item?.comment}</Text>
             </View>
             <View style={{ flexDirection: "row", justifyContent: "flex-end", width: "100%", marginTop: 5 }}>
                 <Text style={styles.TextTime}> { item?.item?.user?.name} | {changeDateForamt(new Date(item.item?.created_at))} ago</Text>
@@ -29,11 +29,11 @@ export default Chat
 
 const styles = StyleSheet.create({
     Text: {
-        color: "#000",
+        color: "white",
         fontSize: 15,
     },
     TextTime: {
-        color: "#00000073",
+        color: "grey",
         fontSize: 11,
         marginRight: 5
     }

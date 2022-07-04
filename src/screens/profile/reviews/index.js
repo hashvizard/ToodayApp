@@ -104,7 +104,7 @@ export default function ReviewModal(props) {
             style={{
                 flex: 1
             }}
-            source={require('../../../../assets/background.png')} resizeMode="cover">
+            source={require('../../../../assets/background.jpg')} resizeMode="cover">
             <KeyboardAvoidingView
                 behavior="padding"
                 style={videoStyles.commentcontainer}

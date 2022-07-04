@@ -17,7 +17,7 @@ export default function CommentModal(props) {
     const [totalComments, settotalComments] = React.useState(0)
     const [nextUrl, setNextUrl] = useState(null)
     const [refreshing, setRefreshing] = React.useState(false);
-
+    const user = useSelector(state=>state.auth.currentUser)
     const feedState = useSelector(state => state.feedState.active);
 
 
@@ -109,7 +109,7 @@ export default function CommentModal(props) {
             style={{
                 flex: 1
             }}
-            source={require('../../../assets/background.png')} resizeMode="cover">
+            source={require('../../../assets/background.jpg')} resizeMode="cover">
             <KeyboardAvoidingView
                 behavior="padding"
                 style={videoStyles.commentcontainer}
@@ -121,22 +121,22 @@ export default function CommentModal(props) {
                         <IconButton
                             icon="arrow-left"
                             size={25}
-                            color='black'
+                            color='white'
                             style={{ alignSelf: "flex-start", }}
 
                         />
 
-                        <Title>Comments </Title>
+                        <Title style={{color:"white"}} >Comments </Title>
                     </View>
-                    <Text style={{ marginRight: 25 }}>Total <Title>{totalComments}</Title></Text>
+                    <Text style={{ marginRight: 25,color:"white" }}>Total <Title style={{color:"white"}}>{totalComments}</Title></Text>
 
                 </TouchableOpacity>
 
                 {loading == true || commentList.length <= 0 ?
                     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
                         <ActivityIndicator color="white" size="small" style={{ display: loading ? "flex" : "none" }} />
-                        <Text style={{ marginTop: 25, display: loading ? "flex" : "none" }}>Loading <Title>Comments</Title></Text>
-                        <Text style={{ display: !loading && commentList.length == 0 ? "flex" : "none" }}>Post don't have any <Title>Comments</Title></Text>
+                        <Text style={{ marginTop: 25, display: loading ? "flex" : "none",color:"white" }}>Loading <Title style={{color:"white"}}>Comments</Title></Text>
+                        <Text style={{ display: !loading && commentList.length == 0 ? "flex" : "none",color:"white" }}>Post don't have any <Title>Comments</Title></Text>
                     </View>
                     :
                     <FlatList
@@ -152,11 +152,17 @@ export default function CommentModal(props) {
                     />
                 }
                 <TextInput
-                    style={{ backgroundColor: 'transparent' }}
+                    style={{ backgroundColor: 'white' }}
                     mode='flat'
+                    theme={{ colors: { text: "white" } }}
+                    label={user?.name}
+                    
+                    underlineColor="red"
                     right={element}
                     onSubmitEditing={() => handleCommentSend()}
                     value={comment}
+                    placeholderTextColor={"red"}
+                    labelTextColor="red"
                     onChangeText={setComment}
                     placeholder='Write a comment..' />
             </KeyboardAvoidingView>
