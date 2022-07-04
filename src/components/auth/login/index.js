@@ -37,20 +37,19 @@ export default function UserLogin(props) {
      * dispatch login action
      */
     const onGoogleButtonPress = async () => {
-       
+        setsigninStatus(true);
         const { idToken } = await GoogleSignin.signIn();
         // Create a Google credential with the token
         const googleCredential = auth.GoogleAuthProvider.credential(idToken);
         dispatch(login(googleCredential))
             .then((data) => {
-                setsigninStatus(true);
                 dispatch(createNewuser(data)).then((newData) => {
-                   
                     if(!newData.status){
                         props.navigation.navigate("Error", { error:newData.message });
                     }else{
                         dispatch(setUserData(newData))}
                 }).catch((error) => {
+                    setsigninStatus(false);
                     console.log(error)
                     props.navigation.navigate("Error", { error });
                 })

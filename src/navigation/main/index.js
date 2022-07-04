@@ -36,12 +36,12 @@ export default function Route() {
         dispatch(userAuthStateListener());
     }, [])
 
-    if (!currentUserObj?.loaded) {
+    if (!currentUserObj?.loaded || currentUserObj?.updates) {
         return (<>
             <SplashScreen />
         </>)
     }
-console.log(currentUserObj)
+
     return (<>
         <Stack.Navigator>
             {currentUserObj?.currentUser === null ?

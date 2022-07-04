@@ -9,21 +9,24 @@ const Code_pUsh_Option = {
 };
 
 const withCodePush = WrappedComponent => {
+ 
   class WrappedApp extends React.PureComponent {
     state = {
       Update: false,
       status: "Updating Tooday",
       Ready: false
     }
-
+    
     componentDidMount() {
       CodePush.sync({ installMode: CodePush.InstallMode.IMMEDIATE }, this.SyncWithCode, null)
       CodePush.checkForUpdate()
         .then((update) => {
           if (!update) {
             this.setState({ Update: false })
+            this.props.updates(false)
             console.log("The app is up to date!");
           } else {
+            this.props.updates(true)
             this.setState({ Update: true })
           }
         });

@@ -30,3 +30,7 @@ export const SET_OPEN_STATE = 'SET_OPEN_STATE'
 export const INTIAL_POST = 'INTIAL_POST'
 
 export const ACTIVE_FEED_STATE = 'ACTIVE_FEED_STATE'
+
+export const CHECK_FOR_UPDATES = 'CHECK_FOR_UPDATES'
+
+
