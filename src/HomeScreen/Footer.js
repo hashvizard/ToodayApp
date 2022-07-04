@@ -7,6 +7,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import { activeFeedState, setFeedState, setIntialPost } from '../redux/actions';
 import * as RootNavigation from '../../RootNavigation';
 import Feather from 'react-native-vector-icons/Feather';
+import TimeAgo from 'react-native-timeago';
+import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const Footer = (props) => {
     console.log(props.post)
@@ -54,10 +56,10 @@ const Footer = (props) => {
     const viewedPosts = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
             <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "100%", }}>
-                {/* <Feather name='hash' size={21} color="red" /> */}
-                {/* <FontAwesome name='map-marker' size={24} color="red" /> */}
-                {/* <Caption style={{ marginLeft: 5, color: 'white' }}>{props.post?.location}</Caption> */}
-
+                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                    <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
+                    <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
+                </View>
                 <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
                     {show ? `${props.post?.description.substr(0, 80)}... ` : props.post?.description}</Paragraph>
                 <Text
@@ -100,15 +102,21 @@ const Footer = (props) => {
         </View>
     </>);
 
-      // Showing This View for Other Profile Posts
-      const otherProfileState = (<>
+    // Showing This View for Other Profile Posts
+    const otherProfileState = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
-            <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "100%", }}>
-                <Feather name='hash' size={21} color="red" />
-                {/* <FontAwesome name='map-marker' size={24} color="red" /> */}
-                <Caption style={{ marginLeft: 5, color: 'white' }}>{props.post?.location}</Caption>
-
-                <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
+            <View style={{ padding: 15, width: "100%" }}>
+                <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
+                        <Feather name='hash' size={21} color="red" />
+                        <Caption style={{ marginLeft: 5, color: 'white' }}>{props.post?.location}</Caption>
+                    </View>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                        <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
+                        <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
+                    </View>
+                </View>
+                <Paragraph style={{ marginTop: 5, paddingTop: 0, color: 'white' }}>
                     {show ? `${props.post?.description.substr(0, 80)}... ` : props.post?.description}</Paragraph>
                 <Text
                     onPress={() => setshow(!show)}
@@ -158,9 +166,15 @@ const Footer = (props) => {
 
                 {/* <FontAwesome name='map-marker' size={24} color="red" /> */}
                 <View style={{ width: "100%", alignItems: "center", flexDirection: "row", justifyContent: "space-between" }}>
-                    <View style={{ flexDirection: "row", alignItems: "center" }}>
-                        <Feather name='hash' size={21} color="red" />
-                        <Caption style={{ marginLeft: 5, color: 'white' }}>{props?.post?.location}</Caption>
+                    <View>
+                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                            <Feather name='hash' size={21} color="red" />
+                            <Caption style={{ marginLeft: 5, color: 'white' }}>{props?.post?.location}</Caption>
+                        </View>
+                        <View style={{ flexDirection: "row",marginTop:10, alignItems: "center", justifyContent: "center" }}>
+                            <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
+                            <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
+                        </View>
                     </View>
                     <View style={{ flexDirection: "row", alignItems: "center" }}>
                         <IconButton
@@ -233,8 +247,11 @@ const Footer = (props) => {
                     <ActivityIndicator size="small" color='white' />
                     <Text style={{ color: "red", marginLeft: 10 }}>Uploading {props.progress}</Text>
                 </View>
-
-                <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
+                <View style={{ flexDirection: "row", alignItems: "center" }}>
+                    <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
+                    <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
+                </View>
+                <Paragraph style={{ marginTop: 5, paddingTop: 0, color: 'white' }}>
                     {show ? `${props?.post?.description.substr(0, 80)}... ` : props?.post?.description}</Paragraph>
                 <Text
                     onPress={() => setshow(!show)}
