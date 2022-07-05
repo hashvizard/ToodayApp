@@ -8,7 +8,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import { addComment, getPostComments } from '../../Apis/LaravelApis/postApi';
 
 export default function CommentModal(props) {
-    const ref = useRef();
+    
     const dispatch = useDispatch();
     const [comment, setComment] = useState('')
     const [commentList, setCommentList] = useState([])
@@ -19,11 +19,13 @@ export default function CommentModal(props) {
     const [refreshing, setRefreshing] = React.useState(false);
     const user = useSelector(state=>state.auth.currentUser)
     const feedState = useSelector(state => state.feedState.active);
-
+    const [focused,setFocused] = useState(true);
+    const TextInputRef = useRef();
 
     useFocusEffect(
         React.useCallback(() => {
             setloading(true);
+            TextInputRef.current.focus();
             if (props.route.params?.id) {
                 dispatch(getPostComments(`comment/${props.route.params.id}`))
                     .then(data => {
@@ -33,7 +35,9 @@ export default function CommentModal(props) {
                         setNextUrl(data.data.next_page_url);
                     }).catch(err => console.log(err));
             }
+       
             return () => {
+                TextInputRef.current.blur();
                 setCommentList([]);
                 setComment('')
             }
@@ -84,7 +88,7 @@ export default function CommentModal(props) {
                 });
         }
     }
-    const element = <TextInput.Icon name="send" onPress={() => handleCommentSend()} />
+
 
     const NavigateBack = () => {
 
@@ -136,7 +140,7 @@ export default function CommentModal(props) {
                     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
                         <ActivityIndicator color="white" size="small" style={{ display: loading ? "flex" : "none" }} />
                         <Text style={{ marginTop: 25, display: loading ? "flex" : "none",color:"white" }}>Loading <Title style={{color:"white"}}>Comments</Title></Text>
-                        <Text style={{ display: !loading && commentList.length == 0 ? "flex" : "none",color:"white" }}>Post don't have any <Title>Comments</Title></Text>
+                        <Text style={{ display: !loading && commentList.length == 0 ? "flex" : "none",color:"white" }}>Post don't have any <Title style={{color:"white"}}>Comments</Title></Text>
                     </View>
                     :
                     <FlatList
@@ -152,17 +156,26 @@ export default function CommentModal(props) {
                     />
                 }
                 <TextInput
-                    style={{ backgroundColor: 'white' }}
+                    style={{ backgroundColor: 'rgba(255,255,255,0.9)' }}
                     mode='flat'
-                    theme={{ colors: { text: "white" } }}
-                    label={user?.name}
+                    ref={TextInputRef}
+                    onFocus={()=> setFocused(true)}
+                    onBlur={()=>setFocused(false)}
                     
+                    // theme={{ colors: { text: "white" } }}
+                    label={focused?user?.name:'Write a comment..'}
+                    theme={{
+                        colors: {
+                          primary:'#5bc0de',
+                          
+                        }
+                      }}
                     underlineColor="red"
-                    right={element}
+                    blurOnSubmit={false}
                     onSubmitEditing={() => handleCommentSend()}
                     value={comment}
-                    placeholderTextColor={"red"}
-                    labelTextColor="red"
+                    placeholderTextColor={"lightgrey"}
+                    labelTextColor="#292b2c"
                     onChangeText={setComment}
                     placeholder='Write a comment..' />
             </KeyboardAvoidingView>

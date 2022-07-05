@@ -23,10 +23,13 @@ export default function ReviewModal(props) {
     const [refreshing, setRefreshing] = React.useState(false);
     const [loading, setloading] = React.useState(true)
     const [totalReviews, settotalReviews] = React.useState(0)
- 
+    const [focused,setFocused] = useState(true);
+    const TextInputRef = useRef();
+
     useFocusEffect(
         React.useCallback(() => {
             setloading(true);
+            TextInputRef.current.focus();
             if (props.route.params?.id) {
                 dispatch(getProfileReviews(`reviews/${props.route.params.id}`))
                     .then(data => {
@@ -42,9 +45,9 @@ export default function ReviewModal(props) {
                        
                     }).catch(err => console.log(err));
             }
-          
+           
             return () => {
-             
+                TextInputRef.current.blur();
                 setReviewList('')
             }
         }, [initialUserId, props.route.params?.id])
@@ -116,22 +119,22 @@ export default function ReviewModal(props) {
                     <IconButton
                         icon="arrow-left"
                         size={25}
-                        color='black'
+                        color='white'
                         style={{ alignSelf: "flex-start", }}
 
                     />
                    
-                    <Title>Reviews</Title>
+                    <Title style={{color:"white"}}>Reviews</Title>
                     </View>
-                    <Text style={{marginRight:25}}>Total <Title>{totalReviews}</Title></Text>
+                    <Text style={{marginRight:25,color:"white"}}>Total <Title style={{color:"white"}}>{totalReviews}</Title></Text>
                 
                 </TouchableOpacity>
 
                 {loading == true || reviewList.length <= 0 ?
                 <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
                         <ActivityIndicator color="white" size="small" style={{display:loading?"flex":"none"}} />
-                        <Text style={{marginTop:25,display:loading?"flex":"none"}}>Loading <Title>Reviews</Title></Text>
-                        <Text style={{display:!loading && reviewList.length <= 0 ?"flex":"none"}}>No <Title>Reviews</Title> Found</Text>
+                        <Text style={{marginTop:25,display:loading?"flex":"none",color:"white"}}>Loading <Title>Reviews</Title></Text>
+                        <Text style={{display:!loading && reviewList.length <= 0 ?"flex":"none",color:"white"}}>No <Title style={{color:"white"}}>Reviews</Title> Found</Text>
                 </View>
                 :
                  <FlatList
@@ -147,11 +150,18 @@ export default function ReviewModal(props) {
                 /> 
 }
                 <TextInput
-                    style={{ backgroundColor: 'transparent'}}
-                    mode='outlined'
-                    right={element}
+                    style={{ backgroundColor: 'rgba(255,255,255,0.9)' }}
+                    ref={TextInputRef}
+                    mode='flat'
+                    onFocus={()=> setFocused(true)}
+                    onBlur={()=>setFocused(false)}
+                    label={focused?currentUser?.name:'Write a comment..'}
+                    underlineColor="red"
+                    blurOnSubmit={false}
                     onSubmitEditing={()=> handleReviewSend()}
                     value={review}
+                    placeholderTextColor={"lightgrey"}
+                    labelTextColor="#292b2c"
                     onChangeText={setReview}
                     placeholder='Write a review..' />
             </KeyboardAvoidingView>

@@ -9,6 +9,7 @@ import { ActivityIndicator, AppState, StatusBar, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import * as RootNavigation from '../../../RootNavigation';
+import Loader from '../../components/loader/Loader';
 
 export default function ProfileFeed(props) {
 
@@ -21,6 +22,7 @@ export default function ProfileFeed(props) {
     const [appState, setAppState] = useState(AppState.currentState);
     const user = useSelector(state => state.auth.currentUser);
     const [profileUser, setProfileUser] = useState(null);
+    const [newPostLoader, setnewPostLoader] = useState(false);
 
     useFocusEffect(
         React.useCallback(() => {
@@ -72,13 +74,16 @@ export default function ProfileFeed(props) {
     }
 
     const DataUpdater = async () => {
+        setnewPostLoader(true);
         await dispatch(getProfilePosts(nextPage))
             .then((data) => {
                 let newData = [...posts, ...data?.data?.data];
                 setPosts(newData);
                 setnextPage(data?.data?.next_page_url)
+                setnewPostLoader(false);
             }).catch(err => {
                 console.log(err.message);
+                setnewPostLoader(false);
             })
     }
 
@@ -141,5 +146,6 @@ export default function ProfileFeed(props) {
                 })
             }} />
         </GestureRecognizer>
+        <Loader loader={newPostLoader}  />
     </>)
 }

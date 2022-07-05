@@ -12,6 +12,7 @@ import Header from '../../HomeScreen/Header';
 import BlockModal from '../../components/modal/block'
 import ReportModal from '../../components/modal/report'
 import * as RootNavigation from '../../../RootNavigation';
+import Loader from '../../components/loader/Loader';
 
 export default function ViewedFeed(props) {
 
@@ -23,7 +24,7 @@ export default function ViewedFeed(props) {
     const [currentPost, setcurrentPost] = useState({});
     const [appState, setAppState] = useState(AppState.currentState);
     const user = useSelector(state => state.auth.currentUser);
-
+    const [newPostLoader, setnewPostLoader] = useState(false);
     const [showblcoked, setShowblcoked] = useState(false);
     const [showReport, setshowReport] = useState(false);
     useFocusEffect(
@@ -75,13 +76,16 @@ export default function ViewedFeed(props) {
     }
 
     const DataUpdater = async () => {
+        setnewPostLoader(true);
         await dispatch(getViewedPosts(nextPage))
             .then((data) => {
                 let newData = [...posts, ...data?.data?.data];
                 setPosts(newData);
-                setnextPage(data?.data?.next_page_url)
+                setnextPage(data?.data?.next_page_url);
+                setnewPostLoader(false);
             }).catch(err => {
                 console.log(err.message);
+                setnewPostLoader(false);
             })
     }
 
@@ -186,6 +190,7 @@ export default function ViewedFeed(props) {
                     nextpage: nextPage,
                 })
             }} />
+            <Loader loader={newPostLoader} />
             <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
             <ReportModal id={currentPost?.id} showModal={showReport} hideModalNow={() => setshowReport(false)} removeReportedPost={(id) => removeReportedPost(id)} />
         </GestureRecognizer>

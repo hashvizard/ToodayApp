@@ -7,7 +7,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../HomeScreen/Header';
 import Footer from '../../HomeScreen/Footer';
 import VideoPlayer from 'react-native-video-controls';
-import { AppState, StatusBar } from 'react-native';
+import { AppState, StatusBar,View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import BlockModal from '../../components/modal/block'
 import ReportModal from '../../components/modal/report'
@@ -17,7 +17,7 @@ import { UploadVideos } from '../../helpers/UploadVideos';
 import RNFetchBlob from 'react-native-fetch-blob'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundService from 'react-native-background-actions';
-
+import Loader from '../../components/loader/Loader';
 
 
 export default function FeedScreen(props) {
@@ -35,6 +35,7 @@ export default function FeedScreen(props) {
     const [showReport, setshowReport] = useState(false);
     const [uploading, setuploading] = useState(false);
     const [progress, setprogress] = useState('0%');
+    const [newPostLoader, setnewPostLoader] = useState(false);
     // Checking Feed State
     const FeedState = useSelector(state => state.feedState.active)
     const veryIntensiveTask = async (taskDataArguments) => {
@@ -171,13 +172,16 @@ export default function FeedScreen(props) {
     }
 
     const DataUpdater = async () => {
+        setnewPostLoader(true);
         await dispatch(getAllPosts(nextPage))
             .then((data) => {
                 let newData = [...posts, ...data?.data?.data];
                 setPosts(newData);
                 setnextPage(data?.data?.next_page_url)
+                setnewPostLoader(false);
             }).catch(err => {
                 console.log(err.message);
+                setnewPostLoader(false);
             })
     }
 
@@ -285,6 +289,7 @@ export default function FeedScreen(props) {
                 /> : null}
             <Footer user={currentPost?.user} progress={progress} uploading={uploading} post={currentPost} goBack={() => props.navigation.goBack()} />
         </GestureRecognizer>
+        <Loader loader={newPostLoader} />
         <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />
         <ReportModal id={currentPost?.id} showModal={showReport} hideModalNow={() => setshowReport(false)} removeReportedPost={(id) => removeReportedPost(id)} />
     </>)

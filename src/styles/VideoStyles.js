@@ -13,6 +13,7 @@ const videoStyles = StyleSheet.create({
         padding:15,
         justifyContent:"space-around"
     },
+    
     commentcontainer: {
         marginTop: STATUS_BAR_HEIGHT,
         marginBottom: NAVIGATION_BAR_HEIGHT,
@@ -26,6 +27,9 @@ const videoStyles = StyleSheet.create({
     },
     spaceBottom:{
         bottom: NAVIGATION_BAR_HEIGHT,
+    },
+    spaceBottomHeight:{
+        height: NAVIGATION_BAR_HEIGHT,
     },
     spaceBottomView:{
         marginBottom: NAVIGATION_BAR_HEIGHT,

@@ -9,6 +9,7 @@ import { ActivityIndicator, AppState, View, Alert } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import { useFocusEffect } from '@react-navigation/native';
 import * as RootNavigation from '../../../RootNavigation'
+import Loader from '../../components/loader/Loader';
 export default function UserFeed(props) {
 
     const isFocused = useIsFocused();
@@ -18,6 +19,8 @@ export default function UserFeed(props) {
     const [nextPage, setnextPage] = useState(null);
     const [currentPost, setcurrentPost] = useState({});
     const [appState, setAppState] = useState(AppState.currentState);
+    const [newPostLoader, setnewPostLoader] = useState(false);
+
     const user = useSelector(state => state.auth.currentUser);
 
     useFocusEffect(
@@ -91,13 +94,16 @@ export default function UserFeed(props) {
     }
 
     const DataUpdater = async () => {
+        setnewPostLoader(true);
         await dispatch(getUserPosts(nextPage))
             .then((data) => {
                 let newData = [...posts, ...data?.data?.data];
                 setPosts(newData);
-                setnextPage(data?.data?.next_page_url)
+                setnextPage(data?.data?.next_page_url);
+                setnewPostLoader(false);
             }).catch(err => {
                 console.log(err.message);
+                setnewPostLoader(false);
             })
     }
 
@@ -184,6 +190,7 @@ export default function UserFeed(props) {
                     })
                 }}
                 deletePost={(id) => removePosts(id)} />
+                <Loader  loader={newPostLoader} />
         </GestureRecognizer>
     </>)
 }
