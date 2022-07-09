@@ -108,13 +108,13 @@ export default function ReviewModal(props) {
                 flex: 1
             }}
             source={require('../../../../assets/background.jpg')} resizeMode="cover">
-            <KeyboardAvoidingView
+            {/* <KeyboardAvoidingView
                 behavior="padding"
                 style={videoStyles.commentcontainer}
-            >
+            > */}
                 <TouchableOpacity 
                 onPress={() => props.navigation.goBack()} 
-                style={{ alignItems: "center",justifyContent:"space-between", flexDirection: "row", paddingTop: 10 }}>
+                style={{ alignItems: "center",justifyContent:"space-between", flexDirection: "row", ...videoStyles.spaceTop, marginTop:10 }}>
                     <View style={{alignItems:"center",flexDirection:"row"}}>
                     <IconButton
                         icon="arrow-left"
@@ -155,7 +155,7 @@ export default function ReviewModal(props) {
                     mode='flat'
                     onFocus={()=> setFocused(true)}
                     onBlur={()=>setFocused(false)}
-                    label={focused?currentUser?.name:'Write a comment..'}
+                    label={focused?currentUser?.name:'Write something..'}
                     underlineColor="red"
                     blurOnSubmit={false}
                     onSubmitEditing={()=> handleReviewSend()}
@@ -164,7 +164,7 @@ export default function ReviewModal(props) {
                     labelTextColor="#292b2c"
                     onChangeText={setReview}
                     placeholder='Write a review..' />
-            </KeyboardAvoidingView>
+            {/* </KeyboardAvoidingView> */}
         </ImageBackground>
     </>
     );

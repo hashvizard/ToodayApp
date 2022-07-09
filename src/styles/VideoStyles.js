@@ -4,9 +4,8 @@ const MODE = Appearance.getColorScheme();
 const SCREEN_HEIGHT = Dimensions.get('screen').height;
 const WINDOW_HEIGHT = Dimensions.get('window').height;
 const STATUS_BAR_HEIGHT = StatusBar.currentHeight || 24;
-const NAVIGATION_BAR_HEIGHT = (SCREEN_HEIGHT - WINDOW_HEIGHT) > 0 ? SCREEN_HEIGHT - WINDOW_HEIGHT : 0;
+const NAVIGATION_BAR_HEIGHT = 0;
 
-console.log(NAVIGATION_BAR_HEIGHT,"sd")
 const videoStyles = StyleSheet.create({
 
     citySelectorStyle:{

@@ -19,7 +19,7 @@ console.log(props.route.params.source)
     const [loading, setloading] = useState(false);
     const dispatch = useDispatch();
 
-    const locationIcon = <TextInput.Icon name="map-marker" color="#f0ad4e" />
+    // const locationIcon = <TextInput.Icon name="map-marker" color="#f0ad4e" />
     const user = useSelector(state => state.auth.currentUser);
 
     const handleSavePost = async () => {
@@ -36,7 +36,7 @@ console.log(props.route.params.source)
             console.log(err);
         })
     }
-
+    const locationIcon = <TextInput.Icon name="pound" color="#d9534f" />
     return (
         <View style={{ flex: 1, backgroundColor: "white" }}>
             <View style={{ ...styles.imgComponent }}>
@@ -54,10 +54,19 @@ console.log(props.route.params.source)
                     source={{ uri: props.route.params.source }}
                 />
             </View>
-            <KeyboardAvoidingView
-                behavior="padding"
-                style={{ ...videoStyles.stylePost }}>
                 <ScrollView contentContainerStyle={{ backgroundColor: "white" }}>
+                <TextInput
+                        style={{ margin: 10, backgroundColor: "white" }}
+                        mode='flat'
+                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
+                        placeholderTextColor="black"
+                        textAlignVertical='center'
+                        textContentType="location"
+                        left={locationIcon}
+                        maxLength={30}
+                        value={location}
+                        onChangeText={(text) => setlocation(text)}
+                        placeholder='Enter the Title' />
                     <TextInput
                         style={{ margin: 10, backgroundColor: "white" }}
                         mode='flat'
@@ -73,25 +82,13 @@ console.log(props.route.params.source)
                         onChangeText={(text) => setDescription(text)}
                         placeholder='Write post Description..' />
 
-                    <TextInput
-                        style={{ margin: 10, backgroundColor: "white" }}
-                        mode='flat'
-                        theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
-                        placeholderTextColor="black"
-                        textAlignVertical='center'
-                        textContentType="location"
-                        right={locationIcon}
-                        maxLength={30}
-                        value={location}
-                        onChangeText={(text) => setlocation(text)}
-                        placeholder='Enter the locality' />
+                 
                     <Button icon="check" loading={loading} disabled={location != '' && description != '' ? false : true}
-                        mode="contained" style={{ padding: 5, marginTop: 25, margin: 10, backgroundColor: "#f0ad4e" }}
+                        mode="contained" style={{  marginTop: 25, margin: 10, backgroundColor: "#f0ad4e" }}
                         onPress={() => handleSavePost()}>
                         Save Changes
                     </Button>
                 </ScrollView>
-            </KeyboardAvoidingView>
         </View>
     )
 }

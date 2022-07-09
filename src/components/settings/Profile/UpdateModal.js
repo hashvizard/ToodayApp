@@ -10,7 +10,7 @@ import CityFinder from '../../../helpers/CityFinder';
 import { updateUserBio, updateUserCity, updateUserName, updateUserprofession } from '../../../Apis/LaravelApis';
 import { USER_STATE_CHANGE } from '../../../redux/constants';
 const UpdateModal = ({ data, type, changeModal }) => {
-
+  console.log(type);
   const user = useSelector(state => state.auth);
 
   const dispatch = useDispatch()
@@ -26,7 +26,7 @@ const UpdateModal = ({ data, type, changeModal }) => {
   const bottomSheetRef = useRef(null);
 
   // variables
-  const snapPoints = useMemo(() => ['40%'], []);
+  const snapPoints = useMemo(() => ['30%'], []);
 
   const adjustSize = () => bottomSheetRef.current.snapToIndex(0);
 
@@ -44,6 +44,27 @@ const UpdateModal = ({ data, type, changeModal }) => {
     };
   }, []);
 
+
+  const updateData =()=>{
+    
+    switch (type) {
+      case 'bio':
+        updateBioData();
+        break;
+      case 'name':
+        updateNameData();
+        break;
+      case 'location':
+        updateCityData();
+        break;
+      case 'profession':
+        updateProfessionData()
+        break;
+      default:
+        break;
+    }
+
+  }
 
   const updateNameData = () => {
     setSave(true);
@@ -121,13 +142,18 @@ const UpdateModal = ({ data, type, changeModal }) => {
       .catch((err) => { setSave(false); console.log(err) })
   }
 
+
+
   const ChangeName = (<>
     <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Enter your name :</Text>
     <View style={{ flexDirection: "row", alignItems: "center" }}>
       <BottomSheetTextInput
         autoFocus={true}
+        multiline
         maxLength={22}
         onChangeText={(text) => setName(text)}
+        onSubmitEditing={()=>updateData()}
+        blurOnSubmit={true}
         style={{
           ...styles.input,
           borderBottomWidth: 2,
@@ -135,26 +161,16 @@ const UpdateModal = ({ data, type, changeModal }) => {
         }} value={name} />
       <Text style={{ paddingHorizontal: 15 }}>{name.length}</Text>
     </View>
-    <View style={{ marginTop: 20, marginHorizontal: 15, flexDirection: "row", justifyContent: "space-between" }}>
-      <Button
-        color='#d9534f'
-        onPress={() => { Keyboard.dismiss(); handleClosePress() }}
-        icon="cancel" style={{ marginRight: 15 }} mode="text" >
-        Cancel
-      </Button>
-      <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
-        onPress={() => updateNameData()}>
-        Save
-      </Button>
-    </View>
   </>);
 
-const ChangeBio = (<>
+const ChangeBio = (<View>
   <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Tell us about yourself :</Text>
   <View style={{ flexDirection: "row", alignItems: "center" }}>
     <BottomSheetTextInput
       autoFocus={true}
       maxLength={150}
+      onSubmitEditing={()=>updateData()}
+      blurOnSubmit={true}
       onChangeText={(text) => setName(text)}
       style={{
         ...styles.input,
@@ -163,19 +179,7 @@ const ChangeBio = (<>
       }} value={name} />
     <Text style={{ paddingHorizontal: 15 }}>{name?.length}</Text>
   </View>
-  <View style={{ marginTop: 20, marginHorizontal: 15, flexDirection: "row", justifyContent: "space-between" }}>
-    <Button
-      color='#d9534f'
-      onPress={() => { Keyboard.dismiss(); handleClosePress() }}
-      icon="cancel" style={{ marginRight: 15 }} mode="text" >
-      Cancel
-    </Button>
-    <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
-      onPress={() => updateBioData()}>
-      Save
-    </Button>
-  </View>
-</>);
+</View>);
 
 const ChangeProfession = (<>
   <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Update your Profession:</Text>
@@ -183,6 +187,8 @@ const ChangeProfession = (<>
     <BottomSheetTextInput
       autoFocus={true}
       maxLength={22}
+      onSubmitEditing={()=>updateData()}
+      blurOnSubmit={true}
       onChangeText={(text) => setName(text)}
       style={{
         ...styles.input,
@@ -191,27 +197,16 @@ const ChangeProfession = (<>
       }} value={name} />
     <Text style={{ paddingHorizontal: 15 }}>{name.length}</Text>
   </View>
-  <View style={{ marginTop: 20, marginHorizontal: 15, flexDirection: "row", justifyContent: "space-between" }}>
-    <Button
-      color='#d9534f'
-      onPress={() => { Keyboard.dismiss(); handleClosePress() }}
-      icon="cancel" style={{ marginRight: 15 }} mode="text" >
-      Cancel
-    </Button>
-    <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
-      onPress={() => updateProfessionData()}>
-      Save
-    </Button>
-  </View>
 </>);
 
   const ChangeLocation = (<>
     <Text style={{ padding: 10, color: notFound ? "red" : "black", fontWeight: "bold" }}>{notFound ? "We are not available in your city !" : 'Update your current City'}</Text>
-    <View style={{ flexDirection: "row", alignItems: "center" }}>
+    <View style={{ flexDirection: "row", alignItems: "center",marginRight:15 }}>
       <BottomSheetTextInput
         autoFocus={true}
         maxLength={22}
         editable={false}
+
         style={styles.input} value={location} />
       <CityFinder city={(city) => {
         if (city) {
@@ -222,36 +217,32 @@ const ChangeProfession = (<>
         }
       }} />
     </View>
-    <View style={{ marginTop: 20, marginHorizontal: 15, flexDirection: "row", justifyContent: "space-between" }}>
-      <Button
-        color='#d9534f'
-        onPress={() => { Keyboard.dismiss(); handleClosePress() }}
-        icon="cancel" mode="outlined" >
-        Cancel
-      </Button>
-      <Button loading={save} icon="check" mode="outlined"
-        onPress={() => updateCityData()}>
-        Save
-      </Button>
-
-    </View>
   </>);
-  return (
+  return (<>
     <BottomSheet
       ref={bottomSheetRef}
       handleStyle={{ backgroundColor: "#f0ad4e" }}
       index={0}
       snapPoints={snapPoints}
 
-      keyboardBehavior="interactive"
+      keyboardBehavior="fillParent"
     >
-      <KeyboardAvoidingView
-        behavior="padding"
-        style={videoStyles.commentcontainer}
-      >
         {type == 'name' ? ChangeName : type == 'bio'? ChangeBio: type == 'profession'? ChangeProfession: ChangeLocation}
-      </KeyboardAvoidingView>
+     
     </BottomSheet>
+    <View style={{ margin: 15, flexDirection: "row", justifyContent: "space-between" }}>
+    <Button
+      color='#d9534f'
+      onPress={() => { Keyboard.dismiss(); handleClosePress() }}
+      icon="cancel" style={{ marginRight: 15 }} mode="text" >
+      Cancel
+    </Button>
+    <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
+      onPress={() => updateData()}>
+      Save
+    </Button>
+  </View>
+    </>
   )
 }
 

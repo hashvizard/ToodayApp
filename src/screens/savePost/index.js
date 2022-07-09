@@ -53,10 +53,10 @@ const createTwoButtonAlert = () =>
                     style={{ aspectRatio: 9 / 16, width: "30%", borderRadius: 10, resizeMode: "cover", borderWidth: 1, borderColor: "darkgrey" }}
                     source={{ uri: props.route.params.source }}
                 />
-            </View>
+            </View>{/* 
             <KeyboardAvoidingView
                 behavior="padding"
-                style={{ ...videoStyles.stylePost }}>
+                style={{ ...videoStyles.stylePost }}> */}
                 <ScrollView contentContainerStyle={{ backgroundColor: "white" }}>
                     <TextInput
                         style={{ margin: 10, backgroundColor: "white" }}
@@ -88,12 +88,12 @@ const createTwoButtonAlert = () =>
                     <Button icon="video-outline" 
                          labelStyle={{color:"white"}}
                     disabled={location != '' && description != '' ? false : true}
-                        mode="contained" style={{ padding: 5, marginTop: 25, margin: 10, backgroundColor: "#5bc0de" }}
+                        mode="outlined" style={{ marginTop: 25, margin: 10, backgroundColor: "#5bc0de" }}
                         onPress={() => createTwoButtonAlert()}>
                         Post Now
                     </Button>
                 </ScrollView>
-            </KeyboardAvoidingView>
+            {/* </KeyboardAvoidingView> */}
         </View>
     )
 }
