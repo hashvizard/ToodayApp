@@ -271,19 +271,21 @@ const Footer = (props) => {
             <View style={{ width: "15%", alignItems: "flex-end" }}>
 
                 <IconButton
-                    icon="plus-circle"
+                    icon={feedState.open != "BOTTOM" ? "chevron-up" : "chevron-down"}
                     animated={true}
                     color="white"
                     size={40}
-                    onPress={() => RootNavigation.navigate('gallery')}
+                    onPress={() => dispatch(setFeedState(feedState.open == "BOTTOM" ? null : "BOTTOM"))}
+                  
                 />
                 <IconButton
                     style={{ display: feedState.open != "BOTTOM" ? "flex" : "none" }}
-                    icon="chevron-up"
+                    icon="plus-circle"
                     color="white"
                     animated={true}
                     size={40}
-                    onPress={() => dispatch(setFeedState("BOTTOM"))}
+                    onPress={() => RootNavigation.navigate('gallery')}
+                    // onPress={() => dispatch(setFeedState("BOTTOM"))}
                 />
                 <View style={{ display: feedState.open == "BOTTOM" ? "flex" : "none" }}>
                     <IconButton
@@ -328,11 +330,11 @@ const Footer = (props) => {
             </View>
             <View style={{ width: "25%", alignItems: "flex-end" }}>
                 <IconButton
-                    icon="chevron-down"
+                    icon="plus-circle"
                     animated={true}
                     color="white"
                     size={40}
-                    onPress={() => dispatch(setFeedState(null))}
+                    onPress={() => RootNavigation.navigate('gallery')}
                 />
             </View>
         </View>
