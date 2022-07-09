@@ -22,7 +22,6 @@ const Header = ({user,showBlock,showReport,post}) => {
         dispatch(setFeedState(null));
         showReport()
     }
-    console.log(post,"I got this")
 
     return (
         <View style={{ ...videoStyles.spaceTop, width: "100%", alignItems: "center", justifyContent: "space-between", position: "absolute", zIndex: 21 }}>

@@ -67,10 +67,7 @@ export default function FeedScreen(props) {
     useFocusEffect(
         React.useCallback(() => {
             // If user navigated from uploading Screen
-            console.log("re",props.route.params)
             if (props.route.params?.data) {
-                console.log(props.route.params)
-                console.log("i m in")
                 updateVideo(props.route.params?.data);
             }
             // If user navigated from comment Screen

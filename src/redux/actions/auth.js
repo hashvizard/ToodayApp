@@ -97,7 +97,7 @@ export const getCurrentUserData = () => dispatch => {
 
 export const setUserData = (user) => dispatch => {
     setToken(user.data.token).then(() => {
-       console.log(user.data?.user[0])
+    //    console.log(user.data?.user[0])
         return dispatch({
             type: USER_STATE_CHANGE,
             currentUser: user.data?.user[0],
