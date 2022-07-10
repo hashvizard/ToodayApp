@@ -45,8 +45,8 @@ const UpdateModal = ({ data, type, changeModal }) => {
   }, []);
 
 
-  const updateData =()=>{
-    
+  const updateData = () => {
+
     switch (type) {
       case 'bio':
         updateBioData();
@@ -152,7 +152,7 @@ const UpdateModal = ({ data, type, changeModal }) => {
         multiline
         maxLength={22}
         onChangeText={(text) => setName(text)}
-        onSubmitEditing={()=>updateData()}
+        onSubmitEditing={() => updateData()}
         blurOnSubmit={true}
         style={{
           ...styles.input,
@@ -163,45 +163,45 @@ const UpdateModal = ({ data, type, changeModal }) => {
     </View>
   </>);
 
-const ChangeBio = (<View>
-  <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Tell us about yourself :</Text>
-  <View style={{ flexDirection: "row", alignItems: "center" }}>
-    <BottomSheetTextInput
-      autoFocus={true}
-      maxLength={150}
-      onSubmitEditing={()=>updateData()}
-      blurOnSubmit={true}
-      onChangeText={(text) => setName(text)}
-      style={{
-        ...styles.input,
-        borderBottomWidth: 2,
-        borderColor: "green"
-      }} value={name} />
-    <Text style={{ paddingHorizontal: 15 }}>{name?.length}</Text>
-  </View>
-</View>);
+  const ChangeBio = (<View>
+    <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Tell us about yourself :</Text>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <BottomSheetTextInput
+        autoFocus={true}
+        maxLength={150}
+        onSubmitEditing={() => updateData()}
+        blurOnSubmit={true}
+        onChangeText={(text) => setName(text)}
+        style={{
+          ...styles.input,
+          borderBottomWidth: 2,
+          borderColor: "green"
+        }} value={name} />
+      <Text style={{ paddingHorizontal: 15 }}>{name?.length}</Text>
+    </View>
+  </View>);
 
-const ChangeProfession = (<>
-  <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Update your Profession:</Text>
-  <View style={{ flexDirection: "row", alignItems: "center" }}>
-    <BottomSheetTextInput
-      autoFocus={true}
-      maxLength={22}
-      onSubmitEditing={()=>updateData()}
-      blurOnSubmit={true}
-      onChangeText={(text) => setName(text)}
-      style={{
-        ...styles.input,
-        borderBottomWidth: 2,
-        borderColor: "green"
-      }} value={name} />
-    <Text style={{ paddingHorizontal: 15 }}>{name.length}</Text>
-  </View>
-</>);
+  const ChangeProfession = (<>
+    <Text style={{ padding: 10, color: "black", fontWeight: "bold" }}>Update your Profession:</Text>
+    <View style={{ flexDirection: "row", alignItems: "center" }}>
+      <BottomSheetTextInput
+        autoFocus={true}
+        maxLength={22}
+        onSubmitEditing={() => updateData()}
+        blurOnSubmit={true}
+        onChangeText={(text) => setName(text)}
+        style={{
+          ...styles.input,
+          borderBottomWidth: 2,
+          borderColor: "green"
+        }} value={name} />
+      <Text style={{ paddingHorizontal: 15 }}>{name.length}</Text>
+    </View>
+  </>);
 
   const ChangeLocation = (<>
     <Text style={{ padding: 10, color: notFound ? "red" : "black", fontWeight: "bold" }}>{notFound ? "We are not available in your city !" : 'Update your current City'}</Text>
-    <View style={{ flexDirection: "row", alignItems: "center",marginRight:15 }}>
+    <View style={{ flexDirection: "row", alignItems: "center", marginRight: 15 }}>
       <BottomSheetTextInput
         autoFocus={true}
         maxLength={22}
@@ -224,25 +224,31 @@ const ChangeProfession = (<>
       handleStyle={{ backgroundColor: "#f0ad4e" }}
       index={0}
       snapPoints={snapPoints}
-
       keyboardBehavior="fillParent"
     >
-        {type == 'name' ? ChangeName : type == 'bio'? ChangeBio: type == 'profession'? ChangeProfession: ChangeLocation}
-     
+     {/*  <KeyboardAvoidingView
+        behavior="padding"
+        style={videoStyles.commentcontainer}
+      >
+      */}
+         {type == 'name' ? ChangeName : type == 'bio' ? ChangeBio : type == 'profession' ? ChangeProfession : ChangeLocation}
+
+        <View style={{ padding: 15, width: "100%", flexDirection: "row", justifyContent: "space-between" }}>
+          <Button
+            color='#d9534f'
+            onPress={() => { Keyboard.dismiss(); handleClosePress() }}
+            icon="cancel" style={{ marginRight: 15 }} mode="text" >
+            Cancel
+          </Button>
+          <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
+            onPress={() => updateData()}>
+            Save
+          </Button>
+
+        </View>
+      {/* </KeyboardAvoidingView> */}
     </BottomSheet>
-    <View style={{ margin: 15, flexDirection: "row", justifyContent: "space-between" }}>
-    <Button
-      color='#d9534f'
-      onPress={() => { Keyboard.dismiss(); handleClosePress() }}
-      icon="cancel" style={{ marginRight: 15 }} mode="text" >
-      Cancel
-    </Button>
-    <Button style={{ marginRight: 15 }} loading={save} icon="check" mode="text"
-      onPress={() => updateData()}>
-      Save
-    </Button>
-  </View>
-    </>
+  </>
   )
 }
 

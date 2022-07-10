@@ -108,13 +108,13 @@ export default function ReviewModal(props) {
                 flex: 1
             }}
             source={require('../../../../assets/background.jpg')} resizeMode="cover">
-            {/* <KeyboardAvoidingView
+            <KeyboardAvoidingView
                 behavior="padding"
                 style={videoStyles.commentcontainer}
-            > */}
+            >
                 <TouchableOpacity 
                 onPress={() => props.navigation.goBack()} 
-                style={{ alignItems: "center",justifyContent:"space-between", flexDirection: "row", ...videoStyles.spaceTop, marginTop:10 }}>
+                style={{ alignItems: "center",justifyContent:"space-between", flexDirection: "row",marginTop:10 }}>
                     <View style={{alignItems:"center",flexDirection:"row"}}>
                     <IconButton
                         icon="arrow-left"
@@ -133,7 +133,7 @@ export default function ReviewModal(props) {
                 {loading == true || reviewList.length <= 0 ?
                 <View style={{flex:1,alignItems:"center",justifyContent:"center"}}>
                         <ActivityIndicator color="white" size="small" style={{display:loading?"flex":"none"}} />
-                        <Text style={{marginTop:25,display:loading?"flex":"none",color:"white"}}>Loading <Title>Reviews</Title></Text>
+                        <Text style={{marginTop:25,display:loading?"flex":"none",color:"white"}}>Loading <Title style={{color:"white"}}>Reviews</Title></Text>
                         <Text style={{display:!loading && reviewList.length <= 0 ?"flex":"none",color:"white"}}>No <Title style={{color:"white"}}>Reviews</Title> Found</Text>
                 </View>
                 :
@@ -164,7 +164,7 @@ export default function ReviewModal(props) {
                     labelTextColor="#292b2c"
                     onChangeText={setReview}
                     placeholder='Write a review..' />
-            {/* </KeyboardAvoidingView> */}
+            </KeyboardAvoidingView>
         </ImageBackground>
     </>
     );

@@ -97,11 +97,15 @@ const ProfileEdit = (props) => {
               
             </View>
         </ScrollView>
+        
         {showModal.show ?
-            <UpdateModal data={showModal.type == 'name' ? user.currentUser.name : showModal.type == 'bio'? user.currentUser.bio: showModal.type == 'profession'? user.currentUser.profession : user.currentUser.city}
+        
+        <UpdateModal data={showModal.type == 'name' ? user.currentUser.name : showModal.type == 'bio'? user.currentUser.bio: showModal.type == 'profession'? user.currentUser.profession : user.currentUser.city}
                 type={showModal.type} changeModal={() => setshowModal({ 'type': '', 'show': false })} />
-            : null
+        
+                : null
         }
+       
     </>
     )
 }

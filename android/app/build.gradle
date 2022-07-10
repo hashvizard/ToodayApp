@@ -135,8 +135,8 @@ android {
         applicationId "com.hashvizard.tooday"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 8
-        versionName "6.3"
+        versionCode 10
+        versionName "6.5"
         missingDimensionStrategy 'react-native-camera', 'general'
     }
     splits {

@@ -113,13 +113,11 @@ const ReportModal = ({showModal,hideModalNow,id,removeReportedPost}) => {
                 data={REPORT}
                 stickyHeaderIndices={[0]}
                 ListFooterComponent={renderSectionFooter}
-                style={{ marginBottom: 50 }}
                 ListHeaderComponent={renderSectionHeader}
                 keyExtractor={(i) => i}
                 renderItem={renderItem}
             />
         </BottomSheet>
-
     )
 }
 

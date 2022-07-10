@@ -16,8 +16,8 @@ const videoStyles = StyleSheet.create({
     },
     
     commentcontainer: {
-        marginTop: STATUS_BAR_HEIGHT,
-        marginBottom: NAVIGATION_BAR_HEIGHT,
+        // marginTop: STATUS_BAR_HEIGHT,
+        marginBottom: 0,
         flex: 1,
         width: "100%",
     },
