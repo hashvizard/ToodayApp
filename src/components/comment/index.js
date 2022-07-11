@@ -120,7 +120,7 @@ export default function CommentModal(props) {
             >
                 <TouchableOpacity
                     onPress={() => NavigateBack()}
-                    style={{ alignItems: "center", justifyContent: "space-between", flexDirection: "row", paddingTop: 10 }}>
+                    style={{ alignItems: "center", justifyContent: "space-between", flexDirection: "row", paddingTop: 30 }}>
                     <View style={{ alignItems: "center", flexDirection: "row" }}>
                         <IconButton
                             icon="arrow-left"
@@ -170,7 +170,7 @@ export default function CommentModal(props) {
                           
                         }
                       }}
-                    underlineColor="red"
+                    underlineColor="black"
                     blurOnSubmit={false}
                     onSubmitEditing={() => handleCommentSend()}
                     value={comment}

@@ -114,7 +114,7 @@ export default function ReviewModal(props) {
             >
                 <TouchableOpacity 
                 onPress={() => props.navigation.goBack()} 
-                style={{ alignItems: "center",justifyContent:"space-between", flexDirection: "row",marginTop:10 }}>
+                style={{ alignItems: "center",justifyContent:"space-between", flexDirection: "row",marginTop:30 }}>
                     <View style={{alignItems:"center",flexDirection:"row"}}>
                     <IconButton
                         icon="arrow-left"
@@ -156,7 +156,7 @@ export default function ReviewModal(props) {
                     onFocus={()=> setFocused(true)}
                     onBlur={()=>setFocused(false)}
                     label={focused?currentUser?.name:'Write something..'}
-                    underlineColor="red"
+                    underlineColor="black"
                     blurOnSubmit={false}
                     onSubmitEditing={()=> handleReviewSend()}
                     value={review}

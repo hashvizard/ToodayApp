@@ -55,11 +55,12 @@ const Footer = (props) => {
     // Showing This View for Viewed Posts
     const viewedPosts = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
-            <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "100%", }}>
-                <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+            <View style={{ paddingHorizontal: 15, zIndex: 0, width: "100%", }}>
+                <View style={{ flexDirection: "row", alignItems: "center"}}>
                     <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
                     <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
                 </View>
+                <View>
                 <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
                     {show ? `${props.post?.description.substr(0, 80)}... ` : props.post?.description}</Paragraph>
                 <Text
@@ -67,35 +68,36 @@ const Footer = (props) => {
                     style={{ display: props?.post?.description?.length > 80 ? 'flex' : 'none', color: "#5bc0de", }}>
                     {show ? 'See full description' : 'Show Less'}
                 </Text>
+                </View>
             </View>
         </View>
 
         <View style={{
-            flexDirection: "row", justifyContent: "space-between", alignItems: "center"
+            flexDirection: "row",justifyContent: "space-between", alignItems: "center"
         }}>
             <View style={{ flexDirection: "row", paddingHorizontal: 10, alignItems: "center", justifyContent: "space-between", width: "75%" }}>
                 <IconButton
-                    icon="eye"
+                    icon="eye-outline"
                     color="#5bc0de"
                     animated={true}
-                    size={34}
+                    size={30}
                 />
                 <Text style={{ color: "white" }}>{props?.post?.views}</Text>
                 <IconButton
-                    icon="comment"
+                    icon="comment-outline"
                     animated={true}
                     color="white"
-                    size={34}
+                    size={30}
                     onPress={() => RootNavigation.navigate('comment', { id: props?.post.id })}
                 />
                 <Text style={{ color: "white" }}>{props?.post?.comments}</Text>
             </View>
             <View style={{ width: "25%", alignItems: "flex-end" }}>
                 <IconButton
-                    icon="close-circle"
+                    icon="close-circle-outline"
                     animated={true}
                     color="white"
-                    size={40}
+                    size={35}
                     onPress={() => updateFeedState()}
                 />
             </View>
@@ -105,8 +107,8 @@ const Footer = (props) => {
     // Showing This View for Other Profile Posts
     const otherProfileState = (<>
         <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
-            <View style={{ padding: 15, width: "100%" }}>
-                <View style={{ flexDirection: "row", alignItems: "flex-start", justifyContent: "space-between" }}>
+            <View style={{ paddingHorizontal: 15, width: "100%" }}>
+                <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
                     <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
                         <Feather name='hash' size={21} color="red" />
                         <Caption style={{ marginLeft: 5, color: 'white' }}>{props.post?.location}</Caption>
@@ -131,27 +133,27 @@ const Footer = (props) => {
         }}>
             <View style={{ flexDirection: "row", paddingHorizontal: 10, alignItems: "center", justifyContent: "space-between", width: "75%" }}>
                 <IconButton
-                    icon="eye"
+                    icon="eye-outline"
                     color="#5bc0de"
                     animated={true}
-                    size={34}
+                    size={30}
                 />
                 <Text style={{ color: "white" }}>{props?.post?.views}</Text>
                 <IconButton
-                    icon="comment"
+                    icon="comment-outline"
                     animated={true}
                     color="white"
-                    size={34}
+                    size={30}
                     onPress={() => RootNavigation.navigate('comment', { id: props?.post.id })}
                 />
                 <Text style={{ color: "white" }}>{props?.post?.comments}</Text>
             </View>
             <View style={{ width: "25%", alignItems: "flex-end" }}>
                 <IconButton
-                    icon="close-circle"
+                    icon="close-circle-outline"
                     animated={true}
                     color="white"
-                    size={40}
+                    size={35}
                     onPress={() => updateFeedState()}
                 />
             </View>
@@ -161,17 +163,15 @@ const Footer = (props) => {
 
     // Showing This View for UserPostView
     const UserPostView = (<>
-        <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between", position: "absolute", bottom: 0 }}>
-            <View style={{ flexDirection: "row", padding: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "100%", }}>
-
-                {/* <FontAwesome name='map-marker' size={24} color="red" /> */}
+        <View style={{ position: "absolute", bottom: 0 }}>
+            <View style={{ flexDirection: "row", paddingHorizontal: 15, alignItems: "center", flexWrap: "wrap", zIndex: 0, width: "100%", }}>
                 <View style={{ width: "100%", alignItems: "center", flexDirection: "row", justifyContent: "space-between" }}>
                     <View>
-                        <View style={{ flexDirection: "row", alignItems: "center" }}>
+                        <View style={{ flexDirection: "row", alignItems: "flex-start" }}>
                             <Feather name='hash' size={21} color="red" />
-                            <Caption style={{ marginLeft: 5, color: 'white' }}>{props?.post?.location}</Caption>
+                            <Caption style={{ marginLeft: 10, color: 'white' }}>{props?.post?.location}</Caption>
                         </View>
-                        <View style={{ flexDirection: "row", marginTop: 10, alignItems: "center", justifyContent: "center" }}>
+                        <View style={{ flexDirection: "row", marginTop: 10, alignItems: "center" }}>
                             <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
                             <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
                         </View>
@@ -194,48 +194,49 @@ const Footer = (props) => {
                         />
                     </View>
 
-                </View>
+           
 
-                <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
+              
+            </View>
+            <Paragraph style={{ marginTop: 15, paddingTop: 0, color: 'white' }}>
                     {show ? `${props?.post?.description.substr(0, 80)}... ` : props?.post?.description}</Paragraph>
                 <Text
                     onPress={() => setshow(!show)}
                     style={{ display: props?.post?.description.length > 80 ? 'flex' : 'none', color: "#5bc0de", }}>
                     {show ? 'See full description' : 'Show Less'}
                 </Text>
-            </View>
-
         </View>
 
         <View style={{
             flexDirection: "row", justifyContent: "space-between", alignItems: "center"
         }}>
-            <View style={{ flexDirection: "row", paddingHorizontal: 10, alignItems: "center", justifyContent: "space-between", width: "75%" }}>
+            <View style={{ flexDirection: "row", paddingHorizontal: 10,alignItems: "center", justifyContent: "space-between", width: "75%" }}>
                 <IconButton
-                    icon="eye"
+                    icon="eye-outline"
                     color="#5bc0de"
                     animated={true}
-                    size={34}
+                    size={30}
                 />
                 <Text style={{ color: "white" }}>{props?.post?.views}</Text>
                 <IconButton
-                    icon="comment"
+                    icon="comment-outline"
                     animated={true}
                     color="white"
-                    size={34}
+                    size={30}
                     onPress={() => RootNavigation.navigate('comment', { id: props?.post.id })}
                 />
                 <Text style={{ color: "white" }}>{props?.post?.comments}</Text>
             </View>
             <View style={{ width: "25%", alignItems: "flex-end" }}>
                 <IconButton
-                    icon="close-circle"
+                    icon="close-circle-outline"
                     animated={true}
                     color="white"
-                    size={40}
+                    size={35}
                     onPress={() => updateFeedState()}
                 />
             </View>
+        </View>
         </View>
     </>);
 
