@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import NoDataFound from '../../components/FeedLoaders/NoDataFound';
 import { useDispatch, useSelector } from 'react-redux';
-import { activeFeedState, setFeedState, setIntialPost } from '../../redux/actions';
+import { activeFeedState, clearUploadedData, setFeedState, setIntialPost } from '../../redux/actions';
 import { addPost, getAllPosts, getProfilePosts, updtaeViews } from '../../Apis/LaravelApis/postApi';
 import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../HomeScreen/Header';
@@ -18,10 +18,45 @@ import RNFetchBlob from 'react-native-fetch-blob'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundService from 'react-native-background-actions';
 import Loader from '../../components/loader/Loader';
+import * as RootNavigation from '../../../RootNavigation';
+   /** api url */
+   const ENV = require('../../../credentials');
+   const BASE_URL = ENV.BACKEND_URL;
 
+//    let progress = '0%';
+const veryIntensiveTask = async (taskDataArguments) => {
+  
+    // Example of an infinite loop task
+    const { data,datas,token } = taskDataArguments;
+    await new Promise( async (resolve,reject) => {
+        RNFetchBlob.fetch('POST', `${BASE_URL}posts`, {
+            Authorization: 'Bearer ' + token,
+            'Content-Type': "multipart/form-data",
+        },
+            [
+                { name: 'photoUrl', filename: 'tooday.png', data: data.thumbnail },
+                { name: 'videoUrl', filename: 'tooday.mp4', type: 'video/mp4', data: RNFetchBlob.wrap(data.path) },
+                { name: 'location', data: datas.location },
+                { name: 'description', data: datas.description },
+            ]).uploadProgress({ interval : 1000 },(written, total) => {
+                let aprogress = `${((written/total) * 100).toFixed(0)}%`;
+                console.log(aprogress)
+            })
+            .then((response) => response.json())
+            .then((RetrivedData) => {
+                    // iOS will also run everything here in the background until .stop() is called
+                BackgroundService.stop();
+            })
+            .catch((err) => {
+                BackgroundService.stop();
+                reject(err);
+            })
+    });
+};
 
 export default function FeedScreen(props) {
-   
+ 
+
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
     const [posts, setPosts] = useState([])
@@ -34,41 +69,20 @@ export default function FeedScreen(props) {
     const [showblcoked, setShowblcoked] = useState(false);
     const [showReport, setshowReport] = useState(false);
     const [uploading, setuploading] = useState(false);
-    const [progress, setprogress] = useState('0%');
+    // const [progress, setprogress] = useState('0%');
     const [newPostLoader, setnewPostLoader] = useState(false);
     // Checking Feed State
     const FeedState = useSelector(state => state.feedState.active)
-    const veryIntensiveTask = async (taskDataArguments) => {
-        // Example of an infinite loop task
-        const { data,datas,token } = taskDataArguments;
-        await new Promise( async (resolve,reject) => {
-            RNFetchBlob.fetch('POST', 'http://10.0.2.2:8000/api/posts', {
-                Authorization: 'Bearer ' + token,
-                'Content-Type': "multipart/form-data",
-            },
-                [
-                    { name: 'photoUrl', filename: 'tooday.png', data: data.thumbnail },
-                    { name: 'videoUrl', filename: 'tooday.mp4', type: 'video/mp4', data: RNFetchBlob.wrap(data.path) },
-                    { name: 'location', data: datas.location },
-                    { name: 'description', data: datas.description },
-                ]).uploadProgress({ interval : 1000 },(written, total) => {
-                    setprogress(`${((written/total) * 100).toFixed(0)}%`)
-                })
-                .then((response) => response.json())
-                .then((RetrivedData) => {
-                   
-                })
-                .catch((err) => {
-                    reject(err);
-                })
-        });
-    };
+    const upload = useSelector(state => state.upload)
     
     useFocusEffect(
         React.useCallback(() => {
             // If user navigated from uploading Screen
-            if (props.route.params?.data) {
-                updateVideo(props.route.params?.data);
+            if (upload.description && upload.location && upload.video) {
+                console.log("I am in")
+                let data = upload;
+                dispatch(clearUploadedData())
+                updateVideo(data);
             }
             // If user navigated from comment Screen
             if (props.route?.params?.totalComments && posts.length != 0) {
@@ -76,7 +90,7 @@ export default function FeedScreen(props) {
                 newData[index].comments = props.route?.params?.totalComments;
                 setPosts(newData);
             }
-        }, [props.route.params?.data,props.route?.params?.totalComments])
+        }, [upload,props.route?.params?.totalComments])
     );
 
     const updateVideo = async (datas) => {
@@ -85,16 +99,21 @@ export default function FeedScreen(props) {
         let token = await AsyncStorage.getItem('tooday_user_token');
 
         const options = {
-            taskName: 'sd',
-            taskTitle: 'ExampleTask title',
-            taskDesc: 'ExampleTask description',
+            taskName: 'uploadingVideo',
+            taskTitle: upload.location,
+            taskDesc: upload.description,
             taskIcon: {
-                name: 'ic_launcher',
+                name: 'ic_notification',
                 type: 'mipmap',
             },
             color: '#ff00ff',
-            linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
-            parameters: {
+            progressBar :{
+                max:1024,
+                value:10,
+                indeterminate:true
+            },
+            // linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
+            parameters: {  
                 data: data,
                 datas:datas,
                 token:token
@@ -103,11 +122,8 @@ export default function FeedScreen(props) {
         
        await BackgroundService.start(veryIntensiveTask, options);
        
-        await BackgroundService.updateNotification({taskDesc: 'New ExampleTask description'}); // Only Android, iOS will ignore this call
-        // iOS will also run everything here in the background until .stop() is called
-        await BackgroundService.stop();
-        setuploading(false);
-        setprogress('0%');
+        await BackgroundService.updateNotification({taskDesc: 'Uploading...'}); // Only Android, iOS will ignore this call
+    
     }
 
 
@@ -284,7 +300,7 @@ export default function FeedScreen(props) {
                     tapAnywhereToPause={true}
                     onEnd={() => updateViewsData(currentPost)}
                 /> : null}
-            <Footer user={currentPost?.user} progress={progress} uploading={uploading} post={currentPost} goBack={() => props.navigation.goBack()} />
+            <Footer user={currentPost?.user} progress={0} uploading={uploading} post={currentPost} goBack={() => props.navigation.goBack()} />
         </GestureRecognizer>
         <Loader loader={newPostLoader} />
         <BlockModal state={showblcoked} userData={currentPost?.user} hideModalNow={() => setShowblcoked(false)} removeLoadedPost={(id) => removePosts(id)} />

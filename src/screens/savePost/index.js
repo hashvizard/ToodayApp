@@ -9,7 +9,8 @@ import { Title, Caption, } from 'react-native-paper'
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons';
 import { ScrollView } from 'react-native-gesture-handler'
 import * as RootNavigation from '../../../RootNavigation';
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
+import { uploadingPostData } from '../../redux/actions'
 
 export default function SavePostScreen(props) {
 
@@ -17,10 +18,11 @@ export default function SavePostScreen(props) {
     const [location, setlocation] = useState('');
     const locationIcon = <TextInput.Icon name="pound" color="#d9534f" />
     const user = useSelector(state => state.auth.currentUser);
-
+    const dispatch = useDispatch()
     const handleSavePost = async () => {
         let videodata = { video: props.route.params.source, description: description, location: location };
-        RootNavigation.navigate('home', { data: videodata });
+        dispatch(uploadingPostData(videodata))
+        RootNavigation.navigate('home');
     }
 
 const createTwoButtonAlert = () =>
@@ -61,6 +63,7 @@ const createTwoButtonAlert = () =>
                     <TextInput
                         style={{ margin: 10, backgroundColor: "white" }}
                         mode='flat'
+                        autoFocus={true}
                         theme={{ colors: { primary: '#292b2c', underlineColor: 'transparent', text: 'black' } }}
                         placeholderTextColor="black"
                         textAlignVertical='center'
@@ -75,7 +78,6 @@ const createTwoButtonAlert = () =>
                         style={{ margin: 10, backgroundColor: "white" }}
                         mode='flat'
                         multiline={true}
-                        autoFocus={true}
                         returnKeyType="done"
                         placeholderTextColor="black"
                         outlineColor='red'
@@ -87,9 +89,9 @@ const createTwoButtonAlert = () =>
                         placeholder='Write post Description..' />
                     <Button icon="video-outline" 
                          labelStyle={{color:"white"}}
-                    disabled={location != '' && description != '' ? false : true}
+                        disabled={location != '' && description != '' ? false : true}
                         mode="outlined" style={{ marginTop: 25, margin: 10, backgroundColor: "#5bc0de" }}
-                        onPress={() => createTwoButtonAlert()}>
+                        onPress={() => handleSavePost()}>
                         Post Now
                     </Button>
                 </ScrollView>

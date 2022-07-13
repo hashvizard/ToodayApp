@@ -244,10 +244,10 @@ const Footer = (props) => {
     const FeedView = (<>
         <View style={{ width: "83%", position: "absolute", bottom: 0, left: 0 }}>
             <View style={{ flexDirection: "column", padding: 20, alignItems: "flex-start", flexWrap: "wrap", zIndex: 0 }}>
-                <View style={{ flexDirection: "row", display: props.uploading ? "flex" : "none", alignItems: "center", alignSelf: "flex-start", elevation: 10, padding: 10, marginLeft: -7, marginBottom: 15, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.5)" }}>
+                {/* <View style={{ flexDirection: "row", display: props.uploading ? "flex" : "none", alignItems: "center", alignSelf: "flex-start", elevation: 10, padding: 10, marginLeft: -7, marginBottom: 15, borderRadius: 10, backgroundColor: "rgba(0,0,0,0.5)" }}>
                     <ActivityIndicator size="small" color='white' />
                     <Text style={{ color: "red", marginLeft: 10 }}>Uploading {props.progress}</Text>
-                </View>
+                </View> */}
                 <View style={{ flexDirection: "row", alignItems: "center" }}>
                     <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
                     <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
