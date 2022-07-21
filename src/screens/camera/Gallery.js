@@ -31,6 +31,7 @@ const Gallery = (props) => {
           after,
           first: 20,
           assetType: 'Videos',
+          include: ['filename', 'imageSize','fileSize'],
         })
           .then((res) => {
             if (oldData) {
@@ -78,6 +79,7 @@ const Gallery = (props) => {
 
   useEffect(() => {
     askPermission();
+    
   }, []);
 
   const onEndReached = useCallback(() => {
@@ -91,7 +93,6 @@ const Gallery = (props) => {
   </TouchableOpacity>)
 
 
-
   return (
     <FlatList
       data={data}
@@ -100,7 +101,9 @@ const Gallery = (props) => {
       horizontal={true}
       ListHeaderComponent={Header}
       renderItem={({ item }) => (
-        <TouchableOpacity activeOpacity={0.5} onPress={() => props.navigation.navigate('savePost', { source: item.node.image.uri })} >
+        <TouchableOpacity activeOpacity={0.5} onPress={() => {
+            props.navigation.navigate('savePost', { source: item.node.image.uri, size:item.node.image.fileSize})
+          }}>
           <Image
             style={styles.galleryVideos}
             source={{ uri: item.node.image.uri }}

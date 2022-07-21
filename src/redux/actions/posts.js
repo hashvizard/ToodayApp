@@ -53,6 +53,7 @@ export const uploadingPostData = (data) => (dispatch) => {
         description: data.description,
         location: data.location,
         video:data.video,
+        thumbnail:data.thumbnail,
         type: UPLOADING_POST
     })
 }
@@ -63,6 +64,7 @@ export const clearUploadedData = () => (dispatch) => {
         description: null,
         location: null,
         video:null,
+        thumbnail:null,
         type: UPLOADED
     })
 }

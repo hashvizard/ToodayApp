@@ -33,7 +33,7 @@ const GalleryView = (props) => {
                     after,
                     first: 20,
                     assetType: 'Videos',
-                    include: ['filename', 'imageSize'],
+                    include: ['filename', 'imageSize','fileSize'],
                 })
                     .then((res) => {
                        
@@ -105,7 +105,9 @@ const GalleryView = (props) => {
                 contentContainerStyle={{ ...styles.botom }}
                 numColumns={3}
                 renderItem={({ item }) => (
-                    <TouchableOpacity style={styles.galleryViewVideos} onPress={() => props.navigation.navigate('savePost', { source: item.node.image.uri })}>
+                    <TouchableOpacity style={styles.galleryViewVideos} onPress={() => {
+                        props.navigation.navigate('savePost', { source: item.node.image.uri, size:item.node.image.fileSize })
+                    }}>
                         <Image
                             style={styles.galleryImages}
                             source={{ uri: item?.node?.image?.uri }}

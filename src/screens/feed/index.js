@@ -7,7 +7,7 @@ import GestureRecognizer from 'react-native-swipe-gestures';
 import Header from '../../HomeScreen/Header';
 import Footer from '../../HomeScreen/Footer';
 import VideoPlayer from 'react-native-video-controls';
-import { AppState, StatusBar,View } from 'react-native';
+import { AppState, StatusBar, View } from 'react-native';
 import { useIsFocused } from '@react-navigation/native';
 import BlockModal from '../../components/modal/block'
 import ReportModal from '../../components/modal/report'
@@ -17,45 +17,89 @@ import { UploadVideos } from '../../helpers/UploadVideos';
 import RNFetchBlob from 'react-native-fetch-blob'
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import BackgroundService from 'react-native-background-actions';
+import BackgroundJob from 'react-native-background-actions';
+
 import Loader from '../../components/loader/Loader';
 import * as RootNavigation from '../../../RootNavigation';
-   /** api url */
-   const ENV = require('../../../credentials');
-   const BASE_URL = ENV.BACKEND_URL;
+import { RNS3 } from 'react-native-aws3';
+/** api url */
+const ENV = require('../../../credentials');
+const BASE_URL = ENV.BACKEND_URL;
 
 //    let progress = '0%';
 const veryIntensiveTask = async (taskDataArguments) => {
-  
-    // Example of an infinite loop task
-    const { data,datas,token } = taskDataArguments;
-    await new Promise( async (resolve,reject) => {
-        RNFetchBlob.fetch('POST', `${BASE_URL}posts`, {
-            Authorization: 'Bearer ' + token,
-            'Content-Type': "multipart/form-data",
+    console.log(taskDataArguments);
+
+    const { data,user,token } = taskDataArguments;
+
+
+    // Uploading video to s3 Bucket     
+    const fileEXT = data.video.slice((data.video.lastIndexOf('.')) + 1);
+    await RNS3.put(
+        {
+            uri: data.video,
+            name: `${new Date().valueOf()}.${fileEXT}`,
+            type: 'video/mp4'
         },
-            [
-                { name: 'photoUrl', filename: 'tooday.png', data: data.thumbnail },
-                { name: 'videoUrl', filename: 'tooday.mp4', type: 'video/mp4', data: RNFetchBlob.wrap(data.path) },
-                { name: 'location', data: datas.location },
-                { name: 'description', data: datas.description },
-            ]).uploadProgress({ interval : 1000 },(written, total) => {
-                let aprogress = `${((written/total) * 100).toFixed(0)}%`;
-                console.log(aprogress)
-            })
-            .then((response) => response.json())
-            .then((RetrivedData) => {
-                    // iOS will also run everything here in the background until .stop() is called
-                BackgroundService.stop();
-            })
-            .catch((err) => {
-                BackgroundService.stop();
-                reject(err);
-            })
-    });
+        {
+            keyPrefix: `${ENV.KEY_PREFIX}/${user.city_id}/${user.id}/`,
+            bucket: ENV.BUCKET,
+            region: ENV.REGION,
+            accessKey: ENV.ACCESS_KEY,
+            secretKey: ENV.SECRET_KEY,
+            successActionStatus: 201,
+        },
+    )
+        .progress(async (progress) => {
+            await BackgroundJob.updateNotification({ taskDesc: `Uploading : ${((progress.loaded / progress.total) * 100).toFixed(0)}%` });
+            console.log(`${((progress.loaded / progress.total) * 100).toFixed(0)}%`);
+        })
+        .then((response) => {
+            if (response.status !== 201) {
+                console.log('Failed to upload image to S3');
+            } else {
+                let videoourl = response?.body?.postResponse?.location;
+                console.log(response.body, "sdfg");
+                uploadingData(videoourl, data, token)
+            }
+        }).catch(err => {
+            console.log(err);
+        })
+};
+
+
+const uploadingData = async (videourl, postdata, token) => {
+    console.log(videourl);
+    // Uploading data in database with thumbnail                
+    await RNFetchBlob.fetch('POST', `${BASE_URL}posts`, {
+        Authorization: 'Bearer ' + token,
+        'Content-Type': "multipart/form-data",
+    },
+        [
+            { name: 'photoUrl', filename: 'tooday.png', data: postdata.thumbnail },
+            { name: 'location', data: postdata.location },
+            { name: 'videoUrl', data: videourl },
+            { name: 'description', data: postdata.description },
+        ]).uploadProgress({ interval: 1000 }, (written, total) => {
+            let aprogress = `${((written / total) * 100).toFixed(0)}%`;
+            console.log(aprogress)
+        })
+        .then((response) => response.json())
+        .then((RetrivedData) => {
+            console.log("finally", RetrivedData);
+            // iOS will also run everything here in the background until .stop() is called
+            BackgroundService.stop();
+        })
+        .catch((err) => {
+            console, log(err);
+            BackgroundService.stop();
+
+        })
+
 };
 
 export default function FeedScreen(props) {
- 
+
 
     const isFocused = useIsFocused();
     const dispatch = useDispatch();
@@ -74,11 +118,11 @@ export default function FeedScreen(props) {
     // Checking Feed State
     const FeedState = useSelector(state => state.feedState.active)
     const upload = useSelector(state => state.upload)
-    
+
     useFocusEffect(
         React.useCallback(() => {
             // If user navigated from uploading Screen
-            if (upload.description && upload.location && upload.video) {
+            if (upload.description && upload.location && upload.video && upload.thumbnail) {
                 console.log("I am in")
                 let data = upload;
                 dispatch(clearUploadedData())
@@ -90,56 +134,39 @@ export default function FeedScreen(props) {
                 newData[index].comments = props.route?.params?.totalComments;
                 setPosts(newData);
             }
-        }, [upload,props.route?.params?.totalComments])
+        }, [upload, props.route?.params?.totalComments])
     );
 
-    const updateVideo = async (datas) => {
-        setuploading(true);
-        let data = await getData(datas.video)
+    const updateVideo = async (data) => {
         let token = await AsyncStorage.getItem('tooday_user_token');
-
         const options = {
             taskName: 'uploadingVideo',
-            taskTitle: upload.location,
-            taskDesc: upload.description,
+            taskTitle: data.location,
+            taskDesc: data.description,
             taskIcon: {
                 name: 'ic_notification',
                 type: 'mipmap',
             },
             color: '#ff00ff',
-            progressBar :{
-                max:1024,
-                value:10,
-                indeterminate:true
+            progressBar: {
+                max: 0,
+                value: 0,
+                indeterminate: true
             },
             // linkingURI: 'yourSchemeHere://chat/jane', // See Deep Linking for more info
-            parameters: {  
+            parameters: {
                 data: data,
-                datas:datas,
-                token:token
+                user:user,
+                token: token
             },
         };
-        
-       await BackgroundService.start(veryIntensiveTask, options);
-       
-        await BackgroundService.updateNotification({taskDesc: 'Uploading...'}); // Only Android, iOS will ignore this call
-    
+
+        await BackgroundService.start(veryIntensiveTask, options);
+
+        await BackgroundService.updateNotification({ taskDesc: data.description }); // Only Android, iOS will ignore this call
+
     }
 
-
-    const getData = async (path) => {
-        const origin = await ProcessingManager.getVideoInfo(path);
-        const result = await ProcessingManager.compress(path, {
-            width: origin.size && origin.size.width / 3,
-            height: origin.size && origin.size.height / 3,
-            bitrateMultiplier: 3,
-            removeAudio: false,
-            minimumBitrate: 300000
-        });
-        const thumbnail = await ProcessingManager.getPreviewForSecond(result.source);
-
-        return { path: result.source, thumbnail: thumbnail };
-    }
 
     useEffect(() => {
 
@@ -278,7 +305,7 @@ export default function FeedScreen(props) {
     }
 
     return (<>
-    <StatusBar barStyle='light-content' translucent={true}/>
+        <StatusBar barStyle='light-content' translucent={true} />
         <GestureRecognizer
             onSwipeUp={() => onSwipeUp()}
             onSwipeDown={() => onSwipeDown()}

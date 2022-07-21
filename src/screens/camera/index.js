@@ -74,13 +74,13 @@ export default function CameraScreen(props) {
         if (cameraRef) {
             try {
                 recording(true);
-                const options = { maxDuration: 300, quality: RNCamera.Constants.VideoQuality['480'], orientation: "portrait" }
+                const options = { maxDuration: 300, quality: RNCamera.Constants.VideoQuality['720'], orientation: "portrait",maxFileSize:20971520}
                 const videoRecordPromise = cameraRef.recordAsync(options)
                 if (videoRecordPromise) {
                     const data = await videoRecordPromise;
-                    const source = data.uri
+                    console.log(data,"I gor this")
                     recording(false)
-                    navigation.navigate('savePost', { source })
+                    navigation.navigate('savePost', { source:data.uri ,size:20000000 })
                 }
             } catch (error) {
                 console.warn(error)
