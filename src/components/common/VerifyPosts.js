@@ -59,7 +59,7 @@ export default function VerifyPosts(props) {
                     console.log(err)
                     setRefreshing(false);
                 });
-        } 
+        }
     }
 
     return (<View style={{ flex: 1, ...videoStyles.spaceBottomView }}>

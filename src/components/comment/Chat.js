@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Avatar } from 'react-native-paper';
 import { changeDateForamt } from '../../helpers';
-import { useUser } from '../../hooks/useUser'
 import {Caption} from 'react-native-paper'
 
 const Chat = ({ item }) => {

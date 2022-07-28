@@ -7,7 +7,6 @@ import ProfileHeader from '../../components/profile/header'
 import ProfilePostList from '../../components/profile/postList'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import { CurrentUserProfileItemInViewContext } from '../../navigation/feed'
-import { useUser } from '../../hooks/useUser'
 import { getPostsByUserId } from '../../services/posts'
 import { useFocusEffect } from '@react-navigation/native';
 import ProfilePostListItem from '../../components/profile/postList/item'

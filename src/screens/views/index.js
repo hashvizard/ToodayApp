@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View, FlatList, ActivityIndicator } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import { useSelector, useDispatch } from 'react-redux';
-import { List, Avatar, IconButton, Title } from 'react-native-paper';
+import { List, Avatar, Title } from 'react-native-paper';
 import { postViewUserData } from '../../Apis/LaravelApis/postApi';
 import * as RootNavigation from '../../../RootNavigation';
 

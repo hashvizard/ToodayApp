@@ -1,8 +1,8 @@
-import { Text, View, Image, ScrollView, Alert, StatusBar } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { View,ScrollView, Alert, StatusBar } from 'react-native'
+import React from 'react'
 import styles from './styles'
 import { useSelector } from 'react-redux'
-import { Caption, Divider, Headline, Paragraph, Subheading, Title } from 'react-native-paper'
+import { Caption, Divider, Subheading, Title } from 'react-native-paper'
 import { List } from 'react-native-paper';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 import { Avatar } from 'react-native-paper';

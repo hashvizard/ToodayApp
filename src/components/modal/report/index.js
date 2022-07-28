@@ -2,8 +2,6 @@ import BottomSheet, { BottomSheetFlatList } from '@gorhom/bottom-sheet'
 import React, { useEffect, useRef, useCallback, useMemo, useState } from 'react'
 import { View, Text } from 'react-native'
 import { useDispatch, useSelector } from 'react-redux'
-import { clearModal } from '../../../redux/actions/modal';
-import { reportAndRemove } from '../../../redux/actions/report';
 import { IconButton, Colors, RadioButton, Button, Divider } from 'react-native-paper';
 import { REPORT } from '../../../constants'
 import styles from './styles'

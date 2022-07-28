@@ -50,7 +50,6 @@ export default function UserLogin(props) {
                         dispatch(setUserData(newData))}
                 }).catch((error) => {
                     setsigninStatus(false);
-                    console.log(error)
                     props.navigation.navigate("Error", { error });
                 })
         
