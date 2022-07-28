@@ -24,6 +24,8 @@ import UserFeed from '../../screens/feed/UserFeed';
 import EditPost from '../../screens/editPost';
 import { IconButton } from 'react-native-paper';
 import * as RootNavigation from '../../../RootNavigation';
+import VerifyFeed from '../../screens/feed/VerifyFeed';
+import Views from '../../screens/views';
 const Stack = createStackNavigator()
 
 
@@ -51,6 +53,7 @@ export default function Route() {
                     :
                     <>
                         <Stack.Screen name="home" component={FeedScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="verifyUserFeeds" component={VerifyFeed} options={{ headerShown: false }} />
                         <Stack.Screen name="profileFeed" component={ProfileFeed} options={{ headerShown: false }} />
                         <Stack.Screen name="ViewedFeed" component={ViewedFeed} options={{ headerShown: false }} />
                         <Stack.Screen name="UserFeeds" component={UserFeed} options={{ headerShown: false }} />
@@ -75,6 +78,7 @@ export default function Route() {
                           ),}} 
                         
                         />
+                         <Stack.Screen name="views" component={Views} options={{ headerShown: true, title: "Views"}} />
                         <Stack.Screen name="settings" component={Settings} options={{ headerShown: false }} />
                     </>
             }

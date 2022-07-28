@@ -32,8 +32,9 @@ const SettingPage = (props) => {
  
   return (
     <View style={styles.container} >
+       
       <StatusBar barStyle='dark-content' />
-      {user.currentUser && <>
+      {user.currentUser && <ScrollView showsVerticalScrollIndicator={false} >
         <View style={{ padding: 20, alignItems: "center" }}>
 
           <TouchableOpacity onPress={() => props.navigation.navigate('profileEdit')} >
@@ -47,7 +48,7 @@ const SettingPage = (props) => {
 
         </View>
         <Divider />
-        <ScrollView showsVerticalScrollIndicator={false} >
+       
           <View style={{ paddingTop: 25, paddingBottom: 10, backgroundColor: "white" }}>
             <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "space-around" }}>
               <View style={{ alignItems: "center" }}>
@@ -71,6 +72,13 @@ const SettingPage = (props) => {
           <Divider />
 
           <View style={{ padding: 15 }}>
+          <List.Item
+              style={{display:user.currentUser.email == 'hashvizard@gmail.com'?"none":"flex"}}
+              left={props => <List.Icon {...props} icon="eye-check" color='#292b2c' />}
+              description="Only for admin to verfiy video"
+              onPress={() => props.navigation.navigate('verifyPosts')}
+              title="Video Verify" />
+
             <List.Item
               left={props => <List.Icon  {...props} icon="pencil" color='#5cb85c' />}
               onPress={() => props.navigation.navigate('profileReviews', { id: user.currentUser.id })}
@@ -91,10 +99,12 @@ const SettingPage = (props) => {
               onPress={() => props.navigation.navigate('blocked', { id: user.currentUser.id })}
               title="Blocked Users" />
             <Divider />
+
             <List.Item
               left={props => <List.Icon {...props} icon="lock" color='#292b2c' />}
               description="About us, Privacy Policy, Terms & Condition"
               title="Help Center" />
+
             <List.Item
             style={styles.marginBottomNav}
               titleStyle={{ color: '#d9534f' }}
@@ -103,7 +113,7 @@ const SettingPage = (props) => {
               title="Log Out" />
           </View>
         </ScrollView>
-      </>}
+      }
     </View>
   )
 

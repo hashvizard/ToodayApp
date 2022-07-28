@@ -8,7 +8,7 @@ import { Title } from 'react-native-paper';
 import { useFocusEffect } from '@react-navigation/native';
 import * as RootNavigation from '../../../RootNavigation';
 
-export default function UserPosts(props) {
+export default function VerifyPosts(props) {
 
 
     const [userPosts, setUserPosts] = useState([]);
@@ -29,17 +29,17 @@ export default function UserPosts(props) {
 
     useEffect(() => {
         setloading(true);
-        dispatch(getUserPosts(`posts/${props.route.params.id}`))
+        dispatch(getUserPosts(`admin/posts`))
             .then(data => {
                 setloading(false);
-                setUserPosts(data.posts.data);
-                setnextpage(data.posts.next_page_url);
+                setUserPosts(data.data.data);
+                setnextpage(data.data.next_page_url);
             }).catch(err => console.log("Error", err));
     }, [])
 
     const goBackHome = (postion) => {
-        RootNavigation.navigate('UserFeeds', {
-            from: "UserPosts",
+        RootNavigation.navigate('verifyUserFeeds', {
+            from: "verifyFeeds",
             videos: userPosts,
             nextpage: nextpage,
             currentIndex: postion

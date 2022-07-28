@@ -61,6 +61,17 @@ export const reportVideo = (data) => dispatch => new Promise((resolve, reject) =
 })
 
 /**
+ * Get Post Views Data
+ */
+
+
+ export const postViewUserData = (id) => dispatch => new Promise((resolve, reject) => {
+    getDataApi(`posts/views/${id}`).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+/**
  * get Post Coomments
 */
 
@@ -90,6 +101,19 @@ export const updatePost = (url,data) => dispatch => new Promise((resolve, reject
         resolve(response);
     }).catch(error => reject(error))
 })
+
+
+/**
+ * Remove Post 
+*/
+
+export const postLive = (url,data) => dispatch => new Promise((resolve, reject) => {
+    getDataApi(url).then(response => {
+        resolve(response);
+    }).catch(error => reject(error))
+})
+
+
 
 /**
  * Remove Post 

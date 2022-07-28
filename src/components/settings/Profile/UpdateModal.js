@@ -10,7 +10,7 @@ import CityFinder from '../../../helpers/CityFinder';
 import { updateUserBio, updateUserCity, updateUserName, updateUserprofession } from '../../../Apis/LaravelApis';
 import { USER_STATE_CHANGE } from '../../../redux/constants';
 const UpdateModal = ({ data, type, changeModal }) => {
-  console.log(type);
+
   const user = useSelector(state => state.auth);
 
   const dispatch = useDispatch()

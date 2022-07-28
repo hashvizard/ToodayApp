@@ -78,7 +78,6 @@ export default function CameraScreen(props) {
                 const videoRecordPromise = cameraRef.recordAsync(options)
                 if (videoRecordPromise) {
                     const data = await videoRecordPromise;
-                    console.log(data,"I gor this")
                     recording(false)
                     navigation.navigate('savePost', { source:data.uri ,size:20000000 })
                 }

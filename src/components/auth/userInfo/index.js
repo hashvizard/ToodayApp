@@ -1,7 +1,7 @@
 import { View, Text, Image, Alert } from 'react-native'
 import React, { useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { Button, Caption, Headline, TextInput, Title } from 'react-native-paper'
+import { Button, Caption, Headline } from 'react-native-paper'
 import CityFinder from '../../../helpers/CityFinder'
 import videoStyles from '../../../styles/VideoStyles'
 import { updateUserCity } from '../../../Apis/LaravelApis'
@@ -33,7 +33,7 @@ const UserInfo = () => {
       let data = userInfo;
       data.city_id = cityData.data[0].id;
       data.city = cityData.data[0].city;
-     
+
       dispatch({ type: USER_STATE_CHANGE, currentUser: data, loaded: true })
       setUpdating(false);
 
@@ -50,12 +50,12 @@ const UserInfo = () => {
       </View>
       <View style={{ ...videoStyles.citySelectorStyle }}>
 
-        <View style={{ flexDirection: "row", alignItems: "center",padding:6,elevation:1,backgroundColor:"white" }} >
+        <View style={{ flexDirection: "row", alignItems: "center", padding: 6, elevation: 1, backgroundColor: "white" }} >
           {city == '' ?
             <Caption style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", marginLeft: 10 }} >Detect your location..</Caption>
-            : <View style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", backgroundColor:"#f7f7f7",padding:5,marginRight:10 }}>
+            : <View style={{ flexGrow: 1, flexWrap: "wrap", width: "70%", backgroundColor: "#f7f7f7", padding: 5, marginRight: 10 }}>
               <Text>City</Text>
-              <Headline style={{ flexGrow: 1, flexWrap: "wrap",color:"#5bc0de", width: "70%", fontWeight: "bold" }}>{city}</Headline>
+              <Headline style={{ flexGrow: 1, flexWrap: "wrap", color: "#5bc0de", width: "70%", fontWeight: "bold" }}>{city}</Headline>
             </View>}
           <CityFinder
             city={(city) => {
@@ -71,7 +71,7 @@ const UserInfo = () => {
           onPress={() => {
             updateCity();
           }}
-          labelStyle={{color:"white"}}
+          labelStyle={{ color: "white" }}
           contentStyle={{ justifyContent: "space-around" }}
           disabled={city == '' || updating ? true : false} color='#5cb85c' >
           {updating ? "Updating Data" : "Update City"}

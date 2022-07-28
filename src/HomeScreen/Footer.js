@@ -1,7 +1,7 @@
 import { View, Text, Alert, ActivityIndicator, TouchableOpacity, } from 'react-native'
 import React, { useState, useMemo, useEffect } from 'react'
 import videoStyles from '../styles/VideoStyles'
-import { Avatar, Caption, IconButton, Paragraph, Subheading, Title } from 'react-native-paper'
+import { Avatar, Button, Caption, IconButton, Paragraph, Subheading, Title } from 'react-native-paper'
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import { useDispatch, useSelector } from 'react-redux';
 import { activeFeedState, setFeedState, setIntialPost } from '../redux/actions';
@@ -11,7 +11,8 @@ import TimeAgo from 'react-native-timeago';
 import Icon from 'react-native-vector-icons/MaterialCommunityIcons'
 
 const Footer = (props) => {
-    console.log(props.post)
+
+    console.log(props)
     const dispatch = useDispatch();
     const feedState = useSelector(state => state.feedState);
     const [show, setshow] = useState(props.post?.description?.length > 80 ? true : false)
@@ -28,6 +29,8 @@ const Footer = (props) => {
                 return viewedPosts;
             case 'UserPosts':
                 return UserPostView;
+            case 'Verify':
+                return verifyVideo; 
             default:
                 return null;
         }
@@ -51,6 +54,23 @@ const Footer = (props) => {
                 { text: "Confirm", onPress: () => props.deletePost(id) }
             ]
         );
+
+
+        const liveVideo = (id) =>
+        Alert.alert(
+            "Live Video",
+            "Are you sure you want to live this post ?",
+            [
+                {
+                    text: "Cancel",
+                    onPress: () => console.log("Cancel Pressed"),
+                    style: "cancel"
+                },
+                { text: "Confirm", onPress: () => props.livePost(id) }
+            ]
+        );
+
+        
 
     // Showing This View for Viewed Posts
     const viewedPosts = (<>
@@ -157,6 +177,54 @@ const Footer = (props) => {
                     onPress={() => updateFeedState()}
                 />
             </View>
+        </View>
+    </>);
+
+    // Showing This View for Other Profile Posts
+    const verifyVideo = (<>
+        <View style={{ alignItems: "flex-end", flexDirection: "row", justifyContent: "space-between" }}>
+            <View style={{ paddingHorizontal: 15, width: "100%" }}>
+                <View style={{ flexDirection: "column", alignItems: "flex-start" }}>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center", marginBottom: 10 }}>
+                        <Feather name='hash' size={21} color="red" />
+                        <Caption style={{ marginLeft: 5, color: 'white' }}>{props.post?.location}</Caption>
+                    </View>
+                    <View style={{ flexDirection: "row", alignItems: "center", justifyContent: "center" }}>
+                        <Icon name='clock-outline' size={18} style={{ marginRight: 10 }} color="white" />
+                        <Caption style={{ color: "white" }}><TimeAgo time={props?.post?.created_at} /></Caption>
+                    </View>
+                </View>
+                <Paragraph style={{ marginTop: 5, paddingTop: 0, color: 'white' }}>
+                    {show ? `${props.post?.description.substr(0, 80)}... ` : props.post?.description}</Paragraph>
+                <Text
+                    onPress={() => setshow(!show)}
+                    style={{ display: props?.post?.description?.length > 80 ? 'flex' : 'none', color: "#5bc0de", }}>
+                    {show ? 'See full description' : 'Show Less'}
+                </Text>
+            </View>
+        </View>
+
+        <View style={{
+            flexDirection: "row", justifyContent: "space-between", alignItems: "center"
+        }}>
+            <View style={{ flexDirection: "row", paddingHorizontal: 10, alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+                <Button
+                icon='close'
+                mode='contained'
+                onPress={() => deleteAlert(props?.post.id)}
+                color='#d9534f'
+                style={{width:"40%",marginVertical:10}}
+                > Rejected </Button>
+                <Button
+                icon='check'
+                color='#5cb85c'
+                mode='contained'
+                onPress={() => liveVideo(props?.post.id)}
+                style={{width:"40%",marginVertical:10}}
+                > Verified </Button>
+            
+            </View>
+            
         </View>
     </>);
 
@@ -280,6 +348,7 @@ const Footer = (props) => {
                         color="#5bc0de"
                         animated={true}
                         size={30}
+                        onPress={() => RootNavigation.navigate('views', { id: props?.post.id })}
                     />
                     <Text style={{ color: "white", marginHorizontal: 15 }}>{props?.post?.views}</Text>
                     <IconButton

@@ -2,7 +2,6 @@ import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
 import { Avatar } from 'react-native-paper';
 import { changeDateForamt } from '../../../helpers';
-import { useUser } from '../../../hooks/useUser';
 import * as RootNavigation from '../../../../RootNavigation';
 import { TouchableOpacity } from 'react-native-gesture-handler';
 import { useSelector } from 'react-redux';

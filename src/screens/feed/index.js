@@ -28,7 +28,6 @@ const BASE_URL = ENV.BACKEND_URL;
 
 //    let progress = '0%';
 const veryIntensiveTask = async (taskDataArguments) => {
-    console.log(taskDataArguments);
 
     const { data,user,token } = taskDataArguments;
 
@@ -178,7 +177,7 @@ export default function FeedScreen(props) {
         );
         return () => {
             appStateListener?.remove();
-        };
+        }; 
     }, []);
 
     useEffect(() => {

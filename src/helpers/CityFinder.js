@@ -89,12 +89,12 @@ const CityFinder = (props) => {
             await Geocoder.from(lat, long)
                 .then(json => {
                     let cities = [];
-                    let address_clues = [];
+                    let address_clues = ['Dehradun'];
 
-                    json.results[0].address_components.map((item) => {
+                 /*    json.results[0].address_components.map((item) => {
                         var City_clue = CapitilizeWords(item.long_name);
                         address_clues = [...address_clues, City_clue];
-                    });
+                    }); */
 
                     cities = address_clues.filter(element => CityData.includes(element));
 
