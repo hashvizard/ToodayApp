@@ -9,8 +9,7 @@ import { useFocusEffect } from '@react-navigation/native';
 import * as RootNavigation from '../../../RootNavigation';
 
 export default function UserPosts(props) {
-
-
+    
     const [userPosts, setUserPosts] = useState([]);
     const [nextpage, setnextpage] = useState(null)
     const [refreshing, setRefreshing] = useState(false);
@@ -59,7 +58,7 @@ export default function UserPosts(props) {
                     console.log(err)
                     setRefreshing(false);
                 });
-        } 
+        }
     }
 
     return (<View style={{ flex: 1, ...videoStyles.spaceBottomView }}>
