@@ -72,12 +72,12 @@ const SettingPage = (props) => {
           <Divider />
 
           <View style={{ padding: 15 }}>
-          <List.Item
+      {/*     <List.Item
               style={{display:user.currentUser.email == 'hashvizard@gmail.com'?"none":"flex"}}
               left={props => <List.Icon {...props} icon="eye-check" color='#292b2c' />}
               description="Only for admin to verfiy video"
               onPress={() => props.navigation.navigate('verifyPosts')}
-              title="Video Verify" />
+              title="Video Verify" /> */}
 
             <List.Item
               left={props => <List.Icon  {...props} icon="pencil" color='#5cb85c' />}

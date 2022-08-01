@@ -395,14 +395,6 @@ const Footer = (props) => {
                     onPress={() => RootNavigation.navigate('gallery')}
                 />
 
-                <IconButton
-                    icon="bell-circle-outline"
-                    color="white"
-                    animated={true}
-                    size={35}
-                    onPress={() => console.log('Pressed')}
-                />
-
                 <TouchableOpacity
                     onPress={() => RootNavigation.navigate('settings')}>
                     <Avatar.Image size={30} style={{ alignSelf: 'center', marginVertical: 5, elevation: 10 }} source={{ uri: currentuser.profile }} />
